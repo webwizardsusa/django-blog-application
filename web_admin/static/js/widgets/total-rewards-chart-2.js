@@ -1,0 +1,1 @@
+"use strict";document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){new ApexCharts(document.querySelector("#total-rewards-chart-2"),{chart:{type:"line",height:100,stacked:!0,sparkline:{enabled:!0}},colors:["#ffb64d"],stroke:{curve:"smooth",width:2},series:[{data:[30,60,40,70,50,90,50,55,45,60,50,65,30,60,40,70,50]}]}).render()},500)});

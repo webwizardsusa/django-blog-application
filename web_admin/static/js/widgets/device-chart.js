@@ -1,0 +1,1 @@
+"use strict";document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){new ApexCharts(document.querySelector("#device-chart"),{chart:{height:135,type:"donut",sparkline:{enabled:!0}},dataLabels:{enabled:!1},series:[66.6,29.7,38.6],labels:["Desktop","Mobile","Tablet"],grid:{padding:{top:20,right:0,bottom:0,left:0}},legend:{show:!1}}).render()},500)});

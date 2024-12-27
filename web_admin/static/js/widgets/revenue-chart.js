@@ -1,0 +1,1 @@
+"use strict";document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){new ApexCharts(document.querySelector("#revenue-chart"),{chart:{height:200,type:"donut"},dataLabels:{enabled:!1},labels:["Target","Last week","Last day"],series:[1258,975,500],legend:{show:!1},colors:["#00bcd4","#FFB64D","#4099ff"]}).render()},500)});

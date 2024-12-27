@@ -1,0 +1,1 @@
+"use strict";document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){new ApexCharts(document.querySelector("#email-chart"),{chart:{height:200,type:"donut"},dataLabels:{enabled:!1},series:[85.7,77.56,20.9],colors:["#4099ff","#ff5370","#2ed8b6"],labels:["Send","Open","Bounced"],legend:{show:!0,position:"bottom"}}).render()},500)});
