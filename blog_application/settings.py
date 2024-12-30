@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'web_admin.middleware.role_based_middleware.RoleBasedAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_application.urls'
