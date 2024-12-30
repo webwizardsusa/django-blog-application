@@ -56,7 +56,7 @@
                             class="dropdown-item"><i class="ph ph-gear"></i> <span>Settings</span> </a><a href="#!"
                             class="dropdown-item"><i class="ph ph-lifebuoy"></i> <span>Support</span> </a><a
                             href="#!" class="dropdown-item"><i class="ph ph-lock-key"></i> <span>Lock Screen</span>
-                        </a><a href="#!" class="dropdown-item"><i class="ph ph-power"></i> <span>Logout</span></a>
+                        </a><a href="{% url 'authentication:logout' %}" class="dropdown-item"><i class="ph ph-power"></i> <span>Logout</span></a>
                     </div>
                 </li>
                 <li class="dropdown pc-h-item"><a class="pc-head-link dropdown-toggle arrow-none me-0"
@@ -299,7 +299,7 @@
                                     </li>
                                     <li class="list-group-item"><a href="#" class="dropdown-item"><span
                                                 class="d-flex align-items-center"><i class="ph ph-plus-circle"></i>
-                                                <span>Add account</span> </span></a><a href="#"
+                                                <span>Add account</span> </span></a><a href="{% url 'authentication:logout' %}"
                                             class="dropdown-item"><span class="d-flex align-items-center"><i
                                                     class="ph ph-power"></i> <span>Logout</span></span></a></li>
                                 </ul>

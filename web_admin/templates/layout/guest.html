@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html lang="en"><!-- [Head] start -->
+<!-- Mirrored from codedthemes.com/demos/admin-templates/gradient-able/bootstrap/default/pages/login-v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2024 12:03:42 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<head>
+    <title>Login | Gradient Able Dashboard Template</title><!-- [Meta] -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description"
+        content="Gradient Able is trending dashboard template made using Bootstrap 5 design framework. Gradient Able is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies.">
+    <meta name="keywords"
+        content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard">
+    <meta name="author" content="codedthemes"><!-- [Favicon] icon -->
+    <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/x-icon"><!-- [Google Font : Poppins] icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="{% static 'fonts/phosphor/duotone/style.css' %}">
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="{% static 'fonts/tabler-icons.min.css' %}"><!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="{% static 'fonts/feather.css' %}">
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome.css' %}">
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="{% static 'fonts/material.css' %}"><!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" id="main-style-link">
+    <link rel="stylesheet" href="{% static 'css/style-preset.css' %}">
+</head><!-- [Head] end --><!-- [Body] Start -->
+
+<body data-pc-header="header-1" data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true"
+    data-pc-direction="ltr" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+    <div class="auth-main v2">
+        <div class="auth-wrapper">
+            <div class="auth-sidecontent">
+            </div>
+            <div class="auth-form">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <!-- Required Js -->
+    <script src="{% static 'js/plugins/popper.min.js' %}"></script>
+    <script src="{% static 'js/plugins/simplebar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/i18next.min.js' %}"></script>
+    <script src="{% static 'js/plugins/i18nextHttpBackend.min.js' %}"></script>
+    <script src="{% static 'js/fonts/custom-font.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/multi-lang.js' %}"></script>
+    <script src="{% static 'js/plugins/feather.min.js' %}"></script>
+    <script>layout_change('light');</script>
+    <script>layout_sidebar_change('light');</script>
+    <script>change_box_container('false');</script>
+    <script>layout_caption_change('true');</script>
+    <script>layout_rtl_change('false');</script>
+    <script>preset_change('preset-1');</script>
+    <script>header_change('header-1');</script>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon='{"rayId":"8f0d8861cd54cd39","version":"2024.10.5","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dfc6ad2bc063456e85d5f100efcb73a2","b":1}'
+        crossorigin="anonymous"></script>
+</body><!-- [Body] end -->
+<!-- Mirrored from codedthemes.com/demos/admin-templates/gradient-able/bootstrap/default/pages/login-v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2024 12:03:42 GMT -->
+
+</html>
