@@ -54,37 +54,45 @@
 
     <!-- [ Main Content ] start -->
     <div class="pc-container">
+        {% if breadcrumb_title %}
         <div class="page-header">
             <div class="page-block card mb-0">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title border-bottom pb-2 mb-2">
-                                <h4 class="mb-0">Category Management</h4>
+                                <h4 class="mb-0">{{ breadcrumb_title }}</h4>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="../dashboard/index.html"><i class="ph ph-house"></i></a>
+                                <li class="breadcrumb-item"><a href="{% url 'web_admin_dashboard' %}"><i class="ph ph-house"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0)">DataTable</a></li>
-                                <li class="breadcrumb-item" aria-current="page">Advance Initialization</li>
+                                {% for item in breadcrumbs %}
+                                    <li class="breadcrumb-item {% if forloop.last %}active{% endif %}">
+                                        {% if not forloop.last %}
+                                            <a href="{{ item.url }}">{{ item.name }}</a>
+                                        {% else %}
+                                            {{ item.name }}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {% endif %}
         
         <div class="pc-content">
             {% if messages %}
-            <div class="alert alert-danger" role="alert">
-                <ul class="messages m-b-0">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
             {% endif %}
             <!-- [ Main Content ] start -->
             {% block content %}{% endblock %}

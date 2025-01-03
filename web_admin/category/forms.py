@@ -12,6 +12,13 @@ class CategoryForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
-        if Category.objects.filter(name=name).exists():
+        qs = Category.objects.filter(name=name)
+
+        # Exclude the current category when editing
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+
+        if qs.exists():
             raise forms.ValidationError("Category with this name already exists.")
+
         return name
