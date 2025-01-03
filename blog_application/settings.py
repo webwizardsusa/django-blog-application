@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web_admin',
     'web_admin.authentication',
+    'web_admin.category',
 ]
 
 MIDDLEWARE = [

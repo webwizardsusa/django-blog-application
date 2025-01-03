@@ -2,6 +2,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path("auth/", include("web_admin.authentication.urls", namespace="authentication")),
     path('', views.dashboard, name='web_admin_dashboard'),
+    path("auth/", include("web_admin.authentication.urls", namespace="authentication")),
+    path('category/', include('web_admin.category.urls', namespace='category')),
 ]

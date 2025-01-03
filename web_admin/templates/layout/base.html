@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="{% static 'fonts/material.css' %}"><!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" id="main-style-link">
     <link rel="stylesheet" href="{% static 'css/style-preset.css' %}">
+    <!-- Page-Specific CSS -->
+    {% block page_css %}{% endblock %}
 </head><!-- [Head] end --><!-- [Body] Start -->
 
 <body data-pc-header="header-1" data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true"
@@ -52,7 +54,38 @@
 
     <!-- [ Main Content ] start -->
     <div class="pc-container">
+        <div class="page-header">
+            <div class="page-block card mb-0">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title border-bottom pb-2 mb-2">
+                                <h4 class="mb-0">Category Management</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="../dashboard/index.html"><i class="ph ph-house"></i></a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0)">DataTable</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Advance Initialization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="pc-content">
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                <ul class="messages m-b-0">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
             <!-- [ Main Content ] start -->
             {% block content %}{% endblock %}
             <!-- [ Main Content ] end -->
@@ -89,6 +122,8 @@
     <script>layout_rtl_change('false');</script>
     <script>preset_change('preset-1');</script>
     <script>header_change('header-1');</script>
+    <!-- Page-Specific JS -->
+    {% block page_js %}{% endblock %}
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
