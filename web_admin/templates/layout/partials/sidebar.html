@@ -2,33 +2,25 @@
 
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
-        <div class="m-header"><a href="index.html"
-                class="b-brand text-primary"><!-- ========   Change your logo from here   ============ --> <img
-                    src="{% static 'images/logo-white.svg' %}" alt="logo image" class="logo-lg"> <span
-                    class="badge bg-primary rounded-pill ms-1 theme-version">v2.2.0</span></a></div>
+        <div class="m-header">
+            <a href="index.html" class="b-brand text-primary">
+                <!-- ========   Change your logo from here   ============ --> 
+                <img src="{% static 'images/logo-white.svg' %}" alt="logo image" class="logo-lg"> 
+            </a>
+        </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
-                <li class="pc-item pc-hasmenu"><a href="#!" class="pc-link"><span class="pc-micon"><i
-                                class="ph ph-gauge"></i></span><span class="pc-mtext"
-                            data-i18n="Dashboard">Dashboard</span> <span class="pc-arrow"><i
-                                data-feather="chevron-right"></i></span></a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="index.html" data-i18n="Sales">Sales</a></li>
-                        <li class="pc-item"><a class="pc-link" href="index-analytics.html"
-                                data-i18n="Analytics">Analytics</a></li>
-                        <li class="pc-item"><a class="pc-link" href="index-affiliate.html"
-                                data-i18n="Affiliate">Affiliate</a></li>
-                        <li class="pc-item"><a class="pc-link" href="finance.html" data-i18n="Finance">Finance</a>
-                        </li>
-                    </ul>
+                <li class="pc-item">
+                    <a href="{% url 'web_admin_dashboard' %}" class="pc-link">
+                        <span class="pc-micon"><i class="ph ph-gauge"></i></span>
+                        <span class="pc-mtext" data-i18n="Dashboard">Dashboard</span> 
+                    </a>
                 </li>
-                <li class="pc-item pc-hasmenu">
-                        <a href="{% url 'category:category_list' %}" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph ph-layout"></i>
-                            </span>
-                            <span class="pc-mtext" data-i18n="Categories">Categories</span>
-                        </a>
+                <li class="pc-item">
+                    <a href="{% url 'category:category_list' %}" class="pc-link">
+                        <span class="pc-micon"><i class="ph ph-layout"></i></span>
+                        <span class="pc-mtext" data-i18n="Categories">Categories</span>
+                    </a>
                 </li>
             </ul>
         </div>
