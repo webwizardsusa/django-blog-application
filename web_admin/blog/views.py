@@ -2,13 +2,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 from .models import Blog
+from web_admin.category.models import Category
 from .forms import BlogForm
 
 def blog_list(request):
     blogs = Blog.objects.all()
+    categories = Category.objects.all()
+
+    category_id = request.GET.get("category")
+    if category_id:
+        blogs = blogs.filter(category_id=category_id)
+
     context = {
         "blogs": blogs,
-        "breadcrumb_title": "Blog Management",
+        "categories": categories,
+        "breadcrumb_title": "Blogs",
         "breadcrumbs": [
             {"name": "Blogs"}
         ]

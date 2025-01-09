@@ -57,6 +57,14 @@ def category_edit(request, pk):
 
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
+
+    # Check if the category has any associated blogs
+    if category.blogs.exists():  # Using related_name='blogs' from the Blog model
+        messages.error(request, "Cannot delete this category because it has associated blogs.")
+
+        return redirect("category:category_list")
+    
     category.delete()
     messages.success(request, "Category deleted successfully.")
+
     return redirect('category:category_list')

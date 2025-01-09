@@ -12,8 +12,31 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
+                <h4 class="mb-0">Advanced Search</h4>
+            </div>
+            <div class="card-body">
+                <form class="row row-cols-md-auto g-3 align-items-center" method="GET" action="">
+                    <div class="col-12">
+                        <select name="category" class="form-control">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Clear</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="mb-0">Blogs</h4>
                     <a href="{% url 'blog:blog_create' %}" class="btn btn-primary">Add Blog</a>
                 </div>
             </div>
@@ -25,6 +48,7 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Image</th>
+                                <th>Status</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
@@ -36,15 +60,23 @@
                                 <td>{{ blog.category.name }}</td>
                                 <td>
                                     {% if blog.image %}
-                                        <img src="{{ blog.image.url }}" alt="Blog Image" width="100">
+                                    <img src="{{ blog.image.url }}" alt="Blog Image" width="100">
                                     {% else %}
-                                        <span class="text-muted">No Image</span>
+                                    <span class="text-muted">No Image</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if blog.is_published %}
+                                    <span class="badge bg-success">Published</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Draft</span>
                                     {% endif %}
                                 </td>
                                 <td>{{ blog.created_at }}</td>
                                 <td>
                                     <a href="{% url 'blog:blog_edit' blog.id %}" class="btn btn-sm btn-warning">Edit</a>
-                                    <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                                    <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure?');">Delete</a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -64,8 +96,8 @@
 <script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
 <script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
 <script>// [ DOM/jquery ]
-  var total, pageTotal;
-  var table = $('#dom-jqry').DataTable();
+    var total, pageTotal;
+    var table = $('#dom-jqry').DataTable();
 </script>
-  <!-- [Page Specific JS] end -->
+<!-- [Page Specific JS] end -->
 {% endblock %}
