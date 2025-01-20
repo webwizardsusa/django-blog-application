@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'web_admin.authentication',
     'web_admin.category',
     'web_admin.blog',
+    'public_site',
 ]
 
 MIDDLEWARE = [

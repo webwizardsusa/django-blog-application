@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path("", include("public_site.urls")),  # Public site
     path('admin/', admin.site.urls),
     path('web_admin/', include('web_admin.urls')),  # Custom web_admin route
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
