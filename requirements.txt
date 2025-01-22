@@ -2,5 +2,6 @@ asgiref==3.8.1
 Django==5.1.4
 mysqlclient==2.2.6
 pillow==11.1.0
+PyMySQL==1.1.1
 python-decouple==3.8
 sqlparse==0.5.3
