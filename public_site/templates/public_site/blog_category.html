@@ -1,0 +1,27 @@
+{% extends "public_site/layout/base.html" %}
+{% load static %}
+
+{% block content %}
+    <header>
+        <h1>Category: {{ category.name }}</h1>
+    </header>
+
+    <section>
+        {% if blogs %}
+            <ul>
+                {% for blog in blogs %}
+                    <li>
+                        <a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a>
+                        <p>Published on {{ blog.published_date|date:"F j, Y" }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts found in this category.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <a href="/">Back to Home</a>
+    </footer>
+{% endblock %}
