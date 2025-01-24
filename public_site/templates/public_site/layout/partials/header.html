@@ -21,21 +21,21 @@
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
                     Home
                 </a>
+                <a href="{% url 'blog_category' 'artificial' %}"
+                    class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
+                    Artificial
+                </a>
+                <a href="{% url 'blog_category' 'programming' %}"
+                    class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
+                    Programming
+                </a>
                 {% comment %} <a href="category.html"
-                    class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
-                    Startup
-                </a>
-                <a href="category.html"
-                    class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
-                    Design
-                </a>
-                <a href="category.html"
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
                     Innovation
                 </a> {% endcomment %}
 
                 <!-- Template pages dropdown container -->
-                <div class="relative" x-data="{ open: false }">
+                {% comment %} <div class="relative" x-data="{ open: false }">
                     <!-- Pages dropdown button -->
                     <button type="button"
                         class="group flex items-center px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700"
@@ -93,7 +93,7 @@
                             404 page
                         </a>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
 
             <!-- Search -->

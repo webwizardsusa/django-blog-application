@@ -14,5 +14,5 @@ def blog_detail(request, id):
 
 def blog_category(request, name):
     category = get_object_or_404(Category, name=name)
-    blogs = category.blogs.all()
+    blogs = category.blogs.filter(is_published=True).order_by("-created_at")
     return render(request, 'public_site/blog_category.html', {'category': category, 'blogs': blogs})

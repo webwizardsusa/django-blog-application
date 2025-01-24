@@ -2,26 +2,230 @@
 {% load static %}
 
 {% block content %}
-    <header>
-        <h1>Category: {{ category.name }}</h1>
-    </header>
-
-    <section>
-        {% if blogs %}
-            <ul>
-                {% for blog in blogs %}
-                    <li>
-                        <a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a>
-                        <p>Published on {{ blog.published_date|date:"F j, Y" }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No posts found in this category.</p>
-        {% endif %}
+    <!-- Category Header -->
+    <section class="bg-gray-50 py-12 sm:py-20 lg:py-24">
+        <!-- Conatiner -->
+        <div class="mx-auto max-w-xl px-4 sm:px-12 md:max-w-3xl lg:max-w-screen-xl lg:px-8">
+            <div class="flex w-full flex-col items-center md:flex-row md:justify-between">
+                <!-- Category -->
+                <div class="order-2 mt-8 flex flex-col items-center md:order-1 md:mt-0 md:flex-row">
+                    <!-- Category Image -->
+                    <div class="flex-shrink-0">
+                        <div class="relative h-[100px] w-[100px] rounded-2xl bg-gray-100">
+                            <img src="{% static 'images/topic-01.jpeg' %}" alt="{{ category.name }}" class="h-full w-full rounded-2xl object-cover object-center"/>
+                            <span class="absolute inset-0 rounded-2xl shadow-inner" aria-hidden="true" />
+                        </div>
+                    </div>
+    
+                    <div class="mt-6 text-center md:ml-5 md:mt-0 md:text-left">
+                        <p class="text-xs uppercase tracking-widest text-red-700">
+                            Recent in
+                        </p>
+                        <h1 class="mt-1.5 text-3xl font-medium tracking-normal text-gray-900 sm:text-4xl md:tracking-tight lg:text-5xl lg:leading-tight">
+                            {{ category.name }}
+                        </h1>
+                    </div>
+                </div>
+                <!-- Breadcrumb -->
+                <div class="order-1 md:order-2">
+                    <nav aria-label="breadcrumb" class="flex items-center space-x-1.5 text-[15px] sm:space-x-4">
+                        <span>
+                            <a href="{% url 'home' %}" class="group flex items-center text-gray-500 no-underline transition duration-300 ease-in-out hover:text-gray-900 hover:no-underline">
+                                <!-- Heroicon name: solid/home -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-[1.125rem] w-[1.125rem] flex-shrink-0 text-gray-400 transition duration-300 ease-in-out group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                                </svg>
+                                Home
+                            </a>
+                        </span>
+                        <span class="text-gray-400">
+                            <!-- Heroicon name: solid/chevron-right -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
+                        <span class="text-red-700">{{ category.name }}</span>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <footer>
-        <a href="/">Back to Home</a>
-    </footer>
+    <!-- Primary Feed -->
+    <section class="relative mx-auto max-w-xl px-5 py-12 sm:px-12 sm:py-16 md:max-w-3xl lg:max-w-screen-xl lg:px-8 lg:py-20">
+        <div class="w-full lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-12">
+            <!-- Articles -->
+            {% if blogs %}
+                <div class="col-span-2">
+                    <!-- 1st Article -->
+                    {% for blog in blogs %}
+                    <article class="md:grid md:grid-cols-4 md:gap-8">
+                            <!-- Image -->
+                            <div class="md:col-span-1">
+                                <a href="{% url 'blog_detail' blog.id %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1" >
+                                    <img data-src="{{ blog.image.url }}" alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
+                                </a>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="relative mt-6 flex flex-col flex-wrap md:col-span-3 md:mt-0">
+                                <div class="mb-8 box-border flex w-full flex-1 flex-col justify-between border-b-2 border-gray-100 px-6 pb-8 md:px-0">
+                                    <div>
+                                        <h3 class="mt-2.5 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
+                                            <a href="{% url 'blog_detail' blog.id %}">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                {{ blog.title }}
+                                            </a>
+                                        </h3>
+
+                                        <p class="mt-3.5 block text-base leading-relaxed text-gray-500">
+                                            {{ blog.content | truncatechars:150 }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Article Footer Info -->
+                                    <footer class="mt-5 flex items-center sm:mt-7">
+                                        <!-- Author Image -->
+                                        <a href="author.html" class="relative mr-3 animate-pulse rounded-lg bg-gray-50">
+                                            <img class="lazy h-7 w-7 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out lg:h-8 lg:w-8" data-src="{% static 'images/author-01.jpeg' %}" alt="Author 01"/>
+                                        </a>
+
+                                        <div class="flex items-center text-sm lg:text-[15px]">
+                                            <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
+                                            <a class="relative font-medium text-gray-700 hover:underline" href="author.html">Mark Jack</a>
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <span class="ml-1 text-gray-500">{{ blog.created_at|date:"F j, Y" }}</span>
+
+                                            {% comment %} <span class="hidden items-center sm:flex">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span class="ml-1 text-gray-500">15 min read</span>
+                                            </span> {% endcomment %}
+                                        </div>
+                                    </footer>
+                                </div>
+                            </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No posts found in this category.</p>
+            {% endif %}
+            <!-- Sidebar -->
+            <div class="mx-auto mt-12 w-full max-w-xl sm:mt-16 md:max-w-3xl lg:col-span-1 lg:mt-0 lg:max-w-none">
+                <!-- Most read articles -->
+                <div class="w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
+                    <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
+                        Most read in {{ category.name }}
+                    </h3>
+
+                    <!-- Articles -->
+                    <div class="space-y-6 pt-6 sm:space-y-5 lg:space-y-6 xl:space-y-5">
+                        <!-- 1st Article -->
+                        <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
+                            <!-- Image -->
+                            <a href="post.html" class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
+                                <img data-src="{% static 'images/trending-01.jpeg' %} " class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24"/>
+                            </a>
+
+                            <!-- Content -->
+                            <div class="w-2/3">
+                                <div class="flex h-full w-full flex-1 flex-col justify-center">
+                                    <div>
+                                        <a href="post.html" class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
+                                            How to generate better ideas
+                                        </a>
+                                    </div>
+
+                                    <!-- Author -->
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <!-- Author meta -->
+                                        <div class="flex items-center justify-center">
+                                            <div class="text-sm">
+                                                <span class="text-gray-500">By </span>
+                                                <a class="font-medium text-gray-700 hover:underline" href="author.html">Micheal Osman</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Related Tags -->
+                <div class="mt-8 w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
+                    <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
+                        Related tags
+                    </h3>
+
+                    <!-- Tags -->
+                    <div class="pt-5">
+                        <ul class="-m-1 flex flex-wrap justify-start">
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Trends
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Tips
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Ideas
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Security
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Gaming
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Climate
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Gear
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tag.html">
+                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
+                                        Reviews
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
