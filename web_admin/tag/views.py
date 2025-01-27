@@ -58,6 +58,11 @@ def tag_edit(request, pk):
 
 def tag_delete(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
+    # Check if the tag has any associated blogs
+    if tag.blogs.exists():  # Using related_name='blogs' from the Blog model
+        messages.error(request, "Cannot delete this tag because it has associated blogs.")
+
+        return redirect("tag:tag_list")
     tag.delete()
     messages.success(request, "Tag deleted successfully.")
     return redirect('tag:tag_list')

@@ -24,6 +24,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Total Blogs</th>
+                                <th>Image</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
@@ -33,6 +34,13 @@
                             <tr>
                                 <td>{{ category.name }}</td>
                                 <td>{{ category.blogs.count }}</td>
+                                <td>
+                                    {% if category.image %}
+                                    <img src="{{ category.image.url }}" alt="Category Image" width="100">
+                                    {% else %}
+                                    <span class="text-muted">No Image</span>
+                                    {% endif %}
+                                </td>
                                 <td>{{ category.created_at }}</td>
                                 <td>
                                     <a href="{% url 'category:category_edit' category.id %}" class="btn btn-sm btn-warning">Edit</a>
