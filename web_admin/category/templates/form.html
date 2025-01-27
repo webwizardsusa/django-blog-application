@@ -9,7 +9,7 @@
                 <h5>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Category</h5>
             </div>
             <div class="card-body">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.name.id_for_label }}">Category Name</label>
@@ -18,6 +18,16 @@
                             <div class="text-danger">{{ form.name.errors }}</div>
                         {% endif %}
                     </div>
+                    <div class="mb-3">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">Category Image</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                        {% if form.image.errors %}
+                            <div class="text-danger">{{ form.image.errors }}</div>
+                        {% endif %}
+                        {% if category and category.image %}
+                            <img src="{{ category.image.url }}" alt="Category Image" class="img-fluid mt-2" width="150">
+                        {% endif %}
+                    </div> 
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.description.id_for_label }}">Description</label>
                         {{ form.description }}

@@ -15,14 +15,13 @@ def category_list(request):
     return render(request, 'list.html', context)
 
 def category_create(request):
+    form = CategoryForm(request.POST or None, request.FILES or None)
+
     if request.method == "POST":
-        form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Category created successfully.")
             return redirect('category:category_list')
-    else:
-        form = CategoryForm()
 
     context = {
         "form": form,
@@ -36,14 +35,12 @@ def category_create(request):
 
 def category_edit(request, pk):
     category = get_object_or_404(Category, pk=pk)
-    if request.method == "POST":
-        form = CategoryForm(request.POST, instance=category)
-        if form.is_valid():
+    form = CategoryForm(request.POST or None, request.FILES or None, instance=category)
+
+    if request.method == "POST" and form.is_valid():
             form.save()
             messages.success(request, "Category updated successfully.")
             return redirect('category:category_list')
-    else:
-        form = CategoryForm(instance=category)
 
     context = {
         "form": form,

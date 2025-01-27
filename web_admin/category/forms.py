@@ -4,7 +4,7 @@ from .models import Category
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name', 'description']
+        fields = ['name', 'image', 'description']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter description', 'rows': 4}),
@@ -22,3 +22,9 @@ class CategoryForm(forms.ModelForm):
             raise forms.ValidationError("Category with this name already exists.")
 
         return name
+    
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if not image:
+            return None  # Ensure None is returned if no image is uploaded
+        return image
