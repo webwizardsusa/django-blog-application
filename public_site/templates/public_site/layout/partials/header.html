@@ -21,13 +21,13 @@
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
                     Home
                 </a>
-                <a href="{% url 'blog_category' 'artificial' %}"
+                <a href=""
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
-                    Artificial
+                    About
                 </a>
-                <a href="{% url 'blog_category' 'programming' %}"
+                <a href=""
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
-                    Programming
+                    Contact us
                 </a>
                 {% comment %} <a href="category.html"
                     class="px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700">
@@ -35,12 +35,12 @@
                 </a> {% endcomment %}
 
                 <!-- Template pages dropdown container -->
-                {% comment %} <div class="relative" x-data="{ open: false }">
+                <div class="relative" x-data="{ open: false }">
                     <!-- Pages dropdown button -->
                     <button type="button"
                         class="group flex items-center px-3 py-1 text-md font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700"
                         @click="open = true">
-                        <span :class="{'text-red-700': open}">Pages</span>
+                        <span :class="{'text-red-700': open}">Categories</span>
 
                         <!-- Heroicon name: solid/chevron-down -->
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -56,44 +56,14 @@
                     <div style="display: none"
                         class="absolute right-0 z-20 mt-3 w-52 space-y-1 rounded-xl bg-white p-2.5 outline-none drop-shadow filter focus:outline-none"
                         x-show.transition="open" @click.away="open = false">
-                        <a href="index.html"
+                        {% for category in categories %}
+                        <a href="{% url 'blog_category' category.name %}"
                             class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Home
+                            {{ category.name }}
                         </a>
-                        <a href="category.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Category page
-                        </a>
-                        <a href="post.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Post
-                        </a>
-                        <a href="author.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Author page
-                        </a>
-                        <a href="tag.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Tag page
-                        </a>
-                        <a href="about.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            About us
-                        </a>
-                        <a href="contact.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Contact us
-                        </a>
-                        <a href="privacy-policy.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            Privacy policy
-                        </a>
-                        <a href="404.html"
-                            class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
-                            404 page
-                        </a>
+                        {% endfor %}
                     </div>
-                </div> {% endcomment %}
+                </div> 
             </div>
 
             <!-- Search -->

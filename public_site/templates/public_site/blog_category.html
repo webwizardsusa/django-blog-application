@@ -12,7 +12,7 @@
                     <!-- Category Image -->
                     <div class="flex-shrink-0">
                         <div class="relative h-[100px] w-[100px] rounded-2xl bg-gray-100">
-                            <img src="{% static 'images/topic-01.jpeg' %}" alt="{{ category.name }}" class="h-full w-full rounded-2xl object-cover object-center"/>
+                            <img src="{% if category.image %}{{ category.image.url }}{% else %}{% static 'images/featured-article-01.jpeg' %}{% endif %}" alt="{{ category.name }}" class="h-full w-full rounded-2xl object-cover object-center"/>
                             <span class="absolute inset-0 rounded-2xl shadow-inner" aria-hidden="true" />
                         </div>
                     </div>
@@ -63,7 +63,8 @@
                             <!-- Image -->
                             <div class="md:col-span-1">
                                 <a href="{% url 'blog_detail' blog.id %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1" >
-                                    <img data-src="{{ blog.image.url }}" alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
+                                    <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                                    alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
                                 </a>
                             </div>
 
@@ -120,24 +121,25 @@
                 <!-- Most read articles -->
                 <div class="w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
                     <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
-                        Most read in {{ category.name }}
+                        Recent blogs in {{ category.name }}
                     </h3>
 
                     <!-- Articles -->
                     <div class="space-y-6 pt-6 sm:space-y-5 lg:space-y-6 xl:space-y-5">
-                        <!-- 1st Article -->
+                        {% for blog in recent_blogs %}
                         <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
                             <!-- Image -->
-                            <a href="post.html" class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                                <img data-src="{% static 'images/trending-01.jpeg' %} " class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24"/>
+                            <a href="{% url 'blog_detail' blog.id %}" class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
+                                <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                                alt="{{ blog.title }}" class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24"/>
                             </a>
 
                             <!-- Content -->
                             <div class="w-2/3">
                                 <div class="flex h-full w-full flex-1 flex-col justify-center">
                                     <div>
-                                        <a href="post.html" class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                            How to generate better ideas
+                                        <a href="{% url 'blog_detail' blog.id %}" class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
+                                            {{ blog.title }}
                                         </a>
                                     </div>
 
@@ -154,74 +156,28 @@
                                 </div>
                             </div>
                         </article>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <!-- Related Tags -->
                 <div class="mt-8 w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
                     <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
-                        Related tags
+                        Latest tags
                     </h3>
 
                     <!-- Tags -->
                     <div class="pt-5">
                         <ul class="-m-1 flex flex-wrap justify-start">
+                            {% for tag in tags|slice:10 %}
                             <li>
                                 <a href="tag.html">
                                     <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Trends
+                                        {{ tag.name }}
                                     </span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Tips
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Ideas
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Security
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Gaming
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Climate
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Gear
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tag.html">
-                                    <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                        Reviews
-                                    </span>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

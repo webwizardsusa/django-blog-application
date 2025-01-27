@@ -12,7 +12,8 @@
             <a href="{% url 'blog_detail' featured_blog.id %}"
                 class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-100">
                 <img class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                    data-src="{{ featured_blog.image.url }}" alt="{{ featured_blog.title }}" />
+                    data-src="{% if featured_blog.image %}{{ featured_blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                    alt="{{ featured_blog.title }}" />
             </a>
 
             <!-- Content -->
@@ -65,7 +66,8 @@
                     <a href="{% url 'blog_detail' blog.id %}" class="order-2 w-full sm:w-2/5 lg:order-1 lg:w-full xl:w-2/5">
                         <div
                             class="group aspect-h-9 aspect-w-16 relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{{ blog.image.url }}" alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110" />
+                            <img data-src="{% if featured_blog.image %}{{ featured_blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                            alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110" />
                         </div>
                     </a>
 
@@ -112,131 +114,33 @@
         <!-- Section Header -->
         <h3
             class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
-            Trending topics
+            Categories
         </h3>
 
         <!-- Topics -->
         <div class="relative mt-8 sm:mt-9">
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-6 lg:gap-4 xl:gap-6">
-                <!-- 1st Topic -->
+                {% for category in categories|slice:":6" %}
                 <div
                     class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
+                    <a href="{% url 'blog_category' category.name %}" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
 
                     <!-- Image -->
                     <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-01.jpeg' %}')"></div>
+                        alt="{{ category.name }}"
+                        style="z-index: -1; background-image: url('{% if category.image %}{{ category.image.url }}{% else %}{% static 'images/featured-article-01.jpeg' %}{% endif %}')"></div>
 
                     <!-- Label -->
                     <div class="absolute inset-x-0 bottom-0 w-full pb-6">
                         <div class="flex w-full justify-center">
                             <span
                                 class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Technology
+                                {{ category.name }}
                             </span>
                         </div>
                     </div>
                 </div>
-
-                <!-- 2nd Topic -->
-                <div
-                    class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
-
-                    <!-- Label -->
-                    <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-02.jpeg' %}')"></div>
-
-                    <!-- Label -->
-                    <div class="absolute inset-x-0 bottom-0 w-full pb-6">
-                        <div class="flex w-full justify-center">
-                            <span
-                                class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Startup
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3rd Topic -->
-                <div
-                    class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
-
-                    <!-- Image -->
-                    <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-03.jpeg' %}')"></div>
-
-                    <!-- Label -->
-                    <div class="absolute inset-x-0 bottom-0 w-full pb-6">
-                        <div class="flex w-full justify-center">
-                            <span
-                                class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Entertainment
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4th Topic -->
-                <div
-                    class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
-
-                    <!-- Image -->
-                    <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-04.jpeg' %}')"></div>
-
-                    <!-- Label -->
-                    <div class="absolute inset-x-0 bottom-0 w-full pb-6">
-                        <div class="flex w-full justify-center">
-                            <span
-                                class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Productivity
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5th Topic -->
-                <div
-                    class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
-
-                    <!-- Image -->
-                    <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-05.jpeg' %}')"></div>
-
-                    <!-- Label -->
-                    <div class="absolute inset-x-0 bottom-0 w-full pb-6">
-                        <div class="flex w-full justify-center">
-                            <span
-                                class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Innovation
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6th Topic -->
-                <div
-                    class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="category.html" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
-
-                    <!-- Image -->
-                    <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
-                        style="z-index: -1; background-image: url('{% static 'images/topic-06.jpeg' %}')"></div>
-
-                    <!-- Label -->
-                    <div class="absolute inset-x-0 bottom-0 w-full pb-6">
-                        <div class="flex w-full justify-center">
-                            <span
-                                class="inline-flex items-center rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 backdrop-blur-lg">
-                                Science
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -257,15 +161,16 @@
             <!-- Articles-->
             <div
                 class="mx-auto mt-8 grid max-w-xl gap-6 px-4 sm:px-6 md:max-w-3xl md:grid-cols-2 md:px-8 lg:max-w-none lg:px-0">
-                <!-- 1st Article -->
+                {% for latest_blog in latest_blogs_by_category %}
                 <article
                     class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
                     <!-- Image -->
                     <div
                         class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
+                        <a href="{% url 'blog_detail' latest_blog.id %}">
                             <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-01.jpeg' %}" />
+                                data-src="{% if latest_blog.image %}{{ latest_blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                                alt="{{ latest_blog.title }}"/>
                         </a>
                     </div>
 
@@ -273,24 +178,22 @@
                     <div
                         class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
                         <div>
-                            <a href="category.html"
+                            <a href="{% url 'blog_category' latest_blog.category.name %}"
                                 class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Design
+                                {{ latest_blog.category.name }}
                             </a>
 
                             <h3
                                 class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
+                                <a href="{% url 'blog_detail' latest_blog.id %}">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                    How to increase conversion with design
-                                    <span class="sr-only">How to increase conversion with design</span>
+                                    {{ latest_blog.title }}
+                                    <span class="sr-only">{{ latest_blog.title }}</span>
                                 </a>
                             </h3>
 
                             <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
+                                {{ latest_blog.content|truncatewords:20 }}
                             </p>
                         </div>
 
@@ -306,304 +209,15 @@
                                     Tayler Adams
                                 </a>
                                 <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Dec 16 2021</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 6 min read </span>
+                                    <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date:"M d Y" }}</time>
+                                    {% comment %} <span aria-hidden="true"> &middot; </span> {% endcomment %}
+                                    {% comment %} <span> 6 min read </span> {% endcomment %}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </article>
-
-                <!-- 2nd Article -->
-                <article
-                    class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
-                    <!-- Image -->
-                    <div
-                        class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
-                            <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-02.jpeg' %}" />
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div
-                        class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
-                        <div>
-                            <a href="category.html"
-                                class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Startup
-                            </a>
-
-                            <h3
-                                class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    15 Ways to Grow your Startup
-                                    <span class="sr-only">15 Ways to Grow your Startup</span>
-                                </a>
-                            </h3>
-
-                            <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
-                            </p>
-                        </div>
-
-                        <!-- Author -->
-                        <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-03.jpeg' %}"
-                                    class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
-                            </a>
-                            <div class="ml-3">
-                                <a href="author.html"
-                                    class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Matt Burgess
-                                </a>
-                                <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Jan 12 2022</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 8 min read </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 3rd Article -->
-                <article
-                    class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
-                    <!-- Image -->
-                    <div
-                        class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
-                            <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-03.jpeg' %}" />
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div
-                        class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
-                        <div>
-                            <a href="category.html"
-                                class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Advertising
-                            </a>
-
-                            <h3
-                                class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    The Best way to get Free Advertising
-                                    <span class="sr-only">The Best way to get Free Advertising</span>
-                                </a>
-                            </h3>
-
-                            <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
-                            </p>
-                        </div>
-
-                        <!-- Author -->
-                        <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-04.jpeg' %}"
-                                    class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
-                            </a>
-                            <div class="ml-3">
-                                <a href="author.html"
-                                    class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Amit Katwala
-                                </a>
-                                <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Sep 24 2021</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 5 min read </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 4th Article -->
-                <article
-                    class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
-                    <!-- Image -->
-                    <div
-                        class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
-                            <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-04.jpeg' %}" />
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div
-                        class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
-                        <div>
-                            <a href="category.html"
-                                class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Technology
-                            </a>
-
-                            <h3
-                                class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    The Latest Tech that will Grow your Business
-                                    <span class="sr-only">The Latest Tech that will Grow your Business</span>
-                                </a>
-                            </h3>
-
-                            <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
-                            </p>
-                        </div>
-
-                        <!-- Author -->
-                        <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-05.jpeg' %}"
-                                    class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
-                            </a>
-                            <div class="ml-3">
-                                <a href="author.html"
-                                    class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Amanda Lewis
-                                </a>
-                                <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Oct 2 2021</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 10 min read </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 5th Article -->
-                <article
-                    class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
-                    <!-- Image -->
-                    <div
-                        class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
-                            <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-05.jpeg' %}" />
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div
-                        class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
-                        <div>
-                            <a href="category.html"
-                                class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Development
-                            </a>
-
-                            <h3
-                                class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    How to Iterate Faster and Work Less
-                                    <span class="sr-only">How to Iterate Faster and Work Less</span>
-                                </a>
-                            </h3>
-
-                            <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
-                            </p>
-                        </div>
-
-                        <!-- Author -->
-                        <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-06.jpeg' %}"
-                                    class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
-                            </a>
-                            <div class="ml-3">
-                                <a href="author.html"
-                                    class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Karina Bell
-                                </a>
-                                <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Mar 1 2022</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 11 min read </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 6th Article -->
-                <article
-                    class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
-                    <!-- Image -->
-                    <div
-                        class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="post.html">
-                            <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% static 'images/feed-06.jpeg' %}" />
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div
-                        class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
-                        <div>
-                            <a href="category.html"
-                                class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                Growth
-                            </a>
-
-                            <h3
-                                class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="post.html">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    Developing a Growth Strategy
-                                    <span class="sr-only">Developing a Growth Strategy</span>
-                                </a>
-                            </h3>
-
-                            <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                Lorem ipsum dolor sit amet tempus bendum labore
-                                laoreet.Hendrerit lobortis a leo curabitur faucibus sapien
-                                ullamcorper do labore odio.
-                            </p>
-                        </div>
-
-                        <!-- Author -->
-                        <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-07.jpeg' %}"
-                                    class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
-                            </a>
-                            <div class="ml-3">
-                                <a href="author.html"
-                                    class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Veronica Mars
-                                </a>
-                                <p class="text-sm text-gray-500">
-                                    <time datetime="2021-12-16">Nov 30 2022</time>
-                                    <span aria-hidden="true"> &middot; </span>
-                                    <span> 9 min read </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                {% endfor %}
             </div>
         </div>
 
@@ -619,12 +233,12 @@
 
                 <!-- Articles -->
                 <div class="space-y-6 pt-6 sm:space-y-5 lg:space-y-6 xl:space-y-5">
-                    <!-- 1st Article -->
+                    {% for blog in trending_blogs %}
                     <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
                         <!-- Image -->
-                        <a href="post.html"
+                        <a href="{% url 'blog_detail' blog.id %}"
                             class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% static 'images/trending-01.jpeg' %}"
+                            <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}"
                                 class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24" />
                         </a>
 
@@ -632,9 +246,9 @@
                         <div class="w-2/3">
                             <div class="flex h-full w-full flex-1 flex-col justify-center">
                                 <div>
-                                    <a href="post.html"
+                                    <a href="{% url 'blog_detail' blog.id %}"
                                         class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                        How to generate better ideas
+                                        {{ blog.title }}
                                     </a>
                                 </div>
 
@@ -652,106 +266,7 @@
                             </div>
                         </div>
                     </article>
-
-                    <!-- 2nd Article -->
-                    <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
-                        <!-- Image -->
-                        <a href="post.html"
-                            class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% static 'images/trending-02.jpeg' %}"
-                                class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24" />
-                        </a>
-
-                        <!-- Content -->
-                        <div class="w-2/3">
-                            <div class="flex h-full w-full flex-1 flex-col justify-center">
-                                <div>
-                                    <a href="post.html"
-                                        class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                        7 simple things you can do to improve your design
-                                    </a>
-                                </div>
-
-                                <!-- Author -->
-                                <div class="mt-2 flex items-center justify-between">
-                                    <!-- Author meta -->
-                                    <div class="flex items-center justify-center">
-                                        <div class="text-sm">
-                                            <span class="text-gray-500">By </span>
-                                            <a class="font-medium text-gray-700 hover:underline"
-                                                href="author.html">Brenda Reinink</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- 3rd Article -->
-                    <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
-                        <!-- Image -->
-                        <a href="post.html"
-                            class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% static 'images/trending-03.jpeg' %}"
-                                class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24" />
-                        </a>
-
-                        <!-- Content -->
-                        <div class="w-2/3">
-                            <div class="flex h-full w-full flex-1 flex-col justify-center">
-                                <div>
-                                    <a href="post.html"
-                                        class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                        6 books that will change your life
-                                    </a>
-                                </div>
-
-                                <!-- Author -->
-                                <div class="mt-2 flex items-center justify-between">
-                                    <div class="flex items-center justify-center">
-                                        <div class="text-sm">
-                                            <span class="text-gray-500">By </span>
-                                            <a class="font-medium text-gray-700 hover:underline" href="author.html">Ava
-                                                Sanchez</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- 4th Article -->
-                    <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
-                        <!-- Images -->
-                        <a href="post.html"
-                            class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% static 'images/trending-04.jpeg' %}"
-                                class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24" />
-                        </a>
-
-                        <!-- Content -->
-                        <div class="w-2/3">
-                            <div class="flex h-full w-full flex-1 flex-col justify-center">
-                                <div>
-                                    <a href="post.html"
-                                        class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                        The importance of having a positive work culture
-                                    </a>
-                                </div>
-
-                                <!-- Content -->
-                                <div class="mt-2 flex items-center justify-between">
-                                    <div class="flex items-center justify-center">
-                                        <div class="text-sm">
-                                            <span class="text-gray-500">By </span>
-                                            <a class="font-medium text-gray-700 hover:underline"
-                                                href="author.html">Veronica Mars</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -759,92 +274,22 @@
             <div class="mt-8 w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
                 <h3
                     class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
-                    Popular tags
+                    Latest tags
                 </h3>
 
                 <!-- Tags -->
                 <div class="pt-5">
                     <ul class="-m-1 flex flex-wrap justify-start">
+                        {% for tag in tags|slice:10 %}
                         <li>
                             <a href="tag.html">
                                 <span
                                     class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Trends
+                                    {{ tag.name }}
                                 </span>
                             </a>
                         </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Tips
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Ideas
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Security
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Gaming
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Climate
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Culture
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Books
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Gear
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tag.html">
-                                <span
-                                    class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
-                                    Reviews
-                                </span>
-                            </a>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -857,7 +302,7 @@
     <div class="mx-auto max-w-screen-xl px-5 sm:px-6 lg:px-8">
         <!-- Content -->
         <div class="mx-auto flex max-w-xl flex-col items-center text-center">
-            <img src="images/paper-airplane.png" class="h-auto w-24 animate-orbit" />
+            <img src={% static 'images/paper-airplane.png' %} class="h-auto w-24 animate-orbit" />
             <h2
                 class="mt-6 text-3xl font-medium tracking-normal text-gray-900 sm:mt-8 sm:text-4xl md:tracking-tight lg:text-5xl lg:leading-tight">
                 Get the most talked about stories directly in your inbox

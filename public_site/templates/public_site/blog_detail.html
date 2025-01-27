@@ -8,7 +8,7 @@
         <header>
             <!-- Image -->
             <div class="aspect-h-2 aspect-w-3 w-full sm:aspect-h-1">
-                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="object-cover object-center" />
+                <img src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" alt="{{ blog.title }}" class="object-cover object-center" />
             </div>
 
             <!-- Post Header Content -->
@@ -64,54 +64,19 @@
             <footer class="divide-y-gray-300/70 mx-auto mt-12 max-w-prose divide-y text-lg sm:mt-14">
                 <!-- Tags -->
                 <ul class="-m-1 flex flex-wrap justify-start pb-8 sm:pb-10">
-                    <!-- Tag item -->
+                    {% for tag in blog.tags.all %}
                     <li>
                         <a href="tag.html">
                             <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
-                                Trends
+                                {{ tag.name }}
                             </span>
                         </a>
                     </li>
-
-                    <!-- Tag item -->
-                    <li>
-                        <a href="tag.html">
-                            <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
-                                Tips
-                            </span>
-                        </a>
-                    </li>
-
-                    <!-- Tag item -->
-                    <li>
-                        <a href="tag.html">
-                            <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
-                                Lists
-                            </span>
-                        </a>
-                    </li>
-
-                    <!-- Tag item -->
-                    <li>
-                        <a href="tag.html">
-                            <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
-                                Lessons
-                            </span>
-                        </a>
-                    </li>
-
-                    <!-- Tag item -->
-                    <li>
-                        <a href="tag.html">
-                            <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
-                                Learnings
-                            </span>
-                        </a>
-                    </li>
+                    {% endfor %}
                 </ul>
 
                 <!-- Social Share Buttons -->
-                <div class="py-8 sm:py-10">
+                {% comment %} <div class="py-8 sm:py-10">
                     <div class="flex items-center justify-between">
                         <span class="text-lg font-medium text-gray-900"> Share </span>
 
@@ -155,7 +120,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Author Details -->
                 <div class="py-8 sm:py-10">
