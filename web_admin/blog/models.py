@@ -1,5 +1,6 @@
 from django.db import models
 from web_admin.category.models import Category
+from web_admin.tag.models import Tag
 
 class Blog(models.Model):
     DRAFT = False
@@ -17,6 +18,7 @@ class Blog(models.Model):
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(Tag, related_name='blogs')
 
     class Meta:
         db_table = 'blogs'

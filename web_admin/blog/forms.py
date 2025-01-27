@@ -4,10 +4,11 @@ from .models import Blog
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ['title', 'category', 'image', 'content', 'is_published']
+        fields = ['title', 'category', 'tags', 'image', 'content', 'is_published']
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter blog title"}),
             "category": forms.Select(attrs={"class": "form-control"}),
+            "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter blog content"}),
             "is_published": forms.Select(choices=Blog.STATUS_CHOICES, attrs={"class": "form-control"}),
         }
