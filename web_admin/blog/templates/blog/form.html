@@ -47,6 +47,14 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label" for="{{ form.author.id_for_label }}">Author</label>
+                        {{ form.author }}
+                        {% if form.author.errors %}
+                            <div class="text-danger">{{ form.author.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label" for="{{ form.is_published.id_for_label }}">Is published</label>
                         {{ form.is_published }}
                         {% if form.is_published.errors %}
