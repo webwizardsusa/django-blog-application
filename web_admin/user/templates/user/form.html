@@ -6,7 +6,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{% if author %}Edit{% else %}Create{% endif %} Author</h5>
+                <h5>{% if user %}Edit{% else %}Create{% endif %} User</h5>
             </div>
             <div class="card-body">
                 <form method="post" >
@@ -58,7 +58,7 @@
                         {% endif %}
                     </div>
                     <button type="submit" class="btn btn-primary">{% if form.password %} Update {% else %} Create {% endif %}</button>
-                    <a href="{% url 'author:author_list' %}" class="btn btn-secondary">Cancel</a>
+                    <a href="{% url 'user:user_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import re
 
 
-class AuthorForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active']
@@ -30,7 +30,7 @@ class AuthorForm(forms.ModelForm):
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise forms.ValidationError("A Author with this title already exists.")
+            raise forms.ValidationError("A User with this title already exists.")
         
         return username
     
@@ -59,13 +59,13 @@ class AuthorForm(forms.ModelForm):
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise forms.ValidationError("A Author with this Email already exists.")
+            raise forms.ValidationError("A User with this Email already exists.")
         return email
     
     
     
     
-class AuthorUpdateForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active']
@@ -96,7 +96,7 @@ class AuthorUpdateForm(forms.ModelForm):
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise forms.ValidationError("A Author with this title already exists.")
+            raise forms.ValidationError("A User with this title already exists.")
         
         return username
     
@@ -108,5 +108,5 @@ class AuthorUpdateForm(forms.ModelForm):
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise forms.ValidationError("A Author with this Email already exists.")
+            raise forms.ValidationError("A User with this Email already exists.")
         return email

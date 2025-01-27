@@ -6,5 +6,5 @@ urlpatterns = [
     path("auth/", include("web_admin.authentication.urls", namespace="authentication")),
     path('category/', include('web_admin.category.urls', namespace='category')),
     path('blog/', include('web_admin.blog.urls', namespace='blog')),
-    path('author/', include('web_admin.author.urls', namespace='author')),
+    path('user/', include('web_admin.user.urls', namespace='user')),
 ]

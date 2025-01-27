@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'web_admin.authentication',
     'web_admin.category',
     'web_admin.blog',
-    'web_admin.author',
+    'web_admin.user',
     'public_site',
 ]
 

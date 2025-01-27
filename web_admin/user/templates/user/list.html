@@ -13,8 +13,8 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="mb-0">Author</h4>
-                    <a href="{% url 'author:author_create' %}" class="btn btn-primary">Add Author</a>
+                    <h4 class="mb-0">User</h4>
+                    <a href="{% url 'user:user_create' %}" class="btn btn-primary">Add User</a>
                 </div>
             </div>
             <div class="card-body">
@@ -32,22 +32,22 @@
                         </thead>
                         
                         <tbody>
-                            {% for author in context.authors %}
+                            {% for user in context.users %}
                             <tr>
-                                <td>{{ author.username }}</td>
-                                <td>{{ author.email }}</td>
-                                <td>{{ author.first_name }}</td>
-                                <td>{{ author.last_name }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
                                 <td>
-                                    {% if author.is_active %}
+                                    {% if user.is_active %}
                                     <span class="badge bg-success">Active</span>
                                     {% else %}
                                     <span class="badge bg-danger">In Active</span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                   <a href="{% url 'author:author_edit' author.id %}" class="btn btn-sm btn-warning">Edit</a>
-                                    <a href="{% url 'author:author_delete' author.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                                   <a href="{% url 'user:user_edit' user.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{% url 'user:user_delete' user.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
                                </td>
                             </tr>
                             {% endfor %}
