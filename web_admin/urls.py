@@ -7,4 +7,5 @@ urlpatterns = [
     path('category/', include('web_admin.category.urls', namespace='category')),
     path('blog/', include('web_admin.blog.urls', namespace='blog')),
     path('tag/', include('web_admin.tag.urls', namespace='tag')),
+    path('user/', include('web_admin.user.urls', namespace='user')),
 ]

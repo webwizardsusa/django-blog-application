@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'web_admin.category',
     'web_admin.blog',
     'web_admin.tag',
+    'web_admin.user',
     'public_site',
 ]
 
