@@ -28,13 +28,14 @@
                     <div class="mt-6 flex items-center sm:mt-8">
                         <a href="author.html" class="mr-3 flex-shrink-0">
                             <div class="relative">
-                                <img class="h-8 w-8 rounded-xl object-cover object-center sm:h-9 sm:w-9" src="{% static 'images/author-01.jpeg' %}" alt=""/>
+                                <img class="h-8 w-8 rounded-xl object-cover object-center sm:h-9 sm:w-9" 
+                                src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt=""/>
                                 <span class="absolute inset-0 rounded-xl shadow-inner" aria-hidden="true"></span>
                             </div>
                         </a>
                         <div class="flex items-center text-sm lg:text-[15px]">
                             <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
-                            <a class="font-medium text-gray-700 hover:underline" href="author.html">Mark Jackson</a>
+                            <a class="font-medium text-gray-700 hover:underline" href="author.html">{{ blog.author.username }}</a>
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -129,7 +130,8 @@
                             <!-- Image -->
                             <div class="flex-shrink-0">
                                 <div class="relative w-fit">
-                                    <img class="h-20 w-20 rounded-2xl object-cover object-center sm:h-24 sm:w-24" src="{% static 'images/author-01.jpeg' %}" alt="" />
+                                    <img class="h-20 w-20 rounded-2xl object-cover object-center sm:h-24 sm:w-24" 
+                                    src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
                                     <span class="absolute inset-0 rounded-2xl shadow-inner" aria-hidden="true"></span>
                                 </div>
                             </div>
@@ -142,7 +144,7 @@
                                             Staff Writer
                                         </p>
                                         <h1 class="mt-1 text-xl font-medium tracking-normal text-gray-900 md:tracking-tight lg:leading-tight">
-                                            Mark Jackson
+                                            {{ blog.author.username }}
                                         </h1>
                                     </div>
                                 </div>

@@ -35,12 +35,12 @@
                 <!-- Author -->
                 <div class="mt-4 flex items-center sm:mt-8">
                     <a href="author.html" class="h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                        <img data-src="{% static 'images/author-01.jpeg' %}"
+                        <img data-src="{% if featured_blog.author.profile.image %}{{ featured_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                             class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                     </a>
                     <div class="ml-3">
                         <a href="author.html" class="text-sm font-medium text-gray-800 hover:underline">
-                            Mark Jack
+                            {{ featured_blog.author.username }}
                         </a>
                         <p class="text-sm text-gray-500">
                             <time datetime="{{ featured_blog.created_at }}">{{ featured_blog.created_at|date:"F j, Y" }}</time>
@@ -91,11 +91,11 @@
                             <div class="flex items-center justify-center">
                                 <a href="author.html" class="mr-3 animate-pulse rounded-lg bg-gray-50">
                                     <img class="lazy h-6 w-6 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out"
-                                        data-src="{% static 'images/author-02.jpeg' %}" alt="Author 01" />
+                                        data-src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="Author 01" />
                                 </a>
                                 <div class="text-sm">
                                     <span class="text-gray-500">By </span>
-                                    <a class="font-medium text-gray-700 hover:underline" href="author.html">Taylor Adams</a>
+                                    <a class="font-medium text-gray-700 hover:underline" href="author.html">{{ blog.author.username }}</a>
                                     <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date:'M d, Y' }}</span>
                                 </div>
                             </div>
@@ -200,13 +200,13 @@
                         <!-- Author -->
                         <div class="mt-5 flex items-center sm:mt-6">
                             <a href="author.html" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% static 'images/author-02.jpeg' %}"
+                                <img data-src="{% if latest_blog.author.profile.image %}{{ latest_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                                     class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                             </a>
                             <div class="ml-3">
                                 <a href="author.html"
                                     class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    Tayler Adams
+                                    {{ latest_blog.author.username }}
                                 </a>
                                 <p class="text-sm text-gray-500">
                                     <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date:"M d Y" }}</time>
@@ -259,7 +259,7 @@
                                         <div class="text-sm">
                                             <span class="text-gray-500">By </span>
                                             <a class="font-medium text-gray-700 hover:underline"
-                                                href="author.html">Micheal Osman</a>
+                                                href="author.html">{{ blog.author.username }}</a>
                                         </div>
                                     </div>
                                 </div>
