@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Profile
 import re
-
 
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active']
+        fields = ['username', 'first_name', 'last_name', 'email', 'groups' ,'password', 'is_active']
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter User Name title", 'required': True}),
             "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name title", 'required': True}),
@@ -14,7 +14,7 @@ class UserForm(forms.ModelForm):
             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Email title", 'required': True}),
             "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter Password", 'required': True}),
             "is_active": forms.Select(choices=[(1, 'Active'),(0, 'In Active')], attrs={"class": "form-control"}),
-            # "user.groups": forms.HiddenInput(attrs={"class": "form-control",'value':2}),
+            "groups": forms.SelectMultiple(attrs={"class": "form-control"}),
         }
         
         
@@ -63,16 +63,14 @@ class UserForm(forms.ModelForm):
         return email
     
     
-    
-    
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'groups', 'is_active']
         STATUS_CHOICES = {
-    "0": "Inactive",
-    "1": "Active",
-}
+            "0": "Inactive",
+            "1": "Active",
+        }
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter User Name title", 'required': True}),
             "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name title", 'required': True}),
@@ -80,7 +78,7 @@ class UserUpdateForm(forms.ModelForm):
             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Email title", 'required': True}),
             "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter Password"}),
             "is_active": forms.Select(attrs={"class": "form-control"}, choices=[(False, 'Inactive'),(True, 'Active')]),
-            # "user.groups": forms.HiddenInput(attrs={"class": "form-control",'value':2}),
+            "groups": forms.SelectMultiple(attrs={"class": "form-control"}),
         }
         
         
@@ -88,6 +86,22 @@ class UserUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Make the password field optional
         self.fields['password'].required = False
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        # Check if the password field is empty
+        if not self.cleaned_data['password']:
+            # Preserve the existing password
+            user.password = User.objects.get(pk=self.instance.pk).password
+        else:
+            # Hash the new password
+            user.set_password(self.cleaned_data['password'])
+        
+        if commit:
+            user.save()
+            self.save_m2m()  # Save the many-to-many relationships
+        return user
         
     def clean_title(self):
         username = self.cleaned_data.get('username')
@@ -110,3 +124,15 @@ class UserUpdateForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("A User with this Email already exists.")
         return email
+    
+    
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image']
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if not image:
+            return None  # Ensure None is returned if no image is uploaded
+        return image

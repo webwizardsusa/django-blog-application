@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth.models import User, Group
-from .forms import UserForm, UserUpdateForm
+from .forms import UserForm, UserUpdateForm, ProfileForm
 from django.http import HttpResponse
 from django.contrib import messages
 
@@ -19,19 +19,33 @@ def user_list(request):
 
 def user_create(request):
     form = UserForm(request.POST or None, request.FILES or None)
+    profile_form = ProfileForm(request.POST or None, request.FILES or None)
+    
     if request.method == "POST":
+        print(request.POST, request.FILES)
+
         form = UserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        profile_form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid() and profile_form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password']) 
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user 
+            profile.save()
+
             group = Group.objects.get(id=2)
             group.user_set.add(user)  
             messages.success(request, "User created successfully.")
             return redirect('user:user_list')
     else:
         form = UserForm()
+        profile_form = ProfileForm()
 
     context = {
         "form": form,
+        "profile_form": profile_form,
         "breadcrumb_title": "User Management",
         "breadcrumbs": [
             {"name": "Users", "url": reverse('user:user_list')},
