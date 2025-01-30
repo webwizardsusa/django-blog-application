@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from web_admin.blog.models import Blog, Category, Tag
+from web_admin.blog.models import Blog, Category, Tag, User
 
 def home(request):
     blogs = Blog.objects.filter(is_published=True).order_by("-created_at")
@@ -31,13 +31,13 @@ def home(request):
         "trending_blogs": trending_blogs,
     })
 
-def blog_detail(request, id):
-    blog = get_object_or_404(Blog, id=id)
+def blog_detail(request, slug):
+    blog = get_object_or_404(Blog, slug=slug)
     categories = Category.objects.all()
     return render(request, 'public_site/blog_detail.html', {'blog': blog, 'categories': categories})
 
-def blog_category(request, name):
-    category = get_object_or_404(Category.objects.prefetch_related('blogs'), name=name)
+def blog_category(request, slug):
+    category = get_object_or_404(Category.objects.prefetch_related('blogs'), slug=slug)
     recent_blogs = category.blogs.filter(is_published=True).order_by("-created_at")[:4]
     blogs = category.blogs.filter(is_published=True).order_by("-created_at")
     categories = Category.objects.all()
@@ -48,4 +48,19 @@ def blog_category(request, name):
         'recent_blogs': recent_blogs,
         'categories': categories,
         'tags': tags,
+    })
+
+def blog_author(request, user_id):
+    author = get_object_or_404(User, pk=user_id)
+    recent_blogs = Blog.objects.filter(author=author, is_published=True).order_by("-created_at")[:4]
+    blogs = Blog.objects.filter(author=author, is_published=True).order_by("-created_at")
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+    print(author)
+    return render(request, 'public_site/blog_author.html', {
+        'author': author,
+        'blogs': blogs,
+        'categories': categories,
+        'tags': tags,
+        'recent_blogs': recent_blogs,
     })

@@ -1,0 +1,306 @@
+{% extends "public_site/layout/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Author Header -->
+<section class="bg-gray-50 py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="mx-auto max-w-xl px-6 sm:px-12 md:max-w-3xl lg:max-w-screen-xl lg:px-8">
+      <!-- Container -->
+      <div class="flex w-full flex-col items-center md:flex-row md:justify-between">
+        <!-- Author Info -->
+        <div class="flex flex-col items-center md:flex-row">
+          <!-- Image -->
+            <div class="flex-shrink-0">
+                <div class="relative animate-pulse rounded-2xl bg-gray-100">
+                    <img class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out" data-src="{{ author.profile.image.url }}" alt=""/>
+                    <span class="absolute inset-0 rounded-xl shadow-inner" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center md:ml-5 md:mt-0 md:text-left">
+                <p class="text-xs uppercase tracking-widest text-red-700">
+                    Staff writer
+                </p>
+                <h1 class="mt-1.5 text-3xl font-medium tracking-normal text-gray-900 sm:text-4xl md:tracking-tight lg:leading-tight">
+                    {{ author.username }}
+                </h1>
+            </div>
+        </div>
+
+        <!-- Author Social Links -->
+        <div class="mt-6 md:mt-0">
+          <!-- Links -->
+          <ul class="flex items-center space-x-3">
+            <!-- Twitter -->
+            <li>
+              <a href="#" class="group flex h-10 w-10 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out sm:h-12 sm:w-12">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M496 109.5a201.8 201.8 0 01-56.55 15.3 97.51 97.51 0 0043.33-53.6 197.74 197.74 0 01-62.56 23.5A99.14 99.14 0 00348.31 64c-54.42 0-98.46 43.4-98.46 96.9a93.21 93.21 0 002.54 22.1 280.7 280.7 0 01-203-101.3A95.69 95.69 0 0036 130.4c0 33.6 17.53 63.3 44 80.7A97.5 97.5 0 0135.22 199v1.2c0 47 34 86.1 79 95a100.76 100.76 0 01-25.94 3.4 94.38 94.38 0 01-18.51-1.8c12.51 38.5 48.92 66.5 92.05 67.3A199.59 199.59 0 0139.5 405.6a203 203 0 01-23.5-1.4A278.68 278.68 0 00166.74 448c181.36 0 280.44-147.7 280.44-275.8 0-4.2-.11-8.4-.31-12.5A198.48 198.48 0 00496 109.5z"
+                  />
+                </svg>
+              </a>
+            </li>
+
+            <!-- Facebook -->
+            <li>
+              <a
+                href="#"
+                class="group flex h-10 w-10 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out sm:h-12 sm:w-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                >
+                  <path
+                    xmlns="http://www.w3.org/2000/svg"
+                    d="M480 257.35c0-123.7-100.3-224-224-224s-224 100.3-224 224c0 111.8 81.9 204.47 189 221.29V322.12h-56.89v-64.77H221V208c0-56.13 33.45-87.16 84.61-87.16 24.51 0 50.15 4.38 50.15 4.38v55.13H327.5c-27.81 0-36.51 17.26-36.51 35v42h62.12l-9.92 64.77H291v156.54c107.1-16.81 189-109.48 189-221.31z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </li>
+
+            <!-- Instagram -->
+            <li>
+              <a
+                href="#"
+                class="group flex h-10 w-10 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out sm:h-12 sm:w-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                >
+                  <path
+                    xmlns="http://www.w3.org/2000/svg"
+                    d="M349.33 69.33a93.62 93.62 0 0193.34 93.34v186.66a93.62 93.62 0 01-93.34 93.34H162.67a93.62 93.62 0 01-93.34-93.34V162.67a93.62 93.62 0 0193.34-93.34h186.66m0-37.33H162.67C90.8 32 32 90.8 32 162.67v186.66C32 421.2 90.8 480 162.67 480h186.66C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32z"
+                  />
+                  <path
+                    xmlns="http://www.w3.org/2000/svg"
+                    d="M377.33 162.67a28 28 0 1128-28 27.94 27.94 0 01-28 28zM256 181.33A74.67 74.67 0 11181.33 256 74.75 74.75 0 01256 181.33m0-37.33a112 112 0 10112 112 112 112 0 00-112-112z"
+                  />
+                </svg>
+              </a>
+            </li>
+
+            <!-- Linkedin-->
+            <li>
+              <a
+                href="#"
+                class="group flex h-10 w-10 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out sm:h-12 sm:w-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                >
+                  <path
+                    xmlns="http://www.w3.org/2000/svg"
+                    d="M444.17 32H70.28C49.85 32 32 46.7 32 66.89v374.72C32 461.91 49.85 480 70.28 480h373.78c20.54 0 35.94-18.21 35.94-38.39V66.89C480.12 46.7 464.6 32 444.17 32zm-273.3 373.43h-64.18V205.88h64.18zM141 175.54h-.46c-20.54 0-33.84-15.29-33.84-34.43 0-19.49 13.65-34.42 34.65-34.42s33.85 14.82 34.31 34.42c-.01 19.14-13.31 34.43-34.66 34.43zm264.43 229.89h-64.18V296.32c0-26.14-9.34-44-32.56-44-17.74 0-28.24 12-32.91 23.69-1.75 4.2-2.22 9.92-2.22 15.76v113.66h-64.18V205.88h64.18v27.77c9.34-13.3 23.93-32.44 57.88-32.44 42.13 0 74 27.77 74 87.64z"
+                  />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- Author Feed -->
+<section class="relative mx-auto max-w-xl px-5 py-12 sm:px-12 sm:py-16 md:max-w-3xl lg:max-w-screen-xl lg:px-8 lg:py-24">
+    <div class="w-full lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-12">
+        <!-- Feed Container -->        
+        <div class="col-span-2">
+            <!-- Articles -->
+            {% if blogs %}
+            <div class="mb-6 border-b-2 border-gray-100 pb-8 sm:mb-10 sm:pb-10">
+                <!-- 1st Article -->
+                {% for blog in blogs %}
+                <article class="md:grid md:grid-cols-4 md:gap-8">
+                    <!-- Image -->
+                    <div class="md:col-span-1">
+                        <a href="{% url 'blog_detail' slug=blog.slug %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1">
+                            <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/archive-01.jpeg' %}{% endif %}" 
+                            class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
+                        </a>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative mt-6 flex flex-col flex-wrap md:col-span-3 md:mt-0">
+                        <div class="mb-8 box-border flex w-full flex-1 flex-col justify-between border-b-2 border-gray-100 px-6 pb-8 md:px-0">
+                            <div>
+                                <a href="{% url 'blog_category' slug=blog.category.slug %}" class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
+                                    {{ blog.category.name }}
+                                </a>
+
+                                <h3 class="mt-2.5 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
+                                    <a href="{% url 'blog_detail' slug=blog.slug %}">
+                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                        {{ blog.title }}
+                                    </a>
+                                </h3>
+
+                                <p class="mt-3.5 block text-base leading-relaxed text-gray-500">
+                                    {{ blog.content | truncatechars:150 }}
+                                </p>
+                            </div>
+
+                            <!-- Article Footer Info -->
+                            <footer class="mt-5 flex items-center sm:mt-7">
+                                <!-- Author Image -->
+                                <a href="{% url 'blog_author' user_id=blog.author.id %}" class="relative mr-3 animate-pulse rounded-lg bg-gray-50">
+                                    <img class="lazy h-7 w-7 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out lg:h-8 lg:w-8"
+                                    data-src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
+                                </a>
+
+                                <div class="flex items-center text-sm lg:text-[15px]">
+                                    <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
+                                    <a class="relative font-medium text-gray-700 hover:underline dark:text-gray-300" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.username }}</a>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span class="ml-1 text-gray-500">{{ blog.created_at|date:"F j, Y" }}</span>
+
+                                    {% comment %} <span class="hidden items-center sm:flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="ml-1 text-gray-500">15 min read</span>
+                                    </span> {% endcomment %}
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination-->
+            <nav class="flex items-center justify-between">
+                <div class="flex w-0 flex-1">
+                    <!-- Previous Button -->
+                    <a href="#" class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        <!-- Heroicon name: solid/chevron-left -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Previous
+                    </a>
+                </div>
+
+                <!-- Pages -->
+                <div class="hidden space-x-2.5 md:flex">
+                    <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        1
+                    </a>
+
+                    <!-- Current: "bg-red-500 text-white", Default: "text-gray-500 transition duration-300 ease-in-out bg-gray-50 hover:bg-gray-100 hover:text-gray-700" -->
+                    <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-red-600 text-sm font-medium text-white" aria-current="page">
+                        2
+                    </a>
+                    <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        3
+                    </a>
+                    <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        4
+                    </a>
+                    <span class="inline-flex h-12 w-12 items-center justify-center text-base font-medium text-gray-500">
+                        ...
+                    </span>
+                    <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        10
+                    </a>
+                </div>
+
+                <!-- Next Button -->
+                <div class="flex w-0 flex-1 justify-end">
+                    <a href="#" class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                        Next
+                        <!-- Heroicon name: solid/chevron-right -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+            {% else %}
+                <p>No posts found in this category.</p>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="mx-auto mt-12 w-full max-w-xl sm:mt-16 md:max-w-3xl lg:col-span-1 lg:mt-0 lg:max-w-none" >
+            <!-- About Author -->
+            <div class="w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
+            <h3
+                class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']"
+            >
+                About the author
+            </h3>
+
+            <div class="pt-6">
+                <p class="text-base leading-loose text-gray-700">
+                Lorem ipsum dolor sit amet mauris quis phasellus ornare dui
+                lectus. Laoreet habitasse eiusmod nulla odio tortor neque diam
+                convallis morbi dolore molestie tellus faucibus pharetra.
+                </p>
+            </div>
+            </div>
+
+        <!-- Most read articles -->
+        {% comment %} <div class="mt-8 w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
+            <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
+                Recent blogs in {{ author.username }}
+            </h3>
+
+            <!-- Articles -->
+            <div class="space-y-6 pt-6 sm:space-y-5 lg:space-y-6 xl:space-y-5">
+                <!-- 1st Article -->
+                <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
+                    <!-- Image -->
+                    <a href="post.html" class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
+                        <img data-src="images/trending-01.jpeg" class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24"/>
+                    </a>
+
+                    <!-- Content -->
+                    <div class="w-2/3">
+                        <div class="flex h-full w-full flex-1 flex-col justify-center">
+                            <div>
+                                <a href="post.html" class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
+                                    How to generate better ideas
+                                </a>
+                            </div>
+
+                            <!-- Author -->
+                            <div class="mt-2 flex items-center justify-between">
+                                <!-- Author meta -->
+                                <div class="flex items-center justify-center">
+                                    <div class="text-sm">
+                                        <span class="text-gray-500 dark:text-gray-400">By</span>
+                                        <a class="font-medium text-gray-700 hover:underline dark:text-gray-300" href="author.html">Matt Burgess</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>            
+            </div>
+        </div> {% endcomment %}
+
+    </div>
+</div>
+</section>
+{% endblock %}
