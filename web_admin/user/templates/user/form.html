@@ -57,6 +57,14 @@
                     </div> 
 
                     <div class="mb-3">
+                        <label class="form-label" for="{{ profile_form.description.id_for_label }}">Description</label>
+                        {{ profile_form.description }}
+                        {% if profile_form.description.errors %}
+                            <div class="text-danger">{{ profile_form.description.errors }}</div>
+                        {% endif %}
+                    </div>                    
+
+                    <div class="mb-3">
                         <label class="form-label" for="{{ form.groups.id_for_label }}">Groups</label>
                         {{ form.groups }}
                         {% if form.groups.errors %}

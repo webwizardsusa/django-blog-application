@@ -35,7 +35,7 @@
                         </a>
                         <div class="flex items-center text-sm lg:text-[15px]">
                             <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
-                            <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.username }}</a>
+                            <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -144,7 +144,7 @@
                                             Staff Writer
                                         </p>
                                         <h1 class="mt-1 text-xl font-medium tracking-normal text-gray-900 md:tracking-tight lg:leading-tight">
-                                            {{ blog.author.username }}
+                                            {{ blog.author.get_full_name }}
                                         </h1>
                                     </div>
                                 </div>
