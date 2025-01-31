@@ -129,7 +129,10 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['image', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs={"class": "form-control", "placeholder": "Enter author description", "rows": 5, 'required': True}),
+        }
 
     def clean_image(self):
         image = self.cleaned_data.get("image")

@@ -58,15 +58,19 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == "POST":
         form = UserUpdateForm(request.POST, instance=user)
-        if form.is_valid():
+        profile_form = ProfileForm(request.POST, request.FILES, instance=user.profile) 
+        if form.is_valid() and profile_form.is_valid():
             form.save()
+            profile_form.save()
             messages.success(request, "User updated successfully.")
             return redirect('user:user_list')
     else:
         form = UserUpdateForm(instance=user)
+        profile_form = ProfileForm(instance=user.profile) 
 
     context = {
         "form": form,
+        "profile_form": profile_form,
         "breadcrumb_title": "User Management",
         "breadcrumbs": [
             {"name": "Categories", "url": reverse('user:user_list')},

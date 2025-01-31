@@ -64,3 +64,9 @@ def blog_author(request, user_id):
         'tags': tags,
         'recent_blogs': recent_blogs,
     })
+
+def about_us(request):
+    return render(request, 'public_site/about_us.html')
+
+def contact_us(request):
+    return render(request, 'public_site/contact_us.html')

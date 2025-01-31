@@ -40,7 +40,7 @@
                     </a>
                     <div class="ml-3">
                         <a href="{% url 'blog_author' user_id=featured_blog.author.id %}" class="text-sm font-medium text-gray-800 hover:underline">
-                            {{ featured_blog.author.username }}
+                            {{ featured_blog.author.get_full_name}}
                         </a>
                         <p class="text-sm text-gray-500">
                             <time datetime="{{ featured_blog.created_at }}">{{ featured_blog.created_at|date:"F j, Y" }}</time>
@@ -95,7 +95,7 @@
                                 </a>
                                 <div class="text-sm">
                                     <span class="text-gray-500">By </span>
-                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.username }}</a>
+                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
                                     <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date:'M d, Y' }}</span>
                                 </div>
                             </div>
@@ -151,13 +151,6 @@
     <div class="w-full lg:grid lg:grid-cols-3 lg:gap-8">
         <!-- Feed Articles Container -->
         <div class="col-span-2">
-            <!-- Advertisement Banner -->
-            <a href="#"
-                class="mx-auto block max-w-xl animate-pulse rounded-2xl bg-gray-50 px-4 sm:px-6 md:max-w-3xl md:px-8 lg:max-w-none lg:px-0">
-                <img data-src="{% static 'images/banner-ad.jpeg' %}"
-                    class="lazy h-auto w-full rounded-2xl transition duration-300 ease-in-out" />
-            </a>
-
             <!-- Articles-->
             <div
                 class="mx-auto mt-8 grid max-w-xl gap-6 px-4 sm:px-6 md:max-w-3xl md:grid-cols-2 md:px-8 lg:max-w-none lg:px-0">
@@ -206,7 +199,7 @@
                             <div class="ml-3">
                                 <a href="{% url 'blog_author' user_id=latest_blog.author.id %}"
                                     class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    {{ latest_blog.author.username }}
+                                    {{ latest_blog.author.get_full_name }}
                                 </a>
                                 <p class="text-sm text-gray-500">
                                     <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date:"M d Y" }}</time>
@@ -259,7 +252,7 @@
                                         <div class="text-sm">
                                             <span class="text-gray-500">By </span>
                                             <a class="font-medium text-gray-700 hover:underline"
-                                                href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.username }}</a>
+                                                href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
                                         </div>
                                     </div>
                                 </div>
