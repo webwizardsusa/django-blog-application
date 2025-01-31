@@ -55,14 +55,15 @@
     <section class="relative mx-auto max-w-xl px-5 py-12 sm:px-12 sm:py-16 md:max-w-3xl lg:max-w-screen-xl lg:px-8 lg:py-20">
         <div class="w-full lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-12">
             <!-- Articles -->
-            {% if blogs %}
-                <div class="col-span-2">
+            <div class="col-span-2">                
+                {% if blogs %}
+                <div class="mb-6 border-b-2 border-gray-100 pb-8 sm:mb-10 sm:pb-10">
                     <!-- 1st Article -->
                     {% for blog in blogs %}
                     <article class="md:grid md:grid-cols-4 md:gap-8">
                             <!-- Image -->
                             <div class="md:col-span-1">
-                                <a href="{% url 'blog_detail' blog.id %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1" >
+                                <a href="{% url 'blog_detail' slug=blog.slug %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1" >
                                     <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
                                     alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
                                 </a>
@@ -73,7 +74,7 @@
                                 <div class="mb-8 box-border flex w-full flex-1 flex-col justify-between border-b-2 border-gray-100 px-6 pb-8 md:px-0">
                                     <div>
                                         <h3 class="mt-2.5 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                            <a href="{% url 'blog_detail' blog.id %}">
+                                            <a href="{% url 'blog_detail' slug=blog.slug %}">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 {{ blog.title }}
                                             </a>
@@ -114,9 +115,68 @@
                     </article>
                     {% endfor %}
                 </div>
-            {% else %}
-                <p>No posts found in this category.</p>
-            {% endif %}
+                
+                <nav class="flex items-center justify-between">
+                    <!-- Previous Button -->
+                    {% if page_obj.has_previous %}
+                        <div class="flex w-0 flex-1">
+                            <a href="?page={{ page_obj.previous_page_number }}" class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Previous
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex w-0 flex-1">
+                            <span class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Previous
+                            </span>
+                        </div>
+                    {% endif %}
+                    <!-- Pages -->
+                    <div class="hidden space-x-2.5 md:flex">
+                        {% for page_num in page_obj.paginator.page_range %}
+                            {% if page_num == page_obj.number %}
+                                <a href="?page={{ page_num }}" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-red-600 text-sm font-medium text-white" aria-current="page">
+                                    {{ page_num }}
+                                </a>
+                            {% else %}
+                                <a href="?page={{ page_num }}" class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                                    {{ page_num }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+    
+                    <!-- Next Button -->
+                    {% if page_obj.has_next %}
+                        <div class="flex w-0 flex-1 justify-end">
+                            <a href="?page={{ page_obj.next_page_number }}" class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-500 transition duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4-4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex w-0 flex-1 justify-end">
+                            <span class="inline-flex h-12 items-center justify-center rounded-xl bg-gray-50 px-4 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </span>
+                        </div>
+                    {% endif %}
+                </nav>                
+                {% else %}
+                    <p>No posts found in this category.</p>
+                {% endif %}
+            </div>
             <!-- Sidebar -->
             <div class="mx-auto mt-12 w-full max-w-xl sm:mt-16 md:max-w-3xl lg:col-span-1 lg:mt-0 lg:max-w-none">
                 <!-- Most read articles -->
@@ -172,7 +232,7 @@
                         <ul class="-m-1 flex flex-wrap justify-start">
                             {% for tag in tags|slice:10 %}
                             <li>
-                                <a href="tag.html">
+                                <a href="{% url 'blog_tag' slug=tag.slug %}">
                                     <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
                                         {{ tag.name }}
                                     </span>
