@@ -87,9 +87,16 @@ def blog_tag(request, slug):
         "recent_blogs": recent_blogs,
         **get_common_context(),
     }
+    return render(request, 'public_site/blog_tag.html', context)
     
 def about_us(request):
-    return render(request, 'public_site/about_us.html')
+    context = {   
+        **get_common_context(),
+    }
+    return render(request, 'public_site/about_us.html', context)
 
 def contact_us(request):
-    return render(request, 'public_site/contact_us.html')
+    context = {   
+        **get_common_context(),
+    }
+    return render(request, 'public_site/contact_us.html', context)
