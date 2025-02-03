@@ -68,7 +68,7 @@
 
             <!-- Search -->
             <div class="relative ml-6 h-10 w-full max-w-xxs rounded-3xl">
-                <form class="group rounded-3xl transition duration-300 ease-in-out">
+                <form class="group rounded-3xl transition duration-300 ease-in-out" method="GET" action="{% url 'blog_search' %}">
                     <div class="absolute inset-y-0 left-3 flex items-center">
                         <!-- Heroicon name: solid/search -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
@@ -79,9 +79,10 @@
                         </svg>
                     </div>
 
-                    <input type="email"
-                        class="h-10 w-full rounded-3xl border border-gray-200 bg-white px-10 py-3 text-sm leading-5 text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-100"
-                        required placeholder="Search..." , autocomplete="email" />
+                    <input type="text"
+                        name="search" 
+                        class="h-10 w-full rounded-3xl border border-gray-200 bg-white px-10 py-3 text-sm leading-5 text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-100" value="{{ request.GET.search|default:'' }}"
+                        required placeholder="Search blogs..." autocomplete="off" />
                 </form>
             </div>
 
