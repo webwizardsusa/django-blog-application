@@ -50,7 +50,7 @@
                     
                     <div class="mb-3">
                         <label for="{{ form.image.id_for_label }}" class="form-label"> Image</label>
-                        <input type="file" name="image" id="image" class="form-control">
+                        <input type="file" name="image" id="image" class="form-control" required>
                         {% if form.image.errors %}
                             <div class="text-danger">{{ form.image.errors }}</div>
                         {% endif %}
