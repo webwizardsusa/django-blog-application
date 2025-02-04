@@ -37,7 +37,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
-                        {{ form.content }}
+                        <textarea name="content" id="id_content" class="form-control" placeholder="Enter blog content">{{ form.content.value }}</textarea>
                         {% if form.content.errors %}
                             <div class="text-danger">{{ form.content.errors }}</div>
                         {% endif %}
@@ -80,10 +80,12 @@
 
 {% block page_css %}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block page_js %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rich-text-editor-vj@3.0.6/js/froala_editor.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -92,5 +94,6 @@
             allowClear: true
         });
     });
+    new FroalaEditor('#id_content')
 </script>
 {% endblock %}

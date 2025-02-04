@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, get_object_or_404
 from web_admin.blog.models import Blog, Category, Tag, User
 from django.contrib.auth.models import Group 
@@ -16,7 +17,7 @@ def get_common_context():
 
 def home(request):
     blogs = Blog.objects.filter(is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
-    featured_blog = blogs.first()
+    featured_blog = random.choice(blogs) if blogs else None
     recent_blogs = blogs[1:6]
 
     trending_tag = Tag.objects.filter(name="trending").first()

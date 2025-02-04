@@ -1,5 +1,6 @@
 {% extends "public_site/layout/base.html" %}
 {% load static %}
+{% load filters %}
 
 {% block content %}
 <!-- Home Hero-->
@@ -27,7 +28,7 @@
                     </h2>
                     <div>
                         <p class="mt-4 text-base leading-loose text-gray-600">
-                            {{ featured_blog.content | truncatechars:270 }}
+                            {{ featured_blog.content|truncate_html:270 }}
                         </p>
                     </div>
                 </a>
@@ -43,7 +44,7 @@
                             {{ featured_blog.author.get_full_name}}
                         </a>
                         <p class="text-sm text-gray-500">
-                            <time datetime="{{ featured_blog.created_at }}">{{ featured_blog.created_at|date:"F j, Y" }}</time>
+                            <time datetime="{{ featured_blog.created_at }}">{{ featured_blog.created_at|date_format }}</time>
                             {% comment %} <span> 6 min read </span> {% endcomment %}
                         </p>
                     </div>
@@ -96,7 +97,7 @@
                                 <div class="text-sm">
                                     <span class="text-gray-500">By </span>
                                     <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
-                                    <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date:'M d, Y' }}</span>
+                                    <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date_format}}</span>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +187,7 @@
                             </h3>
 
                             <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                {{ latest_blog.content|truncatewords:20 }}
+                                {{ latest_blog.content|truncate_html:20 }}
                             </p>
                         </div>
 
@@ -202,7 +203,7 @@
                                     {{ latest_blog.author.get_full_name }}
                                 </a>
                                 <p class="text-sm text-gray-500">
-                                    <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date:"M d Y" }}</time>
+                                    <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date_format }}</time>
                                     {% comment %} <span aria-hidden="true"> &middot; </span> {% endcomment %}
                                     {% comment %} <span> 6 min read </span> {% endcomment %}
                                 </p>

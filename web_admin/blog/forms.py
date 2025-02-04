@@ -10,7 +10,6 @@ class BlogForm(forms.ModelForm):
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter blog title"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
-            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter blog content"}),
             "author": forms.Select(attrs={"class": "form-control"}),
             "is_published": forms.Select(choices=Blog.STATUS_CHOICES, attrs={"class": "form-control"}),
         }
