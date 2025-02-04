@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from web_admin.blog.models import Blog, Category, Tag, User
+from django.contrib.auth.models import Group 
 from django.core.paginator import Paginator
 
 def paginate_queryset(request, queryset, per_page):
@@ -52,7 +53,7 @@ def blog_category(request, slug):
 
     context = {
         "category": category,
-        "blogs": blogs,
+        "blogs": page_obj.object_list,
         "page_obj": page_obj,
         "recent_blogs": recent_blogs,
         **get_common_context(),
@@ -67,7 +68,7 @@ def blog_author(request, user_id):
 
     context = {
         "author": author,
-        "blogs": blogs,
+        "blogs": page_obj.object_list,
         "page_obj": page_obj,
         "recent_blogs": recent_blogs,
         **get_common_context(),
@@ -82,16 +83,34 @@ def blog_tag(request, slug):
 
     context = {
         "tag": tag,
-        "blogs": blogs,
+        "blogs": page_obj.object_list,
         "page_obj": page_obj,
         "recent_blogs": recent_blogs,
         **get_common_context(),
     }
     return render(request, 'public_site/blog_tag.html', context)
+
+def blog_search(request):
+    search_query = request.GET.get('search', '')  
+    if search_query:
+        blogs = Blog.objects.filter(title__icontains=search_query)  
+    page_obj = paginate_queryset(request, blogs, 10)
+
+
+    context = {
+        "blogs": page_obj.object_list,
+        "page_obj": page_obj,
+        "search": search_query,
+        **get_common_context(),
+    }
+    return render(request, 'public_site/blog_search.html', context)
     
 def about_us(request):
+    authors = User.objects.all().filter(groups=2)[:6]
+
     context = {   
         **get_common_context(),
+        "authors": authors,
     }
     return render(request, 'public_site/about_us.html', context)
 
