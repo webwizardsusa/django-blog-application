@@ -9,6 +9,6 @@ from web_admin.common.traits.crud import Crud
 class TagCrud(Crud):
     model = Tag  
     form = TagForm 
-    list_template_name = "tag/list.html"  
-    list_url_name = "tag:tag_list"
+    list_url = "tag/list.html"  
+    redirect_url = "tag:tag_list"
     form_url = "tag/form.html" 

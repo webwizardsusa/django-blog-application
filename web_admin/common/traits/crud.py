@@ -6,8 +6,8 @@ class Crud:
     model = None
     module = None
     form = None 
-    list_template_name = None
-    list_url_name = None 
+    list_url = None
+    redirect_url = None 
     form_url = None
 
     def list(self, request):
@@ -17,7 +17,7 @@ class Crud:
             "breadcrumb_title": f"{self.model.__name__} Management",
             "breadcrumbs": [{"name": self.model.__name__}]
         }
-        return render(request, self.list_template_name, context)
+        return render(request, self.list_url, context)
     
     def create(self, request):
         form = self.form(request.POST or None)
@@ -25,13 +25,13 @@ class Crud:
         if request.method == "POST" and form.is_valid():
             form.save()  
             messages.success(request, f"{self.model.__name__} created successfully.")
-            return redirect(self.list_url_name)  
+            return redirect(self.redirect_url)  
 
         context = {
             "form": form,
             "breadcrumb_title": f"{self.model.__name__} Management",
             "breadcrumbs": [
-                {"name": f"{self.model.__name__}", "url": reverse(self.list_url_name)}, 
+                {"name": f"{self.model.__name__}", "url": reverse(self.redirect_url)}, 
                 {"name": f"Create {self.model.__name__}"}
             ]
         }
@@ -45,14 +45,14 @@ class Crud:
         if request.method == "POST" and form.is_valid():
             form.save()
             messages.success(request, f"{self.model.__name__} updated successfully.")
-            return redirect(self.list_url_name)  
+            return redirect(self.redirect_url)  
 
         context = {
             "form": form,
             "module": module_instance,
             "breadcrumb_title": f"{self.model.__name__} Management",
             "breadcrumbs": [
-                {"name":f"{self.model.__name__}", "url": reverse(self.list_url_name)},
+                {"name":f"{self.model.__name__}", "url": reverse(self.redirect_url)},
                 {"name": f"Edit {self.model.__name__}"}
             ]
         }
@@ -65,4 +65,4 @@ class Crud:
 
         module_instance.delete()
         messages.success(request, f"{self.model.__name__} deleted successfully.")
-        return redirect(self.list_url_name)
+        return redirect(self.redirect_url)
