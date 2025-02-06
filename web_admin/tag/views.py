@@ -1,20 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
+from django.http import JsonResponse
 from .models import Tag
 from .forms import TagForm
 
 # Create your views here.
 def tag_list(request):
-    tags = Tag.objects.all()
-    context = {
-        "tags": tags,
-        "breadcrumb_title": "Tag Management",
-        "breadcrumbs": [
-            {"name": "Tags"}
-        ]
-    }
-    return render(request, 'tag/list.html', context)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        draw = int(request.GET.get("draw", 1))  
+        start = int(request.GET.get("start", 0))  
+        length = int(request.GET.get("length", 10))  
+        search_value = request.GET.get("search[value]", "").strip()  
+
+        tags = Tag.objects.all()
+        if search_value:
+            tags = tags.filter(name__icontains=search_value)
+        records_total = tags.count()
+        tags = tags[start:start+length]
+        data = []
+        for tag in tags:
+            data.append({
+                "name": tag.name, 
+                "total_blogs": tag.blogs.count(), 
+                "created_at": tag.created_at.strftime("%Y-%m-%d"), 
+                "actions": f"""
+                    <a href='{reverse("tag:tag_edit", kwargs={"pk": tag.id})}' class='btn btn-sm btn-warning'>Edit</a>
+                    <a href='{reverse("tag:tag_delete", kwargs={"pk": tag.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
+                """
+            })
+
+        return JsonResponse({"draw": draw, "recordsTotal": Tag.objects.count(), "recordsFiltered": records_total, "data": data}, safe=False)
+
+    return render(request, "tag/list.html", {"breadcrumb_title": "Tag Management", "breadcrumbs": [{"name": "Tags"}]})
 
 def tag_create(request):
     form = TagForm(request.POST or None)

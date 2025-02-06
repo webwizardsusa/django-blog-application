@@ -2,20 +2,33 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth.models import User, Group
 from .forms import UserForm, UserUpdateForm, ProfileForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 
 def user_list(request):
-    users = User.objects.all().filter(groups=2)
-    context = {
-        "users": users,
-        "breadcrumb_title": "Users",
-        "breadcrumbs": [
-            {"name": "Users"}
-        ]
-    }
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        users = User.objects.filter(groups=2) 
+        draw = int(request.GET.get('draw', 1)) 
+        start = int(request.GET.get('start', 0))  
+        length = int(request.GET.get('length', 10))  
+        paginated_users = users[start:start+length]
 
-    return render(request, 'user/list.html', {'context':context})
+        data = []
+        for user in paginated_users:
+            user_data = {
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "status": f'<span class="badge bg-success">Active</span>' if user.is_active else f'<span class="badge bg-danger">In Active</span>',
+                "edit_url": reverse("user:user_edit", kwargs={"pk": user.id}),
+                "delete_url": reverse("user:user_delete", kwargs={"pk": user.id}),
+            }
+            data.append(user_data)
+
+        return JsonResponse({"draw": draw, "recordsTotal": users.count(), "recordsFiltered": users.count(), "data": data,}, safe=False)
+        
+    return render(request, "user/list.html", {"breadcrumb_title": "Users Management","breadcrumbs": [{"name": "Users"}]})
 
 def user_create(request):
     form = UserForm(request.POST or None, request.FILES or None)
