@@ -40,43 +40,30 @@
 {% block page_js %}
 <script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
 <script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
 
 <script>
-$(document).ready(function() {
-    var table = $('#category-table').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{% url 'category:category_list' %}",
-            "type": "GET",
-            "dataSrc": "data", 
-            "data": function(d) {
-                d.search_value = d.search.value;
-            }
-        },
-        "columns": [
-            { "data": "name" },
-            { "data": "total_blogs" },
-            { "data": "image", 
-              "render": function(data, type, row) {
-                  if (data) {
-                      return `<img src="${data}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">`;
-                  } else {
-                      return "<span>No Image</span>";
-                  }
-              }
-            },            
-            { "data": "created_at" },
-            {
-                "data": null,
-                "render": function(data, type, row) {
-                    return data.actions;
+  initializeDataTable('#category-table', "{% url 'category:category_list' %}", [
+        { "data": "name" },
+        { "data": "total_blogs" },
+        {
+            "data": "image", 
+            "render": function(data, type, row) {
+                if (data) {
+                    return `<img src="${data}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">`;
+                } else {
+                    return "<span>No Image</span>";
                 }
             }
-        ]
-    });
-});
-</script>
+        },
+        { "data": "created_at" },
+        {
+            "data": null,
+            "render": function(data, type, row) {
+                return data.actions;
+            }
+        }
+    ]);
 </script>
   <!-- [Page Specific JS] end -->
 {% endblock %}

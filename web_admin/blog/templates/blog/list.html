@@ -17,7 +17,7 @@
             <div class="card-body">
                 <form class="row row-cols-md-auto g-3 align-items-center" method="GET" action="">
                     <div class="col-12">
-                        <select name="category" class="form-control">
+                        <select name="category" class="form-control" id="categoryFilter">
                             <option value="">All Categories</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
@@ -68,62 +68,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
 <script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
 <script>
-    $(document).ready(function () {
-        $('#dom-jqry').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": function(data, callback, settings) {
-                var category = $('select[name="category"]').val();  
-                $.ajax({
-                    url: "{% url 'blog:blog_list_json' %}",
-                    type: "GET",
-                    data: {
-                        category: category,  
-                        draw: settings.iDraw,
-                        start: settings.start,
-                        length: settings.length
-                    },
-                    success: function(response) {
-                        callback({
-                            draw: response.draw,
-                            recordsTotal: response.recordsTotal,
-                            recordsFiltered: response.recordsFiltered,
-                            data: response.data
-                        });
-                    }
-                });
-            },
-            "columns": [
-                {"data": "title"},
-                {"data": "category"},
-                {
-                    "data": "image",
-                    "render": function (data) {
-                        return data ? `<img src="${data}" width="100">` : `<span class="text-muted">No Image</span>`;
-                    }
-                },
-                {"data": "author"},
-                {
-                    "data": "status",
-                    "render": function (data) {
-                        return data === "Published"
-                            ? '<span class="badge bg-success">Published</span>'
-                            : '<span class="badge bg-secondary">Draft</span>';
-                    }
-                },
-                {"data": "created_at"},
-                {
-                    "data": null,
-                    "render": function (data) {
-                        return `
-                            <a href="${data.edit_url}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="${data.delete_url}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
-                        `;
-                    }
+    $(document).ready(function() {
+        const category = $('#categoryFilter').val(); 
+
+        initializeDataTable('#dom-jqry', "{% url 'blog:blog_list_json' %}", [
+            {"data": "title"},
+            {"data": "category"},
+            {
+                "data": "image",
+                "render": function (data) {
+                    return data ? `<img src="${data}" width="100">` : `<span class="text-muted">No Image</span>`;
                 }
-            ]
-        });
+            },
+            {"data": "author"},
+            {
+                "data": "status",
+                "render": function (data) {
+                    return data === "Published"
+                        ? '<span class="badge bg-success">Published</span>'
+                        : '<span class="badge bg-secondary">Draft</span>';
+                }
+            },
+            {"data": "created_at"},
+            {
+                "data": null,
+                "render": function (data) {
+                    return `
+                        <a href="${data.edit_url}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="${data.delete_url}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                    `;
+                }
+            }
+        ], { category: category });  
     });
 </script>
 <!-- [Page Specific JS] end -->

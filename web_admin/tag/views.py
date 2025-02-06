@@ -18,6 +18,7 @@ def tag_list(request):
             tags = tags.filter(name__icontains=search_value)
         records_total = tags.count()
         tags = tags[start:start+length]
+        
         data = []
         for tag in tags:
             data.append({

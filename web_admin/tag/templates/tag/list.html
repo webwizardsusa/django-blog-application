@@ -40,30 +40,18 @@
 <!-- [Page Specific JS] start -->
 <script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
 <script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
-<script>
-$(document).ready(function() {
-    $('#tag-table').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{% url 'tag:tag_list' %}",
-            "type": "GET"
-        },
-        "columns": [
-            { "data": "name" },
-            { "data": "total_blogs" },
-            { "data": "created_at" },
-            {
-                "data": "actions",
-                "orderable": false,
-                "searchable": false
-            }
-        ],
-        "pageLength": 10, 
-        "lengthMenu": [10, 25, 50, 100], 
-        "order": [[2, "desc"]] 
-    });
-});
-</script>
+<script src="{% static 'js/datatable.js' %}"></script>
+<script> 
+    initializeDataTable('#tag-table', "{% url 'tag:tag_list' %}", [
+        { "data": "name" },
+        { "data": "total_blogs" },
+        { "data": "created_at" },
+        {
+            "data": "actions",
+            "orderable": false,
+            "searchable": false
+        }
+    ]);
+    </script>
   <!-- [Page Specific JS] end -->
 {% endblock %}

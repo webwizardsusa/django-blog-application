@@ -11,16 +11,15 @@ def category_list(request):
         length = int(request.GET.get('length', 10))
         search_value = request.GET.get('search[value]', '') 
 
-        categories_query = Category.objects.all()
+        categories = Category.objects.all()
         if search_value:
-            categories_query = categories_query.filter(name__icontains=search_value)
-        total_records = Category.objects.count()
-        filtered_records = categories_query.count()
-        categories = categories_query[start:start + length]
+            categories = categories.filter(name__icontains=search_value)
+        records_total = categories.count()
+        categories = categories[start:start + length]
 
         data = []
         for category in categories:
-            category_data = {
+            data.append({
                 "name": category.name,
                 "total_blogs": category.blogs.count(),
                 "image": category.image.url if category.image else "",
@@ -29,10 +28,9 @@ def category_list(request):
                     <a href='{reverse("category:category_edit", kwargs={"pk": category.id})}' class='btn btn-sm btn-warning'>Edit</a>
                     <a href='{reverse("category:category_delete", kwargs={"pk": category.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
                 """
-            }
-            data.append(category_data)
-
-        return JsonResponse({"draw": draw,  "recordsTotal": total_records, "recordsFiltered": filtered_records,  "data": data })
+            })
+           
+        return JsonResponse({"draw": draw,  "recordsTotal": Category.objects.count(), "recordsFiltered": records_total, "data": data}, safe=False)
 
     return render(request, "list.html", {"breadcrumb_title": "Category Management","breadcrumbs": [{"name": "Categories"}]})
 

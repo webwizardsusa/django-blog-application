@@ -1,30 +1,37 @@
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth.models import User, Group
+from django.db.models import Q
 from .forms import UserForm, UserUpdateForm, ProfileForm
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 
 def user_list(request):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        users = User.objects.filter(groups=2) 
         draw = int(request.GET.get('draw', 1)) 
         start = int(request.GET.get('start', 0))  
         length = int(request.GET.get('length', 10))  
-        paginated_users = users[start:start+length]
+        search_value = request.GET.get("search[value]", "").strip() 
+
+        users = User.objects.filter(groups=2)
+        if search_value:
+            users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
+        records_total = users.count()
+        users = users[start:start+length]
 
         data = []
-        for user in paginated_users:
-            user_data = {
+        for user in users:
+            data.append({
                 "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "status": f'<span class="badge bg-success">Active</span>' if user.is_active else f'<span class="badge bg-danger">In Active</span>',
-                "edit_url": reverse("user:user_edit", kwargs={"pk": user.id}),
-                "delete_url": reverse("user:user_delete", kwargs={"pk": user.id}),
-            }
-            data.append(user_data)
+                "actions": f"""
+                    <a href='{reverse("user:user_edit", kwargs={"pk": user.id})}' class='btn btn-sm btn-warning'>Edit</a>
+                    <a href='{reverse("user:user_delete", kwargs={"pk": user.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
+                """
+            })
 
         return JsonResponse({"draw": draw, "recordsTotal": users.count(), "recordsFiltered": users.count(), "data": data,}, safe=False)
         
