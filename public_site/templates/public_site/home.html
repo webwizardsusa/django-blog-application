@@ -34,12 +34,12 @@
 
                 <!-- Author -->
                 <div class="mt-4 flex items-center sm:mt-8">
-                    <a href="{% url 'blog_author' user_id=featured_blog.author.id %}" class="h-10 w-10 animate-pulse rounded-xl bg-gray-50">
+                    <a href="{% url 'blog_author' username=featured_blog.author.username %}" class="h-10 w-10 animate-pulse rounded-xl bg-gray-50">
                         <img data-src="{% if featured_blog.author.profile.image %}{{ featured_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                             class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                     </a>
                     <div class="ml-3">
-                        <a href="{% url 'blog_author' user_id=featured_blog.author.id %}" class="text-sm font-medium text-gray-800 hover:underline">
+                        <a href="{% url 'blog_author' username=featured_blog.author.username %}" class="text-sm font-medium text-gray-800 hover:underline">
                             {{ featured_blog.author.get_full_name}}
                         </a>
                         <p class="text-sm text-gray-500">
@@ -89,13 +89,13 @@
                         <div class="mt-4 flex items-center justify-between">
                             <!-- Author meta -->
                             <div class="flex items-center justify-center">
-                                <a href="{% url 'blog_author' user_id=blog.author.id %}" class="mr-3 animate-pulse rounded-lg bg-gray-50">
+                                <a href="{% url 'blog_author' username=blog.author.username %}" class="mr-3 animate-pulse rounded-lg bg-gray-50">
                                     <img class="lazy h-6 w-6 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out"
                                         data-src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="Author 01" />
                                 </a>
                                 <div class="text-sm">
                                     <span class="text-gray-500">By </span>
-                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
+                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
                                     <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date:'M d, Y' }}</span>
                                 </div>
                             </div>
@@ -192,12 +192,12 @@
 
                         <!-- Author -->
                         <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="{% url 'blog_author' user_id=latest_blog.author.id %}" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
+                            <a href="{% url 'blog_author' username=latest_blog.author.username %}" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
                                 <img data-src="{% if latest_blog.author.profile.image %}{{ latest_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                                     class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                             </a>
                             <div class="ml-3">
-                                <a href="{% url 'blog_author' user_id=latest_blog.author.id %}"
+                                <a href="{% url 'blog_author' username=latest_blog.author.username %}"
                                     class="relative text-sm font-medium text-gray-700 hover:underline">
                                     {{ latest_blog.author.get_full_name }}
                                 </a>
@@ -252,7 +252,7 @@
                                         <div class="text-sm">
                                             <span class="text-gray-500">By </span>
                                             <a class="font-medium text-gray-700 hover:underline"
-                                                href="{% url 'blog_author' user_id=blog.author.id %}">{{ blog.author.get_full_name }}</a>
+                                                href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
                                         </div>
                                     </div>
                                 </div>

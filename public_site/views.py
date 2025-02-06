@@ -60,8 +60,8 @@ def blog_category(request, slug):
     }
     return render(request, 'public_site/blog_category.html', context)
 
-def blog_author(request, user_id):
-    author = get_object_or_404(User, pk=user_id)
+def blog_author(request, username):
+    author = get_object_or_404(User, username=username)
     blogs = Blog.objects.filter(author=author, is_published=True).select_related("category").prefetch_related("tags").order_by("-created_at")
     page_obj = paginate_queryset(request, blogs, 10)
     recent_blogs = blogs[:4]

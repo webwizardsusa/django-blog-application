@@ -1,28 +1,42 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.contrib import messages
 from .models import Blog
 from web_admin.category.models import Category
 from .forms import BlogForm
 
 def blog_list(request):
-    blogs = Blog.objects.all()
     categories = Category.objects.all()
+    return render(request, 'blog/list.html', {"categories": categories})
+
+def blog_list_json(request):
+    blogs = Blog.objects.select_related("category", "author").all()
 
     category_id = request.GET.get("category")
     if category_id:
         blogs = blogs.filter(category_id=category_id)
 
-    context = {
-        "blogs": blogs,
-        "categories": categories,
-        "breadcrumb_title": "Blogs",
-        "breadcrumbs": [
-            {"name": "Blogs"}
-        ]
-    }
+    paginator = Paginator(blogs, request.GET.get("length", 10))
+    page_number = (int(request.GET.get("start", 0)) // paginator.per_page) + 1
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'blog/list.html', context)
+    data = [
+        {
+            "title": blog.title,
+            "category": blog.category.name,
+            "image": blog.image.url if blog.image else None,
+            "author": blog.author.username,
+            "status": "Published" if blog.is_published else "Draft",
+            "created_at": blog.created_at.strftime("%Y-%m-%d %H:%M"),
+            "edit_url": reverse("blog:blog_edit", kwargs={"pk": blog.pk}),
+            "delete_url": reverse("blog:blog_delete", kwargs={"pk": blog.pk}),
+        }
+        for blog in page_obj.object_list
+    ]
+
+    return JsonResponse({"draw": int(request.GET.get("draw", 1)), "recordsTotal": blogs.count(), "recordsFiltered": paginator.count, "data": data,})
 
 def blog_create(request):
     form = BlogForm(request.POST or None, request.FILES or None)
