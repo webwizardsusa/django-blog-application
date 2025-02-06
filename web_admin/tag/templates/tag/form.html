@@ -6,7 +6,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{% if tag %}Edit{% else %}Create{% endif %} Tag</h5>
+                <h5>{% if module %}Edit{% else %}Create{% endif %} Tag</h5>
             </div>
             <div class="card-body">
                 <form method="post">
@@ -19,7 +19,7 @@
                         {% endif %}
                     </div>
 
-                    <button type="submit" class="btn btn-primary">{% if tag %} Update {% else %} Create {% endif %}</button>
+                    <button type="submit" class="btn btn-primary">{% if module %} Update {% else %} Create {% endif %}</button>
                     <a href="{% url 'tag:tag_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>

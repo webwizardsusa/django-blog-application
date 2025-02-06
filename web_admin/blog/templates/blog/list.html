@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_css %}
 <!-- [Page specific CSS] start -->
@@ -74,7 +75,7 @@
                                     <span class="badge bg-secondary">Draft</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ blog.created_at }}</td>
+                                <td>{{ blog.created_at|date_format }}</td>
                                 <td>
                                     <a href="{% url 'blog:blog_edit' blog.id %}" class="btn btn-sm btn-warning">Edit</a>
                                     <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-sm btn-danger"
