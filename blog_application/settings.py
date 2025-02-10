@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web_admin',
     'web_admin.authentication',
+    'web_admin.myaccount',
     'web_admin.category',
     'web_admin.blog',
     'web_admin.tag',
