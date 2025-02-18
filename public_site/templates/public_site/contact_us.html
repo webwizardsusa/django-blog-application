@@ -42,7 +42,14 @@
             </h3>
 
             <div class="relative mt-10">
-
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 <!-- Contact Form -->
                 <form method="post">
@@ -64,8 +71,16 @@
                                 <div class="text-danger">{{ form.last_name.errors }}</div>
                             {% endif %}
                         </div>
+
+                        <div class="mb-3 col-6">
+                            <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
     
-                        <div class="mb-3">
+                        <div class="mb-3 col-6">
                             <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
                             {{ form.phone }}
                             {% if form.phone.errors %}

@@ -6,10 +6,11 @@ import re
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['first_name', 'last_name', 'phone', 'subject', 'message']
+        fields = ['first_name', 'last_name', 'phone', 'email', 'subject', 'message']
         widgets = {
             "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name"}),
             "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Last Name"}),
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter Your Email"}),
             "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Phone Number"}),
             "subject": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Subject"}),
             "message": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter Message"}),
@@ -40,3 +41,9 @@ class ContactForm(forms.ModelForm):
     #     if len(message) < 100:
     #         raise forms.ValidationError("Please write message minimum 100 characters")
     #     return message
+    
+    # def clean_email(self):
+    #     email = self.cleaned_data.get("email")
+    #     if self.instance.pk:
+    #         qs = qs.exclude(pk=self.instance.pk)
+    #     return email

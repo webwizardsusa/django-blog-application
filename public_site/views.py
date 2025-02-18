@@ -1,9 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from web_admin.blog.models import Blog, Category, Tag, User
 from django.contrib.auth.models import Group 
 from django.core.paginator import Paginator
 from public_site.contact.forms import ContactForm
 from django.contrib import messages
+from public_site.tasks import send_contact_email_task
+from django.core.mail import send_mail
+from blog_application import settings
+from django.core.mail import EmailMessage
 
 def paginate_queryset(request, queryset, per_page):
     paginator = Paginator(queryset, per_page)
@@ -125,7 +129,19 @@ def contact_us(request):
             context = { 
                 **get_common_context(),
             }
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+            from_email = request.POST.get('email')
+            recipient_list = [settings.DEFAULT_FROM_EMAIL]
+            # Call the Celery task to send the email asynchronously
+            send_contact_email_task.delay(subject, message, from_email, recipient_list)
+            # send_mail(subject, message, from_email, recipient_list)
+            # email = EmailMessage(subject, message, from_email, recipient_list)
+            # email.content_subtype = 'html'  # Important for HTML emails
+            # email.send()
+    
             messages.success(request, "Thanks for Contact Us.")
+            return redirect('contact_us')
         
     context = {
         "form":form,   
