@@ -1,0 +1,98 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12"> 
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h5>Edit Profile</h5>
+                    <a href="{% url 'web_admin_dashboard' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="update_profile" value="1">
+                
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="text-danger">{{ form.first_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="text-danger">{{ form.last_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-danger">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Change Password</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="change_password" value="1">
+                
+                    <div class="mb-3">
+                        <label class="form-label" for="id_old_password">Old Password</label>
+                        <input type="password" class="form-control" id="id_old_password" name="old_password" placeholder="Enter current password">
+                        {% if password_form.old_password.errors %}
+                            <div class="text-danger">{{ password_form.old_password.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label" for="id_new_password1">New Password</label>
+                        <input type="password" class="form-control" id="id_new_password1" name="new_password1" placeholder="Enter new password">
+                        {% if password_form.new_password1.errors %}
+                            <div class="text-danger">{{ password_form.new_password1.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label" for="id_new_password2">Confirm New Password</label>
+                        <input type="password" class="form-control" id="id_new_password2" name="new_password2" placeholder="Confirm new password">
+                        {% if password_form.new_password2.errors %}
+                            <div class="text-danger">{{ password_form.new_password2.errors }}</div>
+                        {% endif %}
+                    </div>                    
+                
+                    <button type="submit" class="btn btn-danger">Change Password</button>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

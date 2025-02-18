@@ -81,6 +81,11 @@ def user_edit(request, pk):
 
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
+
+    if user.blogs.exists(): 
+        messages.error(request, "Cannot delete this user as they have associated blogs. Please inactivate the user instead.")
+
+        return redirect("user:user_list")
     user.delete()
     messages.success(request, "User deleted successfully.")
 

@@ -18,7 +18,7 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='blogs')
     content = models.TextField()
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blogs')
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
