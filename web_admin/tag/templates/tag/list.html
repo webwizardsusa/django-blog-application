@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_css %}
 <!-- [Page specific CSS] start -->
@@ -29,11 +30,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for tag in tags %}
+                            {% for tag in results %}
                             <tr>
                                 <td>{{ tag.name }}</td>
                                 <td>{{ tag.blogs.count }}</td>
-                                <td>{{ tag.get_created_at }}</td>
+                                <td>{{ tag.created_at|date_format }}</td>
                                 <td>
                                     <a href="{% url 'tag:tag_edit' tag.id %}" class="btn btn-sm btn-warning">Edit</a>  
                                     <a href="{% url 'tag:tag_delete' tag.id %}" class="btn btn-sm btn-danger"
