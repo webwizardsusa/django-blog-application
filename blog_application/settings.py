@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'web_admin.tag',
     'web_admin.user',
     'public_site',
+    'public_site.contact'
 ]
 
 MIDDLEWARE = [

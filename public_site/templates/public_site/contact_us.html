@@ -42,104 +42,57 @@
             </h3>
 
             <div class="relative mt-10">
-            <!-- Contact Channels -->
-            <div class="grid gap-12 sm:grid-cols-2">
-                <!-- 1st Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Advertise
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Emily Bell</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >advertise@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
 
-                <!-- 2nd Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Press
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Jorge Moreno</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >press@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
 
-                <!-- 3rd Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Careers
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Brandon Marshal</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >careers@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
+                <!-- Contact Form -->
+                <form method="post">
+                    <div class="row">
 
-                <!-- 4th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Reuse Permissions
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Crystal Anderson</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >reprint@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
+                        {% csrf_token %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+    
+                        <div class="mb-3 col-6">
+                            <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="text-danger">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>                    
+    
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.subject.id_for_label }}">Subject</label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}
+                                <div class="text-danger">{{ form.subject.errors }}</div>
+                            {% endif %}
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.message.id_for_label }}">Message</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <div class="text-danger">{{ form.message.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Create </button>
+                    </div>
+                </form>
 
-                <!-- 5th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Letters to the Editor
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Jack Gates</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >editors@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
-
-                <!-- 6th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Pitches
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Henry Cejudo</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >pitches@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
-            </div>
 
             <!-- General contact email -->
             <p class="mt-10 text-md text-gray-500 sm:mt-12">

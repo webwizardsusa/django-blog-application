@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from web_admin.blog.models import Blog, Category, Tag, User
 from django.contrib.auth.models import Group 
 from django.core.paginator import Paginator
+from public_site.contact.forms import ContactForm
+from django.contrib import messages
 
 def paginate_queryset(request, queryset, per_page):
     paginator = Paginator(queryset, per_page)
@@ -115,7 +117,18 @@ def about_us(request):
     return render(request, 'public_site/about_us.html', context)
 
 def contact_us(request):
-    context = {   
+    form = ContactForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            
+            context = { 
+                **get_common_context(),
+            }
+            messages.success(request, "Thanks for Contact Us.")
+        
+    context = {
+        "form":form,   
         **get_common_context(),
     }
     return render(request, 'public_site/contact_us.html', context)
