@@ -1,20 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-from .models import Blog
+from .models import Blog, Tag
 from web_admin.category.models import Category
 from .forms import BlogForm
+from django.contrib.auth.models import User
 
 def blog_list(request):
     blogs = Blog.objects.all()
     categories = Category.objects.all()
+    users = User.objects.all()
+    tags = Tag.objects.all()
 
     category_id = request.GET.get("category")
     if category_id:
         blogs = blogs.filter(category_id=category_id)
+        
+    author_id = request.GET.get("author")
+    if author_id:
+        blogs = blogs.filter(author_id=author_id)
+        
+    tag_id = request.GET.get("tag")
+    if tag_id:
+        blogs = blogs.filter(tags__id=tag_id)
 
     context = {
         "blogs": blogs,
+        "users":users,
+        "tags":tags,
         "categories": categories,
         "breadcrumb_title": "Blogs",
         "breadcrumbs": [
