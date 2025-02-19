@@ -1,21 +1,41 @@
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth.models import User, Group
+from django.db.models import Q
 from .forms import UserForm, UserUpdateForm, ProfileForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 
 def user_list(request):
-    users = User.objects.all().filter(groups=2)
-    context = {
-        "users": users,
-        "breadcrumb_title": "Users",
-        "breadcrumbs": [
-            {"name": "Users"}
-        ]
-    }
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        draw = int(request.GET.get('draw', 1)) 
+        start = int(request.GET.get('start', 0))  
+        length = int(request.GET.get('length', 10))  
+        search_value = request.GET.get("search[value]", "").strip() 
 
-    return render(request, 'user/list.html', {'context':context})
+        users = User.objects.filter(groups=2)
+        if search_value:
+            users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
+        records_total = users.count()
+        users = users[start:start+length]
+
+        data = []
+        for user in users:
+            data.append({
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "status": f'<span class="badge bg-success">Active</span>' if user.is_active else f'<span class="badge bg-danger">In Active</span>',
+                "actions": f"""
+                    <a href='{reverse("user:user_edit", kwargs={"pk": user.id})}' class='btn btn-sm btn-warning'>Edit</a>
+                    <a href='{reverse("user:user_delete", kwargs={"pk": user.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
+                """
+            })
+
+        return JsonResponse({"draw": draw, "recordsTotal": users.count(), "recordsFiltered": users.count(), "data": data,}, safe=False)
+        
+    return render(request, "user/list.html", {"breadcrumb_title": "Users Management","breadcrumbs": [{"name": "Users"}]})
 
 def user_create(request):
     form = UserForm(request.POST or None, request.FILES or None)
