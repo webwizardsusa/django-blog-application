@@ -9,4 +9,5 @@ urlpatterns = [
     path('tag/', include('web_admin.tag.urls', namespace='tag')),
     path('user/', include('web_admin.user.urls', namespace='user')),
     path('myaccount/', include('web_admin.myaccount.urls', namespace='myaccount')),
+    path('news_letter/', include('web_admin.news_letter.urls', namespace='news_letter')),
 ]

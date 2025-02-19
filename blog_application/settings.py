@@ -48,7 +48,12 @@ INSTALLED_APPS = [
     'web_admin.tag',
     'web_admin.user',
     'public_site',
+    'web_admin.news_letter',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'web_admin.middleware.role_based_middleware.RoleBasedAccessMiddleware',
+    'web_admin.middleware.ignore_cdn_rum_middleware.IgnoreCdnRumMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_application.urls'
@@ -141,3 +147,18 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CKEDITOR_UPLOAD_PATH = "media/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'extraPlugins': ','.join([
+            'codesnippet',  # For code formatting
+            'image2',  # Advanced image handling
+        ]),
+    },
+}
