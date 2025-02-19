@@ -38,9 +38,7 @@
 {% endblock %}
 
 {% block page_js %}
-<script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
-<script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
-<script src="{% static 'js/datatable.js' %}"></script>
+{% include 'layout/partials/_scripts.html' %}
 
 <script>
   initializeDataTable('#category-table', "{% url 'category:category_list' %}", [

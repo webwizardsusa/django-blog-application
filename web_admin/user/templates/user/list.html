@@ -40,9 +40,7 @@
 
 {% block page_js %}
 <!-- [Page Specific JS] start -->
-<script src="{% static 'js/plugins/dataTables.min.js' %}"></script>
-<script src="{% static 'js/plugins/dataTables.bootstrap5.min.js' %}"></script>
-<script src="{% static 'js/datatable.js' %}"></script>
+{% include 'layout/partials/_scripts.html' %}
 <script>
     initializeDataTable('#user-table', "{% url 'user:user_list' %}", [
         { "data": "username" },
