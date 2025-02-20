@@ -22,7 +22,7 @@ def category_list(request):
             2: "created_at"
         }
         
-        order_column = column_mapping.get(order_column_index, "title")
+        order_column = column_mapping.get(order_column_index, "name")
         if order_dir == "desc":
             order_column = f"-{order_column}"
             
