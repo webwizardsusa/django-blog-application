@@ -6,7 +6,6 @@ from django.contrib import messages
 from .models import Blog
 from web_admin.category.models import Category
 from .forms import BlogForm
-from django.db.models import Q
 
 def blog_list(request):
     categories = Category.objects.all()
@@ -14,22 +13,9 @@ def blog_list(request):
 
 def blog_list_json(request):
     blogs = Blog.objects.select_related("category", "author").all()
-
-    category_id = request.GET.get("category")
-    if category_id:
-        blogs = blogs.filter(category_id=category_id)
-
-    search_value = request.GET.get("search[value]", "").strip()
-    if search_value:
-        blogs = blogs.filter(
-            Q(title__icontains=search_value) |
-            Q(category__name__icontains=search_value) |
-            Q(author__username__icontains=search_value)
-        )
-
     order_column_index = int(request.GET.get('order[0][column]', 0))
-    order_dir = request.GET.get('order[0][dir]', 'asc')
-
+    order_dir = request.GET.get('order[0][dir]', 'desc')
+    
     column_mapping = {
         0: "title",
         1: "category__name",
@@ -38,27 +24,28 @@ def blog_list_json(request):
         4: "is_published",
         5: "created_at",
     }
-
+        
     order_column = column_mapping.get(order_column_index, "title")
     if order_dir == "desc":
         order_column = f"-{order_column}"
-
+            
     blogs = blogs.order_by(order_column)
+            
+            
+    category_id = request.GET.get("category")
+    if category_id:
+        blogs = blogs.filter(category_id=category_id)
 
-    # Pagination
-    length = int(request.GET.get("length", 10))
-    start = int(request.GET.get("start", 0))
-    paginator = Paginator(blogs, length)
-    page_number = (start // length) + 1
+    paginator = Paginator(blogs, request.GET.get("length", 10))
+    page_number = (int(request.GET.get("start", 0)) // paginator.per_page) + 1
     page_obj = paginator.get_page(page_number)
 
-    # Preparing JSON response data
     data = [
         {
             "title": blog.title,
-            "category": blog.category.name if blog.category else "Uncategorized",
+            "category": blog.category.name,
             "image": blog.image.url if blog.image else None,
-            "author": blog.author.username if blog.author else "Unknown",
+            "author": blog.author.username,
             "status": "Published" if blog.is_published else "Draft",
             "created_at": blog.created_at.strftime("%Y-%m-%d %H:%M"),
             "edit_url": reverse("blog:blog_edit", kwargs={"pk": blog.pk}),
@@ -67,13 +54,8 @@ def blog_list_json(request):
         for blog in page_obj.object_list
     ]
 
-    return JsonResponse({
-        "draw": int(request.GET.get("draw", 1)),
-        "recordsTotal": Blog.objects.count(),
-        "recordsFiltered": blogs.count(),
-        "data": data,
-    })
-    
+    return JsonResponse({"draw": int(request.GET.get("draw", 1)), "recordsTotal": blogs.count(), "recordsFiltered": paginator.count, "data": data,})
+
 def blog_create(request):
     form = BlogForm(request.POST or None, request.FILES or None)
 
