@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from web_admin.blog.models import Blog, Category, Tag, User
 from django.contrib.auth.models import Group 
 from django.core.paginator import Paginator
+from public_site.subscriber.forms import SubscriberForm
+from django.contrib import messages
 
 def paginate_queryset(request, queryset, per_page):
     paginator = Paginator(queryset, per_page)
@@ -28,7 +30,16 @@ def home(request):
         for category in latest_blog_categories
     ]
 
+    form = SubscriberForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thanks for Subscribe.")
+            return redirect('/#subscription_form') 
+        
     context = {
+        "form":form,
         "featured_blog": featured_blog,
         "recent_blogs": recent_blogs,
         "latest_blogs_by_category": [blog for blog in latest_blogs_by_category if blog],

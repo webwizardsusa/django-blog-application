@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'web_admin.news_letter',
     'ckeditor',
     'ckeditor_uploader',
+    'public_site.subscriber'
 ]
 
 
