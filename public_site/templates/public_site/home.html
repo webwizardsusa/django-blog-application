@@ -308,17 +308,17 @@
 
             <!-- Newsletter signup container -->
             <div class="mt-8 flex w-full flex-col items-center sm:mt-10">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <div class="relative h-14 w-full max-w-xl rounded-3xl">
                     <!-- Newsletter signup form -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <form id="subscription_form" method="post" action=''
+                    <form id="subscription_form" method="post"
                         class="group rounded-3xl border border-gray-300/70 bg-transparent transition duration-300 ease-in-out">
                         {% csrf_token %}
                         <!--<input type="email"
