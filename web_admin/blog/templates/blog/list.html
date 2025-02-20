@@ -75,6 +75,8 @@
             {"data": "category"},
             {
                 "data": "image",
+                "orderable": false,
+                "searchable": false,
                 "render": function (data) {
                     return data ? `<img src="${data}" width="100">` : `<span class="text-muted">No Image</span>`;
                 }
@@ -91,6 +93,8 @@
             {"data": "created_at"},
             {
                 "data": null,
+                "orderable": false,
+                "searchable": false,
                 "render": function (data) {
                     return `
                         <a href="${data.edit_url}" class="btn btn-sm btn-warning">Edit</a>

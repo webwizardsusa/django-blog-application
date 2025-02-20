@@ -13,7 +13,23 @@ def user_list(request):
         length = int(request.GET.get('length', 10))  
         search_value = request.GET.get("search[value]", "").strip() 
 
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_dir = request.GET.get('order[0][dir]', 'desc')
+
+        column_mapping = {
+            0: "username",
+            1: "email",
+            2: "first_name",
+            3: "last_name",
+            4: "is_active"
+        }
+
+        order_column = column_mapping.get(order_column_index, "username")
+        if order_dir == "desc":
+            order_column = f"-{order_column}"
+        
         users = User.objects.filter(groups=2)
+        users = users.order_by(order_column)
         if search_value:
             users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
         records_total = users.count()

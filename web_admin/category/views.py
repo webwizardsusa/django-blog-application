@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .models import Category
 from .forms import CategoryForm
+from django.db.models import Count
 
 def category_list(request):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -11,7 +12,22 @@ def category_list(request):
         length = int(request.GET.get('length', 10))
         search_value = request.GET.get('search[value]', '') 
 
-        categories = Category.objects.all()
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_dir = request.GET.get('order[0][dir]', 'desc')
+    
+        column_mapping = {
+            0: "name",
+            1: "total_blogs",
+            2: "image",
+            2: "created_at"
+        }
+        
+        order_column = column_mapping.get(order_column_index, "title")
+        if order_dir == "desc":
+            order_column = f"-{order_column}"
+            
+        categories = Category.objects.annotate(total_blogs=Count("blogs"))
+        categories = categories.order_by(order_column)
         if search_value:
             categories = categories.filter(name__icontains=search_value)
         records_total = categories.count()
