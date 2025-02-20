@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .models import Tag
 from .forms import TagForm
+from django.db.models import Count
 
 # Create your views here.
 def tag_list(request):
@@ -13,7 +14,22 @@ def tag_list(request):
         length = int(request.GET.get("length", 10))  
         search_value = request.GET.get("search[value]", "").strip()  
 
-        tags = Tag.objects.all()
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_dir = request.GET.get('order[0][dir]', 'desc')
+    
+        column_mapping = {
+            0: "name",
+            1: "total_blogs",
+            2: "created_at",
+        }
+        
+        order_column = column_mapping.get(order_column_index, "title")
+        if order_dir == "desc":
+            order_column = f"-{order_column}"
+
+        tags = Tag.objects.annotate(total_blogs=Count("blogs"))
+        tags = tags.order_by(order_column)
+        
         if search_value:
             tags = tags.filter(name__icontains=search_value)
         records_total = tags.count()

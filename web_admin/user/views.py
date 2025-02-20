@@ -7,18 +7,49 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 
 def user_list(request):
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        draw = int(request.GET.get('draw', 1)) 
-        start = int(request.GET.get('start', 0))  
-        length = int(request.GET.get('length', 10))  
-        search_value = request.GET.get("search[value]", "").strip() 
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':  # AJAX request
+        draw = int(request.GET.get('draw', 1))
+        start = int(request.GET.get('start', 0))
+        length = int(request.GET.get('length', 10))
+        search_value = request.GET.get("search[value]", "").strip()
 
-        users = User.objects.filter(groups=2)
+        # Sorting
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_dir = request.GET.get('order[0][dir]', 'desc')
+
+        column_mapping = {
+            0: "username",
+            1: "email",
+            2: "first_name",
+            3: "last_name",
+            4: "is_active"
+        }
+
+        order_column = column_mapping.get(order_column_index, "username")
+        if order_dir == "desc":
+            order_column = f"-{order_column}"
+
+        # Filtering (Search)
+        users = User.objects.all()
         if search_value:
-            users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
-        records_total = users.count()
-        users = users[start:start+length]
+            users = users.filter(
+                Q(username__icontains=search_value) |
+                Q(email__icontains=search_value) |
+                Q(first_name__icontains=search_value) |
+                Q(last_name__icontains=search_value)
+            )
 
+        # Sorting
+        users = users.order_by(order_column)
+
+        # Count records
+        records_total = User.objects.count()
+        records_filtered = users.count()
+
+        # Pagination
+        users = users[start:start + length]
+
+        # Prepare JSON response
         data = []
         for user in users:
             data.append({
@@ -26,17 +57,25 @@ def user_list(request):
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                "status": f'<span class="badge bg-success">Active</span>' if user.is_active else f'<span class="badge bg-danger">In Active</span>',
+                "status": f'<span class="badge bg-success">Active</span>' if user.is_active else f'<span class="badge bg-danger">Inactive</span>',
                 "actions": f"""
                     <a href='{reverse("user:user_edit", kwargs={"pk": user.id})}' class='btn btn-sm btn-warning'>Edit</a>
                     <a href='{reverse("user:user_delete", kwargs={"pk": user.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
                 """
             })
 
-        return JsonResponse({"draw": draw, "recordsTotal": users.count(), "recordsFiltered": users.count(), "data": data,}, safe=False)
-        
-    return render(request, "user/list.html", {"breadcrumb_title": "Users Management","breadcrumbs": [{"name": "Users"}]})
+        return JsonResponse({
+            "draw": draw,
+            "recordsTotal": records_total,
+            "recordsFiltered": records_filtered,
+            "data": data,
+        }, safe=False)
 
+    return render(request, "user/list.html", {
+        "breadcrumb_title": "Users Management",
+        "breadcrumbs": [{"name": "Users"}]
+    })
+    
 def user_create(request):
     form = UserForm(request.POST or None, request.FILES or None)
     profile_form = ProfileForm(request.POST or None, request.FILES or None)
