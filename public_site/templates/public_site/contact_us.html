@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
     <!-- Contact Header -->
     <section class="bg-gray-50 py-12 sm:py-16 md:py-20 lg:py-24">
         <div
@@ -44,69 +45,86 @@
             <div class="relative mt-10">
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <div class="p-4 mb-4 rounded-lg shadow-md text-white 
+                            {% if message.tags == 'success' %} bg-green-500 {% elif message.tags == 'error' %} bg-red-500 {% elif message.tags == 'warning' %} bg-yellow-500 {% elif message.tags == 'info' %} bg-blue-500 {% endif %}">
+                            <div class="flex justify-between">
+                                <span>{{ message }}</span>
+                                <button type="button" class="text-white hover:text-gray-200" onclick="this.parentElement.parentElement.remove();">
+                                    &times;
+                                </button>
+                            </div>
                         </div>
                     {% endfor %}
                 {% endif %}
 
-                <!-- Contact Form -->
-                <form method="post">
-                    <div class="row">
 
-                        {% csrf_token %}
-                        <div class="mb-3 col-6">
-                            <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                <!-- Contact Form -->
+                <form method="post" id="contact_form" class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- First Name -->
+                        <div>
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
                             {{ form.first_name }}
                             {% if form.first_name.errors %}
-                                <div class="text-danger">{{ form.first_name.errors }}</div>
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.first_name.errors }}</div>
                             {% endif %}
                         </div>
-    
-                        <div class="mb-3 col-6">
-                            <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                
+                        <!-- Last Name -->
+                        <div>
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
                             {{ form.last_name }}
                             {% if form.last_name.errors %}
-                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.last_name.errors }}</div>
                             {% endif %}
                         </div>
-
-                        <div class="mb-3 col-6">
-                            <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                
+                        <!-- Email -->
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
                             {{ form.email }}
                             {% if form.email.errors %}
-                                <div class="text-danger">{{ form.email.errors }}</div>
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.email.errors }}</div>
                             {% endif %}
                         </div>
-    
-                        <div class="mb-3 col-6">
-                            <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
+                
+                        <!-- Phone -->
+                        <div>
+                            <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone</label>
                             {{ form.phone }}
                             {% if form.phone.errors %}
-                                <div class="text-danger">{{ form.phone.errors }}</div>
-                            {% endif %}
-                        </div>                    
-    
-                        <div class="mb-3">
-                            <label class="form-label" for="{{ form.subject.id_for_label }}">Subject</label>
-                            {{ form.subject }}
-                            {% if form.subject.errors %}
-                                <div class="text-danger">{{ form.subject.errors }}</div>
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.phone.errors }}</div>
                             {% endif %}
                         </div>
-    
-                        <div class="mb-3">
-                            <label class="form-label" for="{{ form.message.id_for_label }}">Message</label>
-                            {{ form.message }}
-                            {% if form.message.errors %}
-                                <div class="text-danger">{{ form.message.errors }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary"><i class="fa-regular fa-paper-plane"></i>  Send Email </button>
+                    </div>
+                
+                    <!-- Subject -->
+                    <div class="mt-4">
+                        <label for="{{ form.subject.id_for_label }}" class="block text-sm font-medium text-gray-700">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.subject.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <!-- Message -->
+                    <div class="mt-4">
+                        <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-gray-700">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.message.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" 
+                            class="px-4 py-2 text-black bg-blue-950 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <i class="fa-regular fa-paper-plane"></i> Send Email
+                        </button>
                     </div>
                 </form>
+                
 
 
             <!-- General contact email -->

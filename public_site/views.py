@@ -141,7 +141,7 @@ def contact_us(request):
             # email.send()
     
             messages.success(request, "Thanks for Contact Us.")
-            return redirect('contact_us')
+            return redirect('/contact-us/#contact_form')
         
     context = {
         "form":form,   

@@ -8,12 +8,12 @@ class ContactForm(forms.ModelForm):
         model = Contact
         fields = ['first_name', 'last_name', 'phone', 'email', 'subject', 'message']
         widgets = {
-            "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Last Name"}),
-            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter Your Email"}),
-            "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Phone Number"}),
-            "subject": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Subject"}),
-            "message": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter Message"}),
+            "first_name": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "placeholder": "Enter First Name"}),
+            "last_name": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "placeholder": "Enter Last Name"}),
+            "email": forms.EmailInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "placeholder": "Enter Your Email"}),
+            "phone": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "placeholder": "Enter Phone Number"}),
+            "subject": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "placeholder": "Enter Subject"}),
+            "message": forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", "rows": 5, "placeholder": "Enter Message"}),
         }
         
     def clean_phone(self):
