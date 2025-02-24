@@ -7,15 +7,20 @@ from .models import Blog, Tag
 from web_admin.category.models import Category
 from .forms import BlogForm
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 def blog_list(request):
     categories = Category.objects.all()
-    return render(request, 'blog/list.html', {"categories": categories})
+    users = User.objects.all()
+    tags = Tag.objects.all()
+    return render(request, 'blog/list.html', {"categories": categories, "users":users, "tags":tags})
 
 def blog_list_json(request):
     blogs = Blog.objects.select_related("category", "author").all()
     order_column_index = int(request.GET.get('order[0][column]', 0))
     order_dir = request.GET.get('order[0][dir]', 'desc')
+    search_value = request.GET.get("search[value]", "").strip() 
+
     
     column_mapping = {
         0: "title",
@@ -45,10 +50,15 @@ def blog_list_json(request):
     if tag_id:
         blogs = blogs.filter(tags__id=tag_id)
 
+    if search_value:
+        blogs = blogs.filter(Q(title__icontains=search_value) | Q(category__name__icontains=search_value) | Q(is_published__icontains=search_value) | Q(author__username__icontains=search_value) )
+        
     paginator = Paginator(blogs, request.GET.get("length", 10))
     page_number = (int(request.GET.get("start", 0)) // paginator.per_page) + 1
     page_obj = paginator.get_page(page_number)
 
+    
+        
     data = [
         {
             "title": blog.title,
