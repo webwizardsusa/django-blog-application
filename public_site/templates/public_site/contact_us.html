@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
     <!-- Contact Header -->
     <section class="bg-gray-50 py-12 sm:py-16 md:py-20 lg:py-24">
         <div
@@ -42,104 +43,89 @@
             </h3>
 
             <div class="relative mt-10">
-            <!-- Contact Channels -->
-            <div class="grid gap-12 sm:grid-cols-2">
-                <!-- 1st Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Advertise
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Emily Bell</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >advertise@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="p-4 mb-4 rounded-lg shadow-md text-white 
+                            {% if message.tags == 'success' %} bg-green-500 {% elif message.tags == 'error' %} bg-red-500 {% elif message.tags == 'warning' %} bg-yellow-500 {% elif message.tags == 'info' %} bg-blue-500 {% endif %}">
+                            <div class="flex justify-between">
+                                <span>{{ message }}</span>
+                                <button type="button" class="text-white hover:text-gray-200" onclick="this.parentElement.parentElement.remove();">
+                                    &times;
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
-                <!-- 2nd Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Press
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Jorge Moreno</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >press@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
 
-                <!-- 3rd Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Careers
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Brandon Marshal</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >careers@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
+                <!-- Contact Form -->
+                <form method="post" id="contact_form" class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- First Name -->
+                        <div>
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                
+                        <!-- Last Name -->
+                        <div>
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                
+                        <!-- Email -->
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                
+                        <!-- Phone -->
+                        <div>
+                            <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                
+                    <!-- Subject -->
+                    <div class="mt-4">
+                        <label for="{{ form.subject.id_for_label }}" class="block text-sm font-medium text-gray-700">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.subject.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <!-- Message -->
+                    <div class="mt-4">
+                        <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-gray-700">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div class="text-red-700 transition duration-300 ease-in-out hover:text-red-800 text-sm mt-1">{{ form.message.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" 
+                            class="px-4 py-2 text-black bg-blue-950 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <i class="fa-regular fa-paper-plane"></i> Send Email
+                        </button>
+                    </div>
+                </form>
+                
 
-                <!-- 4th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Reuse Permissions
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Crystal Anderson</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >reprint@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
-
-                <!-- 5th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Letters to the Editor
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Jack Gates</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >editors@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
-
-                <!-- 6th Channel -->
-                <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Pitches
-                </h3>
-                <div class="mt-2 space-y-1 text-md">
-                    <p class="text-gray-500">Henry Cejudo</p>
-                    <a
-                    href="#"
-                    class="text-red-700 transition duration-300 ease-in-out hover:text-red-800"
-                    >pitches@email.com</a
-                    >
-                    <p class="text-gray-500">+1 (800) 123-4567</p>
-                </div>
-                </div>
-            </div>
 
             <!-- General contact email -->
             <p class="mt-10 text-md text-gray-500 sm:mt-12">

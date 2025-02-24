@@ -13,7 +13,25 @@ def blog_list(request):
 
 def blog_list_json(request):
     blogs = Blog.objects.select_related("category", "author").all()
-
+    order_column_index = int(request.GET.get('order[0][column]', 0))
+    order_dir = request.GET.get('order[0][dir]', 'desc')
+    
+    column_mapping = {
+        0: "title",
+        1: "category__name",
+        2: "image",
+        3: "author__username",
+        4: "is_published",
+        5: "created_at",
+    }
+        
+    order_column = column_mapping.get(order_column_index, "title")
+    if order_dir == "desc":
+        order_column = f"-{order_column}"
+            
+    blogs = blogs.order_by(order_column)
+            
+            
     category_id = request.GET.get("category")
     if category_id:
         blogs = blogs.filter(category_id=category_id)

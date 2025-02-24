@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'public_site.subscriber'
+    'public_site.contact'
 ]
 
 
@@ -103,6 +104,23 @@ DATABASES = {
     }
 }
 
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')  # Redis server URL
+CELERY_ACCEPT_CONTENT = [config('CELERY_ACCEPT_CONTENT')]
+CELERY_TASK_SERIALIZER = config('CELERY_TASK_SERIALIZER')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
+CELERY_RESULT_SERIALIZER = config('CELERY_RESULT_SERIALIZER')
+
+
+# Email backend (use this in production)
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+
+# Looking to send emails in production? Check out our Email API/SMTP product!
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS') # Use TLS for secure connection
+EMAIL_PORT = config('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')  # The default from email address
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
