@@ -8,4 +8,5 @@ urlpatterns = [
     path('blog/', include('web_admin.blog.urls', namespace='blog')),
     path('tag/', include('web_admin.tag.urls', namespace='tag')),
     path('user/', include('web_admin.user.urls', namespace='user')),
+    path('myaccount/', include('web_admin.myaccount.urls', namespace='myaccount')),
 ]

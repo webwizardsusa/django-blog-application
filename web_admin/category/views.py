@@ -1,18 +1,54 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
+from django.http import JsonResponse
 from .models import Category
 from .forms import CategoryForm
+from django.db.models import Count
 
 def category_list(request):
-    categories = Category.objects.all()
-    context = {
-        "categories": categories,
-        "breadcrumb_title": "Category Management",
-        "breadcrumbs": [
-            {"name": "Categories"}
-        ]
-    }
-    return render(request, 'list.html', context)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        draw = int(request.GET.get('draw', 1))
+        start = int(request.GET.get('start', 0))
+        length = int(request.GET.get('length', 10))
+        search_value = request.GET.get('search[value]', '') 
+
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_dir = request.GET.get('order[0][dir]', 'desc')
+    
+        column_mapping = {
+            0: "name",
+            1: "total_blogs",
+            2: "image",
+            2: "created_at"
+        }
+        
+        order_column = column_mapping.get(order_column_index, "name")
+        if order_dir == "desc":
+            order_column = f"-{order_column}"
+            
+        categories = Category.objects.annotate(total_blogs=Count("blogs"))
+        categories = categories.order_by(order_column)
+        if search_value:
+            categories = categories.filter(name__icontains=search_value)
+        records_total = categories.count()
+        categories = categories[start:start + length]
+
+        data = []
+        for category in categories:
+            data.append({
+                "name": category.name,
+                "total_blogs": category.blogs.count(),
+                "image": category.image.url if category.image else "",
+                "created_at": category.created_at.strftime("%Y-%m-%d"),
+                "actions": f"""
+                    <a href='{reverse("category:category_edit", kwargs={"pk": category.id})}' class='btn btn-sm btn-warning'>Edit</a>
+                    <a href='{reverse("category:category_delete", kwargs={"pk": category.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
+                """
+            })
+           
+        return JsonResponse({"draw": draw,  "recordsTotal": Category.objects.count(), "recordsFiltered": records_total, "data": data}, safe=False)
+
+    return render(request, "list.html", {"breadcrumb_title": "Category Management","breadcrumbs": [{"name": "Categories"}]})
 
 def category_create(request):
     form = CategoryForm(request.POST or None, request.FILES or None)
