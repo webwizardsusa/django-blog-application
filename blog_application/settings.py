@@ -51,8 +51,10 @@ INSTALLED_APPS = [
     'web_admin.news_letter',
     'ckeditor',
     'ckeditor_uploader',
-    'public_site.subscriber'
-    'public_site.contact'
+    'public_site.subscriber',
+    'public_site.contact',
+    'django_celery_beat',
+    'celery'
 ]
 
 

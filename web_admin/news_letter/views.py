@@ -3,7 +3,6 @@ from django.urls import reverse
 from .models import NewsLetter
 from .forms import NewsLetterForm
 from django.contrib import messages
-from public_site.subscriber.models import Subscriber
 
 # Create your views here.
 def news_letters_list(request):
@@ -22,8 +21,8 @@ def news_letters_list(request):
     return render(request, 'news_letters/list.html', context)
 
 def news_letter_create(request):
-    form = NewsLetterForm(request.POST or None)
-
+    form = NewsLetterForm(request.POST or None) 
+            
     if request.method == "POST":
         if form.is_valid():
             print('Yes1') 
@@ -43,10 +42,3 @@ def news_letter_create(request):
         ]
     }
     return render(request, 'news_letters/form.html', context)
-
-def send_news_letter_emails():
-    news_letter_id = NewsLetter.objects.filter(status=0).values_list('id', flat=True).first()
-    subscribers_email = Subscriber.objects.filter(news_letter_id = news_letter_id, status=0).values_list('email', flat=True)[:10]
-    subscribers_email=list(subscribers_email)
-    Subscriber.objects.filter(email = subscribers_email).update(status=0)
-    

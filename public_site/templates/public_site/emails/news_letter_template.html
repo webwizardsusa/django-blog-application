@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { padding: 20px; background-color: #f4f4f4; }
+        .content { background-color: white; padding: 20px; border-radius: 8px; }
+        .footer { margin-top: 20px; font-size: 12px; color: gray; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <p>{{ newsletter.content|safe }}</p>
+        </div>
+        <div class="footer">
+            <p>Thank you for subscribing!</p>
+        </div>
+    </div>
+</body>
+</html>
