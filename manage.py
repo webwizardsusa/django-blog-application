@@ -9,6 +9,7 @@ def start_background_services():
     """ Start Redis, Celery worker, and Celery Flower when running the Django server """
     subprocess.Popen(["redis-server"])
     subprocess.Popen(["celery", "-A", "blog_application", "worker", "--loglevel=info"])
+    subprocess.Popen(["celery", "-A", "blog_application", "beat", "--loglevel=info"])
     subprocess.Popen(["celery", "-A", "blog_application", "flower"])
 
 
