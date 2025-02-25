@@ -8,7 +8,6 @@ class NewsLetter(models.Model):
     subject = models.TextField(max_length=255)
     content = RichTextField()
     status = models.IntegerField(default=0)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='news_letters')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='news_letters', null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_news_letters')
     created_at = models.DateTimeField(auto_now_add=True)

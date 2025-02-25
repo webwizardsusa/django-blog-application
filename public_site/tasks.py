@@ -30,8 +30,8 @@ def send_news_letter_task():
             }
             html_message = render_to_string("public_site/emails/news_letter_template.html", context)
 
-            # Call the Celery task to send the email asynchronously
-            send_mail(subject, message, from_email, recipient_list, fail_silently=False, html_message=html_message)
+            for email in recipient_list:
+                send_mail(subject, message, from_email, email, fail_silently=False, html_message=html_message)
         else:
             NewsLetter.objects.filter(id=news_letter.id).update(status=1)
             Subscriber.objects.filter(news_letter_id = news_letter.pk).update(status=0)

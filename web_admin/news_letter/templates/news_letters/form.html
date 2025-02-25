@@ -49,13 +49,13 @@
                         {% endif %}
                     </div> {% endcomment %}
 
-                    <div class="mb-3">
+                    {% comment %} <div class="mb-3">
                         <label class="form-label" for="{{ form.group.id_for_label }}">Group</label>
                         {{ form.group }}
                         {% if form.group.errors %}
                             <div class="text-danger">{{ form.group.errors }}</div>
                         {% endif %}
-                    </div>
+                    </div> {% endcomment %}
 
                     {% comment %} <div class="mb-3">
                         <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>

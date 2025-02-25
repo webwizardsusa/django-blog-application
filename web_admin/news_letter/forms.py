@@ -7,12 +7,11 @@ class NewsLetterForm(forms.ModelForm):
     
     class Meta:
         model = NewsLetter
-        fields = ['title', 'subject', 'content', 'group']
+        fields = ['title', 'subject', 'content']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter News Letter title'}),
             'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter News Letter subject'}),
             'content': forms.CharField(widget=CKEditorWidget(attrs={'class': 'form-control', 'rows': 20})),
-            'group': forms.Select(attrs={'class': 'form-control'}),
         }
         
     def __init__(self, *args, **kwargs):
