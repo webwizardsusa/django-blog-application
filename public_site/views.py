@@ -134,8 +134,8 @@ def contact_us(request):
             from_email = request.POST.get('email')
             recipient_list = [settings.DEFAULT_FROM_EMAIL]
             # Call the Celery task to send the email asynchronously
-            send_contact_email_task.delay(subject, message, from_email, recipient_list)
-            # send_mail(subject, message, from_email, recipient_list)
+            # send_contact_email_task.delay(subject, message, from_email, recipient_list)
+            send_mail(subject, message, from_email, recipient_list)
             # email = EmailMessage(subject, message, from_email, recipient_list)
             # email.content_subtype = 'html'  # Important for HTML emails
             # email.send()
