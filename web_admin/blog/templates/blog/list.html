@@ -27,6 +27,26 @@
                         </select>
                     </div>
                     <div class="col-12">
+                        <select name="author" class="form-control"  id="authorFilter">
+                            <option value="">All Authors</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}" {% if request.GET.author == user.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ user.username }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <select name="tag" class="form-control"  id="tagFilter">
+                            <option value="">All Tags</option>
+                            {% for tag in tags %}
+                                <option value="{{ tag.id }}" {% if request.GET.tag == tag.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ tag.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Clear</a>
                     </div>
@@ -68,7 +88,9 @@
 {% include 'layout/partials/_scripts.html' %}
 <script>
     $(document).ready(function() {
-        const category = $('#categoryFilter').val(); 
+        const category = $('#categoryFilter').val();
+        const author = $('#authorFilter').val();
+        const tag = $('#tagFilter').val(); 
 
         initializeDataTable('#dom-jqry', "{% url 'blog:blog_list_json' %}", [
             {"data": "title"},
@@ -102,7 +124,7 @@
                     `;
                 }
             }
-        ], { category: category });  
+        ], { category: category, author: author, tag: tag });  
     });
 </script>
 <!-- [Page Specific JS] end -->
