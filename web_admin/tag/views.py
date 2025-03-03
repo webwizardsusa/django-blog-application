@@ -19,7 +19,7 @@ def tag_list(request):
     
         column_mapping = {
             0: "name",
-            1: "total_blogs",
+            1: "total_posts",
             2: "created_at",
         }
         
@@ -27,7 +27,7 @@ def tag_list(request):
         if order_dir == "desc":
             order_column = f"-{order_column}"
 
-        tags = Tag.objects.annotate(total_blogs=Count("blogs"))
+        tags = Tag.objects.annotate(total_posts=Count("posts"))
         tags = tags.order_by(order_column)
         
         if search_value:
@@ -39,7 +39,7 @@ def tag_list(request):
         for tag in tags:
             data.append({
                 "name": tag.name, 
-                "total_blogs": tag.blogs.count(), 
+                "total_posts": tag.posts.count(), 
                 "created_at": tag.created_at.strftime("%Y-%m-%d"), 
                 "actions": f"""
                     <a href='{reverse("tag:tag_edit", kwargs={"pk": tag.id})}' class='btn btn-sm btn-warning'>Edit</a>
@@ -93,9 +93,9 @@ def tag_edit(request, pk):
 
 def tag_delete(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
-    # Check if the tag has any associated blogs
-    if tag.blogs.exists():  # Using related_name='blogs' from the Blog model
-        messages.error(request, "Cannot delete this tag because it has associated blogs.")
+    # Check if the tag has any associated posts
+    if tag.posts.exists():  # Using related_name='posts' from the Post model
+        messages.error(request, "Cannot delete this tag because it has associated posts.")
 
         return redirect("tag:tag_list")
     tag.delete()

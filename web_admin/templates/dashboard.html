@@ -6,9 +6,9 @@
     <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-primary order-card">
             <div class="card-body">
-                <h6 class="text-white">Total Blogs</h6>
+                <h6 class="text-white">Total Posts</h6>
                 <h2 class="text-end text-white"><i
-                        class="feather icon-file float-start"></i><span>{{ total_blogs }}</span></h2>
+                        class="feather icon-file float-start"></i><span>{{ total_posts }}</span></h2>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
     <div class="col-sm-12">
         <div class="card table-card">
             <div class="card-header">
-                <h5>Recent Blogs</h5>
+                <h5>Recent Posts</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -56,19 +56,19 @@
                             <th>Status</th>
                             <th>Created At</th>
                         </tr>
-                        {% for blog in blogs %}
+                        {% for post in posts %}
                         <tr>
-                            <td><img src="{{ blog.image.url }}" alt="blog img" class="img-fluid rounded" width="50" height="50">
+                            <td><img src="{{ post.image.url }}" alt="post img" class="img-fluid rounded" width="50" height="50">
                             </td>
-                            <td>{{ blog.title | truncatechars:20 }}</td>
-                            <td>{{ blog.category.name }}</td>
-                            <td>{{ blog.author.get_full_name }}</td>
-                            <td> {% if blog.is_published %}
+                            <td>{{ post.title | truncatechars:20 }}</td>
+                            <td>{{ post.category.name }}</td>
+                            <td>{{ post.author.get_full_name }}</td>
+                            <td> {% if post.is_published %}
                                 <span class="badge bg-success">Published</span>
                                 {% else %}
                                 <span class="badge bg-secondary">Draft</span>
                                 {% endif %}</td>
-                            <td>{{ blog.created_at|date:"d/m/Y" }}</td>
+                            <td>{{ post.created_at|date:"d/m/Y" }}</td>
                         </tr>
                         {% endfor %}
                     </table>

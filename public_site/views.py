@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from web_admin.blog.models import Blog, Category, Tag, User
+from web_admin.post.models import Post, Category, Tag, User
 from django.contrib.auth.models import Group 
 from django.core.paginator import Paginator
 from public_site.contact.forms import ContactForm
@@ -21,95 +21,95 @@ def get_common_context():
     }
 
 def home(request):
-    blogs = Blog.objects.filter(is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
-    featured_blog = blogs.first()
-    recent_blogs = blogs[1:6]
+    posts = Post.objects.filter(is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
+    featured_post = posts.first()
+    recent_posts = posts[1:6]
 
     trending_tag = Tag.objects.filter(name="trending").first()
-    trending_blogs = blogs.filter(tags=trending_tag)[:4] if trending_tag else []
+    trending_posts = posts.filter(tags=trending_tag)[:4] if trending_tag else []
 
-    latest_blog_categories = Category.objects.prefetch_related("blogs").all()[:6]
-    latest_blogs_by_category = [
-        category.blogs.filter(is_published=True).order_by('-created_at').first()
-        for category in latest_blog_categories
+    latest_post_categories = Category.objects.prefetch_related("posts").all()[:6]
+    latest_posts_by_category = [
+        category.posts.filter(is_published=True).order_by('-created_at').first()
+        for category in latest_post_categories
     ]
 
     context = {
-        "featured_blog": featured_blog,
-        "recent_blogs": recent_blogs,
-        "latest_blogs_by_category": [blog for blog in latest_blogs_by_category if blog],
-        "trending_blogs": trending_blogs,
+        "featured_post": featured_post,
+        "recent_posts": recent_posts,
+        "latest_posts_by_category": [post for post in latest_posts_by_category if post],
+        "trending_posts": trending_posts,
         **get_common_context(),
     }
     return render(request, "public_site/home.html", context)
 
-def blog_detail(request, slug):
-    blog = get_object_or_404(Blog.objects.select_related("author", "category").prefetch_related("tags"), slug=slug)
+def post_detail(request, slug):
+    post = get_object_or_404(Post.objects.select_related("author", "category").prefetch_related("tags"), slug=slug)
     context = {
-        "blog": blog,
+        "post": post,
         **get_common_context(),
     }
-    return render(request, "public_site/blog_detail.html", context)
+    return render(request, "public_site/post_detail.html", context)
 
-def blog_category(request, slug):
-    category = get_object_or_404(Category.objects.prefetch_related('blogs'), slug=slug)
-    blogs = category.blogs.filter(is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
-    page_obj = paginate_queryset(request, blogs, 10)
-    recent_blogs = blogs[:4]
+def post_category(request, slug):
+    category = get_object_or_404(Category.objects.prefetch_related('posts'), slug=slug)
+    posts = category.posts.filter(is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
+    page_obj = paginate_queryset(request, posts, 10)
+    recent_posts = posts[:4]
 
     context = {
         "category": category,
-        "blogs": page_obj.object_list,
+        "posts": page_obj.object_list,
         "page_obj": page_obj,
-        "recent_blogs": recent_blogs,
+        "recent_posts": recent_posts,
         **get_common_context(),
     }
-    return render(request, 'public_site/blog_category.html', context)
+    return render(request, 'public_site/post_category.html', context)
 
-def blog_author(request, username):
+def post_author(request, username):
     author = get_object_or_404(User, username=username)
-    blogs = Blog.objects.filter(author=author, is_published=True).select_related("category").prefetch_related("tags").order_by("-created_at")
-    page_obj = paginate_queryset(request, blogs, 10)
-    recent_blogs = blogs[:4]
+    posts = Post.objects.filter(author=author, is_published=True).select_related("category").prefetch_related("tags").order_by("-created_at")
+    page_obj = paginate_queryset(request, posts, 10)
+    recent_posts = posts[:4]
 
     context = {
         "author": author,
-        "blogs": page_obj.object_list,
+        "posts": page_obj.object_list,
         "page_obj": page_obj,
-        "recent_blogs": recent_blogs,
+        "recent_posts": recent_posts,
         **get_common_context(),
     }
-    return render(request, 'public_site/blog_author.html', context)
+    return render(request, 'public_site/post_author.html', context)
 
-def blog_tag(request, slug):
-    tag = get_object_or_404(Tag.objects.prefetch_related('blogs'), slug=slug)  # 'blog_set' is the default reverse relation for the Blog model
-    blogs = Blog.objects.filter(tags=tag, is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
-    page_obj = paginate_queryset(request, blogs, 10)
-    recent_blogs = blogs[:4]
+def post_tag(request, slug):
+    tag = get_object_or_404(Tag.objects.prefetch_related('posts'), slug=slug)  # 'post_set' is the default reverse relation for the Post model
+    posts = Post.objects.filter(tags=tag, is_published=True).select_related("author", "category").prefetch_related("tags").order_by("-created_at")
+    page_obj = paginate_queryset(request, posts, 10)
+    recent_posts = posts[:4]
 
     context = {
         "tag": tag,
-        "blogs": page_obj.object_list,
+        "posts": page_obj.object_list,
         "page_obj": page_obj,
-        "recent_blogs": recent_blogs,
+        "recent_posts": recent_posts,
         **get_common_context(),
     }
-    return render(request, 'public_site/blog_tag.html', context)
+    return render(request, 'public_site/post_tag.html', context)
 
-def blog_search(request):
+def post_search(request):
     search_query = request.GET.get('search', '')  
     if search_query:
-        blogs = Blog.objects.filter(title__icontains=search_query)  
-    page_obj = paginate_queryset(request, blogs, 10)
+        posts = Post.objects.filter(title__icontains=search_query)  
+    page_obj = paginate_queryset(request, posts, 10)
 
 
     context = {
-        "blogs": page_obj.object_list,
+        "posts": page_obj.object_list,
         "page_obj": page_obj,
         "search": search_query,
         **get_common_context(),
     }
-    return render(request, 'public_site/blog_search.html', context)
+    return render(request, 'public_site/post_search.html', context)
     
 def about_us(request):
     authors = User.objects.all().filter(groups=2)[:6]

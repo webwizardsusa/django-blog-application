@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Clear</a>
+                        <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Clear</a>
                     </div>
                 </form>
             </div>
@@ -37,7 +37,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <a href="{% url 'blog:blog_create' %}" class="btn btn-primary">Add Blog</a>
+                    <a href="{% url 'post:post_create' %}" class="btn btn-primary">Add Post</a>
                 </div>
             </div>
             <div class="card-body table-responsive">
@@ -70,7 +70,7 @@
     $(document).ready(function() {
         const category = $('#categoryFilter').val(); 
 
-        initializeDataTable('#dom-jqry', "{% url 'blog:blog_list_json' %}", [
+        initializeDataTable('#dom-jqry', "{% url 'post:post_list_json' %}", [
             {"data": "title"},
             {"data": "category"},
             {

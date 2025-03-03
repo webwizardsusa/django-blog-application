@@ -8,39 +8,39 @@
         <header>
             <!-- Image -->
             <div class="aspect-h-2 aspect-w-3 w-full sm:aspect-h-1">
-                <img src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" alt="{{ blog.title }}" class="object-cover object-center" />
+                <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" alt="{{ post.title }}" class="object-cover object-center" />
             </div>
 
             <!-- Post Header Content -->
             <div class="px-5 lg:px-0">
                 <!-- Article Information -->
                 <div class="mx-auto mb-8 max-w-prose border-b border-gray-300/70 pb-8 pt-10 text-lg sm:pt-16">
-                    <a href="{% url 'blog_category' blog.category.name %}" class="transition-color relative text-sm font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                        {{ blog.category.name }}
+                    <a href="{% url 'post_category' post.category.name %}" class="transition-color relative text-sm font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
+                        {{ post.category.name }}
                     </a>
                     <h2 class="mt-3.5 text-4xl font-medium tracking-normal text-gray-900 decoration-red-300 decoration-3 transition duration-300 ease-in-out group-hover:underline sm:mt-5 sm:text-5xl sm:leading-tight md:tracking-tight lg:text-6xl">
-                        {{ blog.title }}
+                        {{ post.title }}
                     </h2>
                     <div>
                         <p class="mt-4 text-base leading-loose text-gray-600"></p>
                     </div>
                     <!-- Author meta -->
                     <div class="mt-6 flex items-center sm:mt-8">
-                        <a href="{% url 'blog_author' username=blog.author.username %}" class="mr-3 flex-shrink-0">
+                        <a href="{% url 'post_author' username=post.author.username %}" class="mr-3 flex-shrink-0">
                             <div class="relative">
                                 <img class="h-8 w-8 rounded-xl object-cover object-center sm:h-9 sm:w-9" 
-                                src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt=""/>
+                                src="{% if post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt=""/>
                                 <span class="absolute inset-0 rounded-xl shadow-inner" aria-hidden="true"></span>
                             </div>
                         </a>
                         <div class="flex items-center text-sm lg:text-[15px]">
                             <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
-                            <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
+                            <a class="font-medium text-gray-700 hover:underline" href="{% url 'post_author' username=post.author.username %}">{{ post.author.get_full_name }}</a>
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            <span class="ml-1 text-gray-500">{{ blog.created_at|date:"F j, Y" }}</span>
+                            <span class="ml-1 text-gray-500">{{ post.created_at|date:"F j, Y" }}</span>
 
                             {% comment %} <span class="hidden items-center sm:flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -58,16 +58,16 @@
             <!-- Post Content -->
             <!-- Uses the official Tailwind CSS Typography plugin -->
             <div class="prose mx-auto sm:prose-lg first-letter:text-4xl first-letter:font-bold first-letter:tracking-[.15em] prose-a:transition prose-a:duration-300 prose-a:ease-in-out hover:prose-a:text-red-700 prose-img:rounded-xl">
-                <p>{{ blog.content }}</p>
+                <p>{{ post.content }}</p>
             </div>
 
             <!-- Post Footer -->
             <footer class="divide-y-gray-300/70 mx-auto mt-12 max-w-prose divide-y text-lg sm:mt-14">
                 <!-- Tags -->
                 <ul class="-m-1 flex flex-wrap justify-start pb-8 sm:pb-10">
-                    {% for tag in blog.tags.all %}
+                    {% for tag in post.tags.all %}
                     <li>
-                        <a href="{% url 'blog_tag' slug=tag.slug %}">
+                        <a href="{% url 'post_tag' slug=tag.slug %}">
                             <span class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-6 sm:py-2">
                                 {{ tag.name }}
                             </span>
@@ -131,7 +131,7 @@
                             <div class="flex-shrink-0">
                                 <div class="relative w-fit">
                                     <img class="h-20 w-20 rounded-2xl object-cover object-center sm:h-24 sm:w-24" 
-                                    src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
+                                    src="{% if post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
                                     <span class="absolute inset-0 rounded-2xl shadow-inner" aria-hidden="true"></span>
                                 </div>
                             </div>
@@ -144,13 +144,13 @@
                                             Staff Writer
                                         </p>
                                         <h1 class="mt-1 text-xl font-medium tracking-normal text-gray-900 md:tracking-tight lg:leading-tight">
-                                            {{ blog.author.get_full_name }}
+                                            {{ post.author.get_full_name }}
                                         </h1>
                                     </div>
                                 </div>
 
                                 <p class="mt-2.5 text-base leading-loose text-gray-500">
-                                    {{  blog.author.profile.description }}
+                                    {{  post.author.profile.description }}
                                 </p>
 
                                 <!-- Author Social Links -->

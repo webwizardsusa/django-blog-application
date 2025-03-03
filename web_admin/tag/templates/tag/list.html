@@ -23,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Total Blogs</th>
+                                <th>Total Posts</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
@@ -42,7 +42,7 @@
 <script> 
     initializeDataTable('#tag-table', "{% url 'tag:tag_list' %}", [
         { "data": "name" },
-        { "data": "total_blogs" },
+        { "data": "total_posts" },
         { "data": "created_at" },
         {
             "data": "actions",

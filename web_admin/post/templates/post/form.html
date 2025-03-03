@@ -6,7 +6,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{% if blog %}Edit{% else %}Create{% endif %} Blog</h5>
+                <h5>{% if post %}Edit{% else %}Create{% endif %} Post</h5>
             </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
@@ -44,13 +44,13 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="{{ form.image.id_for_label }}" class="form-label">Blog Image</label>
+                        <label for="{{ form.image.id_for_label }}" class="form-label"> Image</label>
                         <input type="file" name="image" id="image" class="form-control">
                         {% if form.image.errors %}
                             <div class="text-danger">{{ form.image.errors }}</div>
                         {% endif %}
-                        {% if blog and blog.image %}
-                            <img src="{{ blog.image.url }}" alt="Blog Image" class="img-fluid mt-2" width="150">
+                        {% if post and post.image %}
+                            <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-2" width="150">
                         {% endif %}
                     </div>
 
@@ -69,8 +69,8 @@
                             <div class="text-danger">{{ form.is_published.errors }}</div>
                         {% endif %}
                     </div>
-                    <button type="submit" class="btn btn-primary">{% if blog %} Update {% else %} Create {% endif %}</button>
-                    <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">{% if post %} Update {% else %} Create {% endif %}</button>
+                    <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

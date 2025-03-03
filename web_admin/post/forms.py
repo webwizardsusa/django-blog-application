@@ -1,18 +1,18 @@
 from django import forms
-from .models import Blog
+from .models import Post
 from django.contrib.auth.models import User
 
-class BlogForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Blog
+        model = Post
         fields = ['title', 'category', 'tags', 'image', 'content', 'is_published', 'author']
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter blog title"}),
+            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter post title"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
-            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter blog content"}),
+            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter post content"}),
             "author": forms.Select(attrs={"class": "form-control"}),
-            "is_published": forms.Select(choices=Blog.STATUS_CHOICES, attrs={"class": "form-control"}),
+            "is_published": forms.Select(choices=Post.STATUS_CHOICES, attrs={"class": "form-control"}),
         }
 
 
@@ -24,14 +24,14 @@ class BlogForm(forms.ModelForm):
         
     def clean_title(self):
         title = self.cleaned_data.get('title')
-        qs = Blog.objects.filter(title=title)
+        qs = Post.objects.filter(title=title)
 
-        # Exclude the current blog when editing
+        # Exclude the current post when editing
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
 
         if qs.exists():
-            raise forms.ValidationError("A blog with this title already exists.")
+            raise forms.ValidationError("A post with this title already exists.")
         
         return title
     

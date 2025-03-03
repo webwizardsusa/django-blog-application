@@ -8,15 +8,15 @@
         <!-- Feed Container -->        
         <div class="col-span-2">
             <!-- Articles -->
-            {% if blogs %}
+            {% if posts %}
             <div class="mb-6 border-b-2 border-gray-100 pb-8 sm:mb-10 sm:pb-10">
                 <!-- 1st Article -->
-                {% for blog in blogs %}
+                {% for post in posts %}
                 <article class="md:grid md:grid-cols-4 md:gap-8">
                     <!-- Image -->
                     <div class="md:col-span-1">
-                        <a href="{% url 'blog_detail' slug=blog.slug %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1">
-                            <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/archive-01.jpeg' %}{% endif %}" 
+                        <a href="{% url 'post_detail' slug=post.slug %}" class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-50 md:aspect-h-1 md:aspect-w-1">
+                            <img data-src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/archive-01.jpeg' %}{% endif %}" 
                             class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"/>
                         </a>
                     </div>
@@ -25,38 +25,38 @@
                     <div class="relative mt-6 flex flex-col flex-wrap md:col-span-3 md:mt-0">
                         <div class="mb-8 box-border flex w-full flex-1 flex-col justify-between border-b-2 border-gray-100 px-6 pb-8 md:px-0">
                             <div>
-                                <a href="{% url 'blog_category' slug=blog.category.slug %}" class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                    {{ blog.category.name }}
+                                <a href="{% url 'post_category' slug=post.category.slug %}" class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
+                                    {{ post.category.name }}
                                 </a>
 
                                 <h3 class="mt-2.5 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                    <a href="{% url 'blog_detail' slug=blog.slug %}">
+                                    <a href="{% url 'post_detail' slug=post.slug %}">
                                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                        {{ blog.title }}
+                                        {{ post.title }}
                                     </a>
                                 </h3>
 
                                 <p class="mt-3.5 block text-base leading-relaxed text-gray-500">
-                                    {{ blog.content | truncatechars:150 }}
+                                    {{ post.content | truncatechars:150 }}
                                 </p>
                             </div>
 
                             <!-- Article Footer Info -->
                             <footer class="mt-5 flex items-center sm:mt-7">
                                 <!-- Author Image -->
-                                <a href="{% url 'blog_author' username=blog.author.username %}" class="relative mr-3 animate-pulse rounded-lg bg-gray-50">
+                                <a href="{% url 'post_author' username=post.author.username %}" class="relative mr-3 animate-pulse rounded-lg bg-gray-50">
                                     <img class="lazy h-7 w-7 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out lg:h-8 lg:w-8"
-                                    data-src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
+                                    data-src="{% if post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="" />
                                 </a>
 
                                 <div class="flex items-center text-sm lg:text-[15px]">
                                     <span class="hidden text-gray-500 sm:inline-block">By&nbsp;</span>
-                                    <a class="relative font-medium text-gray-700 hover:underline dark:text-gray-300" href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
+                                    <a class="relative font-medium text-gray-700 hover:underline dark:text-gray-300" href="{% url 'post_author' username=post.author.username %}">{{ post.author.get_full_name }}</a>
 
                                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                     </svg>
-                                    <span class="ml-1 text-gray-500">{{ blog.created_at|date:"F j, Y" }}</span>
+                                    <span class="ml-1 text-gray-500">{{ post.created_at|date:"F j, Y" }}</span>
 
                                     {% comment %} <span class="hidden items-center sm:flex">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2.5 h-[18px] w-[18px] text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -131,7 +131,7 @@
                 {% endif %}
             </nav>            
             {% else %}
-                <p>No blogs found.</p>
+                <p>No posts found.</p>
             {% endif %}
         </div>
     </div>
