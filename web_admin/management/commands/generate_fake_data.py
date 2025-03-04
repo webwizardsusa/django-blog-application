@@ -1,10 +1,10 @@
 import random
 from faker import Faker
 from django.core.management.base import BaseCommand
-from web_admin.blog.models import Blog, Category
+from web_admin.post.models import Post, Category
 
 class Command(BaseCommand):
-    help = "Generate fake categories and blog posts"
+    help = "Generate fake categories and posts"
 
     def handle(self, *args, **kwargs):
         fake = Faker()
@@ -21,10 +21,10 @@ class Command(BaseCommand):
 
         self.stdout.write(f"{len(categories)} categories created.")
 
-        # Create fake blog posts
+        # Create fake posts
         self.stdout.write("Generating posts...")
         for _ in range(50):
-            Blog.objects.create(
+            Post.objects.create(
                 title=fake.sentence(nb_words=6),
                 content=fake.text(max_nb_chars=1000),
                 is_published=1,

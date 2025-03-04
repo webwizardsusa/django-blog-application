@@ -6,44 +6,44 @@
 <section class="bg-gray-50 pt-12 sm:pt-16 lg:pt-20">
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:flex lg:max-w-screen-2xl lg:items-start lg:px-8">
         <!-- Featured Article-->
-        {% if featured_blog %}
+        {% if featured_post %}
         <article class="relative lg:sticky lg:top-8 lg:w-1/2">
             <!-- Image -->
-            <a href="{% url 'blog_detail' slug=featured_blog.slug %}"
+            <a href="{% url 'post_detail' slug=featured_post.slug %}"
                 class="group aspect-h-9 aspect-w-16 relative z-10 block animate-pulse overflow-hidden rounded-2xl bg-gray-100">
                 <img class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                    data-src="{% if featured_blog.image %}{{ featured_blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
-                    alt="{{ featured_blog.title }}" />
+                    data-src="{% if featured_post.image %}{{ featured_post.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                    alt="{{ featured_post.title }}" />
             </a>
 
             <!-- Content -->
             <div class="mt-6 md:align-middle">
-                <a href="{% url 'blog_category' slug=featured_blog.category.slug %}" class="transition-color relative text-sm font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                    {{ featured_blog.category.name }}
+                <a href="{% url 'post_category' slug=featured_post.category.slug %}" class="transition-color relative text-sm font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
+                    {{ featured_post.category.name }}
                 </a>
-                <a href="{% url 'blog_detail' slug=featured_blog.slug %}" class="group mt-3 block">
+                <a href="{% url 'post_detail' slug=featured_post.slug %}" class="group mt-3 block">
                     <h2 class="text-3xl font-medium tracking-normal text-gray-900 decoration-gray-800 decoration-3 transition duration-300 ease-in-out group-hover:underline md:tracking-tight lg:text-4xl lg:leading-tight">
-                        {{ featured_blog.title }}
+                        {{ featured_post.title }}
                     </h2>
                     <div>
                         <p class="mt-4 text-base leading-loose text-gray-600">
-                            {{ featured_blog.content | truncatechars:270 }}
+                            {{ featured_post.content | truncatechars:270 }}
                         </p>
                     </div>
                 </a>
 
                 <!-- Author -->
                 <div class="mt-4 flex items-center sm:mt-8">
-                    <a href="{% url 'blog_author' username=featured_blog.author.username %}" class="h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                        <img data-src="{% if featured_blog.author.profile.image %}{{ featured_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
+                    <a href="{% url 'post_author' username=featured_post.author.username %}" class="h-10 w-10 animate-pulse rounded-xl bg-gray-50">
+                        <img data-src="{% if featured_post.author.profile.image %}{{ featured_post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                             class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                     </a>
                     <div class="ml-3">
-                        <a href="{% url 'blog_author' username=featured_blog.author.username %}" class="text-sm font-medium text-gray-800 hover:underline">
-                            {{ featured_blog.author.get_full_name}}
+                        <a href="{% url 'post_author' username=featured_post.author.username %}" class="text-sm font-medium text-gray-800 hover:underline">
+                            {{ featured_post.author.get_full_name}}
                         </a>
                         <p class="text-sm text-gray-500">
-                            <time datetime="{{ featured_blog.created_at }}">{{ featured_blog.created_at|date:"F j, Y" }}</time>
+                            <time datetime="{{ featured_post.created_at }}">{{ featured_post.created_at|date:"F j, Y" }}</time>
                             {% comment %} <span> 6 min read </span> {% endcomment %}
                         </p>
                     </div>
@@ -60,28 +60,28 @@
 
             <!-- Articles Container -->
             <div class="grid lg:grid-cols-2 lg:gap-x-5 xl:grid-cols-1">
-                {% for blog in recent_blogs %}
+                {% for post in recent_posts %}
                 <article class="py-8 sm:flex lg:flex-col xl:flex-row xl:items-center">
                     <!-- Image -->
-                    <a href="{% url 'blog_detail' slug=blog.slug %}" class="order-2 w-full sm:w-2/5 lg:order-1 lg:w-full xl:w-2/5">
+                    <a href="{% url 'post_detail' slug=post.slug %}" class="order-2 w-full sm:w-2/5 lg:order-1 lg:w-full xl:w-2/5">
                         <div
                             class="group aspect-h-9 aspect-w-16 relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
-                            alt="{{ blog.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110" />
+                            <img data-src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                            alt="{{ post.title }}" class="lazy rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110" />
                         </div>
                     </a>
 
                     <!-- Content -->
                     <div
                         class="order-1 mt-5 w-full px-2 sm:mt-0 sm:max-w-sm sm:pl-0 sm:pr-5 lg:order-2 lg:mt-4 xl:ml-5 xl:mt-0 xl:flex-1">
-                        <a href="{% url 'blog_category' slug=blog.category.slug %}"
+                        <a href="{% url 'post_category' slug=post.category.slug %}"
                             class="transition-color text-xs font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                            {{ blog.category.name }}
+                            {{ post.category.name }}
                         </a>
 
-                        <a href="{% url 'blog_detail' slug=blog.slug %}">
+                        <a href="{% url 'post_detail' slug=post.slug %}">
                             <h3 class="mt-2 text-xl font-medium leading-normal tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                {{ blog.title }}
+                                {{ post.title }}
                             </h3>
                         </a>
 
@@ -89,14 +89,14 @@
                         <div class="mt-4 flex items-center justify-between">
                             <!-- Author meta -->
                             <div class="flex items-center justify-center">
-                                <a href="{% url 'blog_author' username=blog.author.username %}" class="mr-3 animate-pulse rounded-lg bg-gray-50">
+                                <a href="{% url 'post_author' username=post.author.username %}" class="mr-3 animate-pulse rounded-lg bg-gray-50">
                                     <img class="lazy h-6 w-6 flex-shrink-0 rounded-lg object-cover object-center opacity-0 transition duration-300 ease-in-out"
-                                        data-src="{% if blog.author.profile.image %}{{ blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="Author 01" />
+                                        data-src="{% if post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}" alt="Author 01" />
                                 </a>
                                 <div class="text-sm">
                                     <span class="text-gray-500">By </span>
-                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
-                                    <span class="text-gray-500 lg:hidden xl:inline-block">{{ blog.created_at|date:'M d, Y' }}</span>
+                                    <a class="font-medium text-gray-700 hover:underline" href="{% url 'post_author' username=post.author.username %}">{{ post.author.get_full_name }}</a>
+                                    <span class="text-gray-500 lg:hidden xl:inline-block">{{ post.created_at|date:'M d, Y' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                 {% for category in categories|slice:":6" %}
                 <div
                     class="group relative z-0 h-40 translate-y-0 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition duration-300 ease-in-out hover:-translate-y-1">
-                    <a href="{% url 'blog_category' slug=category.slug %}" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
+                    <a href="{% url 'post_category' slug=category.slug %}" class="absolute inset-0 z-10 h-full w-full rounded-2xl shadow-md"></a>
 
                     <!-- Image -->
                     <div class="absolute inset-0 h-full w-full bg-gray-100 bg-cover bg-center bg-no-repeat"
@@ -154,16 +154,16 @@
             <!-- Articles-->
             <div
                 class="mx-auto mt-8 grid max-w-xl gap-6 px-4 sm:px-6 md:max-w-3xl md:grid-cols-2 md:px-8 lg:max-w-none lg:px-0">
-                {% for latest_blog in latest_blogs_by_category %}
+                {% for latest_post in latest_posts_by_category %}
                 <article
                     class="group relative flex flex-col flex-wrap rounded-2xl transition duration-300 ease-in-out hover:shadow-xl">
                     <!-- Image -->
                     <div
                         class="aspect-h-1 aspect-w-2 relative z-10 w-full animate-pulse overflow-hidden rounded-t-2xl bg-gray-50">
-                        <a href="{% url 'blog_detail' slug=latest_blog.slug %}">
+                        <a href="{% url 'post_detail' slug=latest_post.slug %}">
                             <img class="lazy absolute inset-0 h-full w-full rounded-t-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110"
-                                data-src="{% if latest_blog.image %}{{ latest_blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
-                                alt="{{ latest_blog.title }}"/>
+                                data-src="{% if latest_post.image %}{{ latest_post.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}" 
+                                alt="{{ latest_post.title }}"/>
                         </a>
                     </div>
 
@@ -171,38 +171,38 @@
                     <div
                         class="box-border flex w-full flex-1 flex-col justify-between rounded-b-2xl border-b-2 border-l-2 border-r-2 border-gray-100 bg-white p-6 transition duration-300 ease-in-out group-hover:border-transparent xl:p-7">
                         <div>
-                            <a href="{% url 'blog_category' slug=latest_blog.category.slug %}"
+                            <a href="{% url 'post_category' slug=latest_post.category.slug %}"
                                 class="transition-color relative text-tiny font-medium uppercase tracking-widest text-red-700 duration-300 ease-in-out hover:text-red-600">
-                                {{ latest_blog.category.name }}
+                                {{ latest_post.category.name }}
                             </a>
 
                             <h3
                                 class="mt-3 text-xl font-medium leading-tight text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline sm:text-2xl lg:text-xl xl:text-2xl">
-                                <a href="{% url 'blog_detail' slug=latest_blog.slug %}">
+                                <a href="{% url 'post_detail' slug=latest_post.slug %}">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                    {{ latest_blog.title }}
-                                    <span class="sr-only">{{ latest_blog.title }}</span>
+                                    {{ latest_post.title }}
+                                    <span class="sr-only">{{ latest_post.title }}</span>
                                 </a>
                             </h3>
 
                             <p class="mt-4 block text-base leading-relaxed text-gray-500">
-                                {{ latest_blog.content|truncatewords:20 }}
+                                {{ latest_post.content|truncatewords:20 }}
                             </p>
                         </div>
 
                         <!-- Author -->
                         <div class="mt-5 flex items-center sm:mt-6">
-                            <a href="{% url 'blog_author' username=latest_blog.author.username %}" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
-                                <img data-src="{% if latest_blog.author.profile.image %}{{ latest_blog.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
+                            <a href="{% url 'post_author' username=latest_post.author.username %}" class="relative h-10 w-10 animate-pulse rounded-xl bg-gray-50">
+                                <img data-src="{% if latest_post.author.profile.image %}{{ latest_post.author.profile.image.url }}{% else %}{% static 'images/author-04.jpeg' %}{% endif %}"
                                     class="lazy h-full w-full rounded-xl object-cover object-center opacity-0 transition duration-300 ease-in-out" />
                             </a>
                             <div class="ml-3">
-                                <a href="{% url 'blog_author' username=latest_blog.author.username %}"
+                                <a href="{% url 'post_author' username=latest_post.author.username %}"
                                     class="relative text-sm font-medium text-gray-700 hover:underline">
-                                    {{ latest_blog.author.get_full_name }}
+                                    {{ latest_post.author.get_full_name }}
                                 </a>
                                 <p class="text-sm text-gray-500">
-                                    <time datetime="{{ latest_blog.created_at }}">{{ latest_blog.created_at|date:"M d Y" }}</time>
+                                    <time datetime="{{ latest_post.created_at }}">{{ latest_post.created_at|date:"M d Y" }}</time>
                                     {% comment %} <span aria-hidden="true"> &middot; </span> {% endcomment %}
                                     {% comment %} <span> 6 min read </span> {% endcomment %}
                                 </p>
@@ -226,12 +226,12 @@
 
                 <!-- Articles -->
                 <div class="space-y-6 pt-6 sm:space-y-5 lg:space-y-6 xl:space-y-5">
-                    {% for blog in trending_blogs %}
+                    {% for post in trending_posts %}
                     <article class="flex space-x-4 sm:space-x-6 lg:space-x-4">
                         <!-- Image -->
-                        <a href="{% url 'blog_detail' slug=blog.slug %}"
+                        <a href="{% url 'post_detail' slug=post.slug %}"
                             class="group relative z-10 animate-pulse overflow-hidden rounded-2xl bg-gray-100">
-                            <img data-src="{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}"
+                            <img data-src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/feed-04.jpeg' %}{% endif %}"
                                 class="lazy h-24 w-24 rounded-2xl object-cover object-center opacity-0 transition duration-300 ease-in-out group-hover:scale-110 sm:h-28 sm:w-28 lg:h-20 lg:w-20 xl:h-24 xl:w-24" />
                         </a>
 
@@ -239,9 +239,9 @@
                         <div class="w-2/3">
                             <div class="flex h-full w-full flex-1 flex-col justify-center">
                                 <div>
-                                    <a href="{% url 'blog_detail' slug=blog.slug %}"
+                                    <a href="{% url 'post_detail' slug=post.slug %}"
                                         class="text-md font-medium leading-snug tracking-normal text-gray-900 decoration-gray-800 decoration-2 transition duration-300 ease-in-out hover:underline">
-                                        {{ blog.title }}
+                                        {{ post.title }}
                                     </a>
                                 </div>
 
@@ -252,7 +252,7 @@
                                         <div class="text-sm">
                                             <span class="text-gray-500">By </span>
                                             <a class="font-medium text-gray-700 hover:underline"
-                                                href="{% url 'blog_author' username=blog.author.username %}">{{ blog.author.get_full_name }}</a>
+                                                href="{% url 'post_author' username=post.author.username %}">{{ post.author.get_full_name }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@
                     <ul class="-m-1 flex flex-wrap justify-start">
                         {% for tag in tags|slice:10 %}
                         <li>
-                            <a href="{% url 'blog_tag' slug=tag.slug %}">
+                            <a href="{% url 'post_tag' slug=tag.slug %}">
                                 <span
                                     class="m-1 inline-flex items-center rounded-full border border-gray-300/70 bg-transparent px-4 py-1 text-sm font-medium text-gray-800 transition duration-300 ease-in-out hover:text-red-700 sm:px-4 sm:py-1.5">
                                     {{ tag.name }}

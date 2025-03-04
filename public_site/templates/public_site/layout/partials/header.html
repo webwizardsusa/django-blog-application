@@ -57,7 +57,7 @@
                         class="absolute right-0 z-20 mt-3 w-52 space-y-1 rounded-xl bg-white p-2.5 outline-none drop-shadow filter focus:outline-none"
                         x-show.transition="open" @click.away="open = false">
                         {% for category in categories %}
-                        <a href="{% url 'blog_category' slug=category.slug %}"
+                        <a href="{% url 'post_category' slug=category.slug %}"
                             class="block rounded-lg px-5 py-3.5 font-medium text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
                             {{ category.name }}
                         </a>
@@ -68,7 +68,7 @@
 
             <!-- Search -->
             <div class="relative ml-6 h-10 w-full max-w-xxs rounded-3xl">
-                <form class="group rounded-3xl transition duration-300 ease-in-out" method="GET" action="{% url 'blog_search' %}">
+                <form class="group rounded-3xl transition duration-300 ease-in-out" method="GET" action="{% url 'post_search' %}">
                     <div class="absolute inset-y-0 left-3 flex items-center">
                         <!-- Heroicon name: solid/search -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
@@ -82,7 +82,7 @@
                     <input type="text"
                         name="search" 
                         class="h-10 w-full rounded-3xl border border-gray-200 bg-white px-10 py-3 text-sm leading-5 text-gray-800 transition duration-300 ease-in-out hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-100" value="{{ request.GET.search|default:'' }}"
-                        required placeholder="Search blogs..." autocomplete="off" />
+                        required placeholder="Search posts..." autocomplete="off" />
                 </form>
             </div>
 
@@ -130,7 +130,7 @@
             <div class="mt-3 space-y-1 px-2">
                 <!-- Current: "bg-gray-50 text-red-700", Default: "text-gray-600 hover:bg-gray-50 hover:text-red-700 transition duration-300 ease-in-out" -->
                 {% for category in categories %}
-                <a href="{% url 'blog_category' slug=category.slug %}"
+                <a href="{% url 'post_category' slug=category.slug %}"
                     class="block rounded-lg px-4 py-2 font-medium text-gray-600 transition duration-300 ease-in-out hover:bg-gray-50 hover:text-red-700">
                     {{ category.name }}
                 </a>

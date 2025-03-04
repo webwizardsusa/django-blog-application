@@ -17,7 +17,7 @@ def category_list(request):
     
         column_mapping = {
             0: "name",
-            1: "total_blogs",
+            1: "total_posts",
             2: "image",
             2: "created_at"
         }
@@ -26,7 +26,7 @@ def category_list(request):
         if order_dir == "desc":
             order_column = f"-{order_column}"
             
-        categories = Category.objects.annotate(total_blogs=Count("blogs"))
+        categories = Category.objects.annotate(total_posts=Count("posts"))
         categories = categories.order_by(order_column)
         if search_value:
             categories = categories.filter(name__icontains=search_value)
@@ -37,7 +37,7 @@ def category_list(request):
         for category in categories:
             data.append({
                 "name": category.name,
-                "total_blogs": category.blogs.count(),
+                "total_posts": category.posts.count(),
                 "image": category.image.url if category.image else "",
                 "created_at": category.created_at.strftime("%Y-%m-%d"),
                 "actions": f"""
@@ -91,9 +91,9 @@ def category_edit(request, pk):
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
 
-    # Check if the category has any associated blogs
-    if category.blogs.exists():  # Using related_name='blogs' from the Blog model
-        messages.error(request, "Cannot delete this category because it has associated blogs.")
+    # Check if the category has any associated posts
+    if category.posts.exists():  # Using related_name='posts' from the Post model
+        messages.error(request, "Cannot delete this category because it has associated posts.")
 
         return redirect("category:category_list")
     
