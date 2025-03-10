@@ -10,7 +10,6 @@ class PostForm(forms.ModelForm):
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter post title"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
-            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": "Enter post content"}),
             "author": forms.Select(attrs={"class": "form-control"}),
             "is_published": forms.Select(choices=Post.STATUS_CHOICES, attrs={"class": "form-control"}),
         }

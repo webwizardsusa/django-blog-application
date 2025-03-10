@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web_admin',
+    'web_admin.common',
     'web_admin.authentication',
     'web_admin.myaccount',
     'web_admin.category',
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'web_admin.tag',
     'web_admin.user',
     'public_site',
-    'public_site.contact'
+    'public_site.contact',
+    'public_site.helpers',
 ]
 
 MIDDLEWARE = [
