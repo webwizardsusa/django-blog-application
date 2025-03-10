@@ -1,0 +1,69 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Group</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.name.id_for_label }}">Group Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+            
+                    <div class="mb-3">
+                        <label class="form-label">Permissions</label>
+                        <div class="container">
+                            <div class="row">
+                                {% regroup form.permissions.field.queryset by content_type.model as grouped_permissions %}
+                                {% for group in grouped_permissions %}
+                                    {% if "log" not in group.grouper %}
+                                        <div class="col-md-4 mb-3 d-flex flex-column"> 
+                                            <h5 class="text-primary text-uppercase">{{ group.grouper|title }}</h5>
+                                            <div class="permissions-list">
+                                                {% for permission in group.list %}
+                                                    <div class="form-check form-switch d-flex align-items-center">
+                                                        <input class="form-check-input me-2" type="checkbox" name="permissions" value="{{ permission.id }}" id="perm{{ permission.id }}" 
+                                                        {% if permission in form.instance.permissions.all %}checked{% endif %}>
+                                                        <label class="form-check-label" for="perm{{ permission.id }}">
+                                                            {% if "add" in permission.name %}
+                                                                Add
+                                                            {% elif "change" in permission.name %}
+                                                                Edit  
+                                                            {% elif "delete" in permission.name %}
+                                                                Delete 
+                                                            {% elif "view" in permission.name %}
+                                                                List 
+                                                            {% else %}
+                                                                {{ permission.name }}
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                                            </div><div class="row"> 
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>                                  
+        
+                    <button type="submit" class="btn btn-primary">{% if groups %} Update {% else %} Create {% endif %}</button>
+                    <a href="{% url 'group:group_list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

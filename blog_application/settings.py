@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'web_admin.myaccount',
     'web_admin.category',
     'web_admin.post',
+    'web_admin.group',
     'web_admin.tag',
     'web_admin.user',
     'public_site',
