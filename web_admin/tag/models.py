@@ -17,5 +17,3 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
     
-    def get_created_at(self):
-        return self.created_at.strftime('%m/%d/%Y')

@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="row">
@@ -68,7 +69,7 @@
                                 {% else %}
                                 <span class="badge bg-secondary">Draft</span>
                                 {% endif %}</td>
-                            <td>{{ post.created_at|date:"d/m/Y" }}</td>
+                            <td>{{ post.created_at| date_format }}</td>
                         </tr>
                         {% endfor %}
                     </table>

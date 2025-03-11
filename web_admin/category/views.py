@@ -39,7 +39,7 @@ def category_list(request):
                 "name": category.name,
                 "total_posts": category.posts.count(),
                 "image": category.image.url if category.image else "",
-                "created_at": category.created_at.strftime("%Y-%m-%d"),
+                "created_at": category.created_at.strftime("%m-%d-%Y"),
                 "actions": f"""
                     <a href='{reverse("category:category_edit", kwargs={"pk": category.id})}' class='btn btn-sm btn-warning'>Edit</a>
                     <a href='{reverse("category:category_delete", kwargs={"pk": category.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
