@@ -47,7 +47,7 @@ def post_list_json(request):
             "image": post.image.url if post.image else None,
             "author": post.author.username,
             "status": "Published" if post.is_published else "Draft",
-            "created_at": post.created_at.strftime("%d-%m-%Y"),
+            "created_at": post.created_at.strftime("%m-%d-%Y"),
             "edit_url": reverse("post:post_edit", kwargs={"pk": post.pk}),
             "delete_url": reverse("post:post_delete", kwargs={"pk": post.pk}),
         }

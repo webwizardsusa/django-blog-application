@@ -40,7 +40,7 @@ def tag_list(request):
             data.append({
                 "name": tag.name, 
                 "total_posts": tag.posts.count(), 
-                "created_at": tag.created_at.strftime("%d-%m-%Y"), 
+                "created_at": tag.created_at.strftime("%m-%d-%Y"), 
                 "actions": f"""
                     <a href='{reverse("tag:tag_edit", kwargs={"pk": tag.id})}' class='btn btn-sm btn-warning'>Edit</a>
                     <a href='{reverse("tag:tag_delete", kwargs={"pk": tag.id})}' class='btn btn-sm btn-danger' onclick='return confirm("Are you sure?");'>Delete</a>
