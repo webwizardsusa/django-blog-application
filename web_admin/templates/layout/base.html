@@ -52,33 +52,31 @@
 
     <!-- [ Main Content ] start -->
     <div class="pc-container">
-        {% if breadcrumb_title %}
+        {% block page_header %}
         <div class="page-header">
             <div class="page-block card mb-0">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="page-header-title">
-                            <h4 class="mb-0">{{ breadcrumb_title }}</h4>
+                            <h4 class="mb-0">{% block title %}{% endblock %}</h4>
                         </div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'web_admin_dashboard' %}"><i class="ph ph-house"></i></a>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'web_admin_dashboard' %}"><i class="ph ph-house"></i></a>
                             </li>
-                            {% for item in breadcrumbs %}
-                                <li class="breadcrumb-item {% if forloop.last %}active{% endif %}">
-                                    {% if not forloop.last %}
-                                        <a href="{{ item.url }}">{{ item.name }}</a>
-                                    {% else %}
-                                        {{ item.name }}
-                                    {% endif %}
-                                </li>
+                            {% for crumb in breadcrumb %}
+                                {% if forloop.last %}
+                                    <li class="breadcrumb-item active" aria-current="page">{{ crumb.text }}</li>
+                                {% else %}
+                                    <li class="breadcrumb-item"><a href="{% url crumb.url %}">{{ crumb.text }}</a></li>
+                                {% endif %}
                             {% endfor %}
-                        </ul>
+                        </ul>                        
                     </div>
                 </div>
             </div>
         </div>
-        {% endif %}
-        
+        {% endblock %}
         <div class="pc-content">
             {% if messages %}
                 {% for message in messages %}
@@ -107,6 +105,8 @@
     <script src="{% static 'js/plugins/world-merc.js' %}"></script><!-- Custom js -->
     <script src="{% static 'js/widgets/world-map-markers.js' %}"></script>
     <script src="{% static 'js/widgets/earnings-users-chart.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+
     <!-- [Page Specific JS] end --><!-- Required Js -->
     <script src="{% static 'js/plugins/popper.min.js' %}"></script>
     <script src="{% static 'js/plugins/simplebar.min.js' %}"></script>
@@ -127,6 +127,7 @@
     <script>header_change('header-1');</script>
     <!-- Page-Specific JS -->
     {% block page_js %}{% endblock %}
+    {% block script %}{% endblock %}
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
