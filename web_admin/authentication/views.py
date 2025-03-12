@@ -10,7 +10,7 @@ def web_admin_login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            if user.groups.filter(name="web_admin").exists():
+            if user.groups.exists():
                 login(request, user)
                 return redirect("web_admin_dashboard")
             else:

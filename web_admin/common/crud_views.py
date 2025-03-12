@@ -11,7 +11,17 @@ class CrudView:
     form_template_name = None
     redirect_url = None
 
+    def permission(self, request, action):
+        if not request.user.has_perm(f"{self.model._meta.app_label}.{action}_{self.model._meta.model_name}"):
+            messages.error(request, "You do not have permission to perform this action.")
+            return redirect('web_admin_dashboard')
+    
+
     def list(self, request):
+        permission_check = self.permission(request, 'view')
+        if permission_check:
+            return permission_check 
+
         page = 'List'
         shared_data = (self._shareData(page, {'request': request}) or {}) if hasattr(self, '_shareData') else {}
         results = self._dataQuery(page)
@@ -66,6 +76,10 @@ class CrudView:
         })
 
     def form(self, request, id = None):
+        permission_check = self.permission(request, 'add' if id is None else 'change')
+        if permission_check:
+            return permission_check 
+        
         if id == None:
             page, message, instance = 'Create', f"{self.module} created successfully!", None
         else:
@@ -113,6 +127,10 @@ class CrudView:
         return render(request, self.form_template_name, context)
 
     def delete(self, request, id):
+        permission_check = self.permission(request, 'delete')
+        if permission_check:
+            return permission_check 
+            
         if request.method == 'POST':
             page = 'Delete'
 

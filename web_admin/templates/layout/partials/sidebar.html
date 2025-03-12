@@ -28,12 +28,14 @@
                         <span class="pc-mtext" data-i18n="Posts">Posts</span>
                     </a>
                 </li>
+                {% if can_view_tag %}
                 <li class="pc-item">
                     <a href="{% url 'tag:tag_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-swatches"></i></span>
                         <span class="pc-mtext" data-i18n="Tags">Tags</span>
                     </a>
                 </li>
+                {% endif %}
                 <li class="pc-item">
                     <a href="{% url 'group:group_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-users-three"></i></span>

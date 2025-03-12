@@ -15,7 +15,9 @@
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
                     <h4 class="mb-0">Tag Management</h4>
-                    <a href="{% url 'tag:tag_create' %}" class="btn btn-primary">Add Tag</a>
+                    {% if can_add_tag %}
+                        <a href="{% url 'tag:tag_create' %}" class="btn btn-primary">Add Tag</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="card-body">
@@ -48,9 +50,12 @@
                     { "data": "total_posts", "searchable": false, "orderable": false }, 
                     { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
                         let action = {};
+                        {% if can_edit_tag %}
                             action['edit'] = '{% url "tag:tag_edit" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        {% if can_delete_tag %}
                             action['delete'] = '{% url "tag:tag_delete" id=0 %}'.replace('0', row.id)
-
+                        {% endif %}
                         return actionColumn(action)
                     }},
                 ],

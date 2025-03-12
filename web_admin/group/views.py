@@ -71,8 +71,10 @@ def group_edit(request, pk):
     form = GroupForm(request.POST or None, request.FILES or None, instance=groups)
 
     if request.method == "POST" and form.is_valid():
-            form.save()
+            group_instance = form.save(commit=False)  
+            group_instance.save()  
             form.save_m2m() 
+            
             messages.success(request, "Group updated successfully.")
             return redirect('group:group_list')
 

@@ -16,7 +16,7 @@ class RoleBasedAccessMiddleware:
         if path.startswith("/web_admin"):
             if not request.user.is_authenticated:
                 return redirect("/web_admin/auth/login/")
-            if not request.user.groups.filter().exists():
+            if not request.user.groups.exists():
                 return HttpResponseForbidden("You do not have permission to access this page.")
 
         # Handle /admin role restrictions

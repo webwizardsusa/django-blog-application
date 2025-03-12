@@ -28,7 +28,7 @@ def user_list(request):
         if order_dir == "desc":
             order_column = f"-{order_column}"
         
-        users = User.objects.filter(groups=2)
+        users = User.objects.exclude(groups__name="web_admin")
         users = users.order_by(order_column)
         if search_value:
             users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
