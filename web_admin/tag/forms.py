@@ -2,12 +2,11 @@ from django import forms
 from .models import Tag
 
 class TagForm(forms.ModelForm):
+    name = forms.CharField(required=True)
+
     class Meta:
         model = Tag
         fields = ['name']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter tag name'}),
-        }
 
     def clean_name(self):
         name = self.cleaned_data.get('name')

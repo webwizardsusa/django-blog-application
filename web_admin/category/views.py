@@ -80,6 +80,7 @@ def category_edit(request, pk):
 
     context = {
         "form": form,
+        "category":category,
         "breadcrumb_title": "Category Management",
         "breadcrumbs": [
             {"name": "Categories", "url": reverse('category:category_list')},

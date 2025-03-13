@@ -28,7 +28,7 @@ def user_list(request):
         if order_dir == "desc":
             order_column = f"-{order_column}"
         
-        users = User.objects.filter(groups=2)
+        users = User.objects.filter(is_superuser=False)
         users = users.order_by(order_column)
         if search_value:
             users = users.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) | Q(username__icontains=search_value)  )
@@ -71,8 +71,8 @@ def user_create(request):
             profile.user = user 
             profile.save()
 
-            group = Group.objects.get(id=2)
-            group.user_set.add(user)  
+            groups = form.cleaned_data['groups'] 
+            user.groups.set(groups) 
             messages.success(request, "User created successfully.")
             return redirect('user:user_list')
     else:

@@ -1,21 +1,20 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .models import Profile
 import re
 
 class UserForm(forms.ModelForm):
+    username = forms.CharField(required=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    email = forms.CharField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    is_active = forms.ChoiceField(choices=[(1, 'Active'), (0, 'Inactive')], widget=forms.Select(attrs={"class": "form-control"}), required=True)
+    groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), widget=forms.SelectMultiple(attrs={"class": "form-control"}), required=False)
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'groups' ,'password', 'is_active']
-        widgets = {
-            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter User Name title", 'required': True}),
-            "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name title", 'required': True}),
-            "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Last Name title", 'required': True}),
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Email title", 'required': True}),
-            "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter Password", 'required': True}),
-            "is_active": forms.Select(choices=[(1, 'Active'),(0, 'In Active')], attrs={"class": "form-control"}),
-            "groups": forms.SelectMultiple(attrs={"class": "form-control"}),
-        }
         
         
     def __init__(self, *args, **kwargs):
@@ -34,9 +33,17 @@ class UserForm(forms.ModelForm):
         
         return username
     
+    def clean_groups(self):
+        groups = self.cleaned_data.get('groups')
+        if not groups:
+            raise forms.ValidationError("This field is required.")  
+        return groups
+    
     def clean_password(self):
         password = self.cleaned_data.get("password")
-
+        if not password:
+            raise forms.ValidationError("This field is required.")
+            
         # Check for minimum length
         if len(password) < 8:
             raise forms.ValidationError("Password must be at least 8 characters long.")
@@ -64,21 +71,20 @@ class UserForm(forms.ModelForm):
     
     
 class UserUpdateForm(forms.ModelForm):
+    username = forms.CharField(required=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    email = forms.CharField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=False)
+    is_active = forms.ChoiceField(choices=[(1, 'Active'), (0, 'Inactive')], widget=forms.Select(attrs={"class": "form-control"}), required=False)
+    groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), widget=forms.SelectMultiple(attrs={"class": "form-control"}), required=False)
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password', 'groups', 'is_active']
         STATUS_CHOICES = {
             "0": "Inactive",
             "1": "Active",
-        }
-        widgets = {
-            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter User Name title", 'required': True}),
-            "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter First Name title", 'required': True}),
-            "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Last Name title", 'required': True}),
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Email title", 'required': True}),
-            "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter Password"}),
-            "is_active": forms.Select(attrs={"class": "form-control"}, choices=[(False, 'Inactive'),(True, 'Active')]),
-            "groups": forms.SelectMultiple(attrs={"class": "form-control"}),
         }
         
         
@@ -114,6 +120,21 @@ class UserUpdateForm(forms.ModelForm):
         
         return username
     
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+
+        if password:
+            if len(password) < 8:
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+
+            if not any(char.isupper() for char in password):
+                raise forms.ValidationError("Password must contain at least one uppercase letter.")
+
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+                raise forms.ValidationError("Password must contain at least one special character (e.g., @, #, $, etc.).")
+
+        return password  
+    
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -127,13 +148,12 @@ class UserUpdateForm(forms.ModelForm):
     
     
 class ProfileForm(forms.ModelForm):
+    description = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter description'}))
+
     class Meta:
         model = Profile
         fields = ['image', 'description']
-        widgets = {
-            'description': forms.Textarea(attrs={"class": "form-control", "placeholder": "Enter author description", "rows": 5, 'required': True}),
-        }
-
+        
     def clean_image(self):
         image = self.cleaned_data.get("image")
         if not image:

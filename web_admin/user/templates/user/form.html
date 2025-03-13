@@ -6,35 +6,35 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{% if user %}Edit{% else %}Create{% endif %} User</h5>
+                <h5>{% if form.instance.pk %}Edit{% else %}Create{% endif %} User</h5>
             </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.username.id_for_label }}">User Name</label>
-                        {{ form.username }}
+                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter Username" value="{{ form.username.value|default:'' }}">
                         {% if form.username.errors %}
                             <div class="text-danger">{{ form.username.errors }}</div>
                         {% endif %}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
-                        {{ form.first_name }}
+                        <input type="text" name="first_name" class="form-control" id="first_name" placeholder="Enter Firstname" value="{{ form.first_name.value|default:'' }}">
                         {% if form.first_name.errors %}
                             <div class="text-danger">{{ form.first_name.errors }}</div>
                         {% endif %}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
-                        {{ form.last_name }}
+                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Enter Lastname" value="{{ form.last_name.value|default:'' }}">
                         {% if form.last_name.errors %}
                             <div class="text-danger">{{ form.last_name.errors }}</div>
                         {% endif %}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
-                        {{ form.email }}
+                        <input type="text" name="email" class="form-control" id="email" placeholder="Enter Email" value="{{ form.email.value|default:'' }}">
                         {% if form.email.errors %}
                             <div class="text-danger">{{ form.email.errors }}</div>
                         {% endif %}
@@ -42,7 +42,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
-                        {{ form.password }}
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
                         {% if form.password.errors %}
                             <div class="text-danger">{{ form.password.errors }}</div>
                         {% endif %}
@@ -58,7 +58,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="{{ profile_form.description.id_for_label }}">Description</label>
-                        {{ profile_form.description }}
+                        <textarea name="description" class="form-control" id="description" placeholder="Enter description" rows="4">{{ profile_form.description.value|default:'' }}</textarea>
                         {% if profile_form.description.errors %}
                             <div class="text-danger">{{ profile_form.description.errors }}</div>
                         {% endif %}
@@ -79,7 +79,7 @@
                             <div class="text-danger">{{ form.is_active.errors }}</div>
                         {% endif %}
                     </div>
-                    <button type="submit" class="btn btn-primary">{% if form.password %} Update {% else %} Create {% endif %}</button>
+                    <button type="submit" class="btn btn-primary">{% if form.instance.pk %} Update {% else %} Create {% endif %}</button>
                     <a href="{% url 'user:user_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>

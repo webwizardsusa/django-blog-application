@@ -2,13 +2,12 @@ from django import forms
 from .models import Category
 
 class CategoryForm(forms.ModelForm):
+    name = forms.CharField(required=True)
+    description = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter description'}))
+    
     class Meta:
         model = Category
         fields = ['name', 'image', 'description']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter description', 'rows': 4}),
-        }
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
