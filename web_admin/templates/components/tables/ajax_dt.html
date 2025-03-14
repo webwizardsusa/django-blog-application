@@ -1,0 +1,87 @@
+{% load static %}
+
+{% if type == 'css' %}
+    <link rel="stylesheet" href="{% static 'css/plugins/dataTables.bootstrap5.min.css' %}">
+
+    <style>
+        .dt_section1{
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .dt_section3{
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .dt-paging{
+            display: flex;
+            justify-content: end;
+        }
+    </style>
+{% elif type == 'js' %}
+    <script src="{% static 'js/plugins/dataTables.bootstrap5.js' %}"></script>
+    <script src="{% static 'js/plugins/buttons.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'js/plugins/jszip.min.js' %}"></script>
+    <script src="{% static 'js/plugins/pdfmake.min.js' %}"></script>
+    <script src="{% static 'js/plugins/vfs_fonts.js' %}"></script>
+    <script src="{% static 'js/plugins/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'js/plugins/buttons.print.min.js' %}"></script>
+    <script src="{% static 'js/plugins/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'js/plugins/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/plugins/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'js/datatables.js' %}"></script>
+{% elif type == 'table' %}
+    <table id="{{ table_id }}" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+    </table>
+{% elif type == 'script' %}
+    <script>
+        function ajaxdatatable(data){
+            var options = {
+                "language": {
+                    "emptyTable": "No record found",
+                    "zeroRecords": "No record found",
+                    "loadingRecords": "No record found",
+                },
+                "processing": true, 
+                "serverSide": true, 
+                "dom": '<"row dt_section1"<"col-md-6"l><"col-md-6"f>><"row dt_section2"<"col-md-12"rt>><"row dt_section3"<"col-md-6"i><"col-md-6"p>>',
+                "ajax": {
+                    "url": data.url,
+                    "type": "post",
+                    "data": data.data,
+                    "dataSrc": function (json) {
+                        return json.data || []; 
+                    },
+                },
+                "columns": data.columns,
+                "order": data.order ? [data.order] : [[0, 'asc']]
+            };
+
+            $(data.selector).DataTable(options);
+        }
+        function actionColumn(data = {}) {
+            var action = '';
+
+            if ("edit" in data) {
+                action += '<a href="'+data['edit']+'" class="btn btn-sm btn-warning">Edit</a> ';
+            }
+
+            if ("delete" in data) {
+                action += '<a href="javascript:void(0);" data-href="'+data['delete']+'" class="btn btn-sm btn-danger" id="delete">Delete</a>';
+            }
+
+            return action;
+        }
+
+    </script>
+{% endif %}

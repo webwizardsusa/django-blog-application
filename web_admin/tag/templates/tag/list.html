@@ -1,10 +1,11 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load tags %}
+
+{% block title %}{{title}}{% endblock %}
 
 {% block page_css %}
-<!-- [Page specific CSS] start -->
-<link rel="stylesheet" href="{% static 'css/plugins/dataTables.bootstrap5.min.css' %}">
-<!-- [Page specific CSS] end -->
+    {% datatable 'css' %}
 {% endblock %}
 
 {% block content %}
@@ -13,43 +14,66 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="mb-0">Tags</h4>
-                    <a href="{% url 'tag:tag_create' %}" class="btn btn-primary">Add Tag</a>
+                    <h4 class="mb-0">Tag Management</h4>
+                    {% if can_add_tag %}
+                        <a href="{% url 'tag:tag_create' %}" class="btn btn-primary">Add Tag</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="card-body">
-                <div class="dt-responsive">
-                    <table id="tag-table" class="table table-striped table-bordered nowrap">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Total Posts</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+                {% datatable 'table' table_id='tags' columns=columns %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block page_js %}
-<!-- [Page Specific JS] start -->
-{% include 'layout/partials/_scripts.html' %}
-<script> 
-    initializeDataTable('#tag-table', "{% url 'tag:tag_list' %}", [
-        { "data": "name" },
-        { "data": "total_posts" },
-        { "data": "created_at" },
-        {
-            "data": "actions",
-            "orderable": false,
-            "searchable": false
-        }
-    ]);
+{% block js %}
+    {% datatable 'js' %}
+    {% sweetalert 'js' %}
+{% endblock %}
+
+{% block script %}
+    {% include 'layout/partials/_scripts.html' %}
+    {% datatable 'script' %}
+    {% sweetalert 'script' %}
+    <script>
+        $(function(){
+            ajaxdatatable({
+                selector: '#tags', 
+                url: '{% url "tag:tag_datatable" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                columns: [
+                    { "data": "name" },
+                    { "data": "total_posts", "searchable": false, "orderable": false }, 
+                    { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
+                        let action = {};
+                        {% if can_edit_tag %}
+                            action['edit'] = '{% url "tag:tag_edit" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        {% if can_delete_tag %}
+                            action['delete'] = '{% url "tag:tag_delete" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        return actionColumn(action)
+                    }},
+                ],
+                order: [0, 'desc']
+            })
+        })  
+        $(document).on('click', '#delete', function(e){
+            e.preventDefault;
+
+            var url = $(this).data('href');
+            var fields = '{% csrf_token %}';
+
+            sweetalert().then((result) => {
+                if (result.isConfirmed) {
+                    postform(url, fields)
+                }
+            })
+        })
+            
     </script>
-  <!-- [Page Specific JS] end -->
 {% endblock %}

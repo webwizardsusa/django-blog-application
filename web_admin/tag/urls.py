@@ -1,12 +1,13 @@
 # web_admin/tag/urls.py
 from django.urls import path
-from . import views
+from .views import TagView
 
 app_name = 'tag'
 
 urlpatterns = [
-    path('', views.tag_list, name='tag_list'),
-    path('create/', views.tag_create, name='tag_create'),
-    path('<int:pk>/edit/', views.tag_edit, name='tag_edit'),
-    path('<int:pk>/delete/', views.tag_delete, name='tag_delete'),
+    path('', TagView().list, name='tag_list'),
+    path('create/', TagView().form, name='tag_create'),
+    path('<int:id>/edit/', TagView().form, name='tag_edit'),
+    path('<int:id>/delete/',  TagView().delete, name='tag_delete'),
+    path("datatable", TagView().datatable, name="tag_datatable"),
 ]

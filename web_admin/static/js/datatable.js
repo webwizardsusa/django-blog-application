@@ -12,6 +12,9 @@ function initializeDataTable(tableId, ajaxUrl, columns, additionalData) {
         "columns": columns,
         "pageLength": 10,
         "lengthMenu": [10, 25, 50, 100],
-        "order": [[5, "desc"]]  
+        "order": [[0, "asc"]],  
+        "columnDefs": [
+            { "orderable": false, "targets": [1] }  
+        ]
     });
 }
