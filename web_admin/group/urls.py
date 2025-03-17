@@ -1,11 +1,12 @@
 from django.urls import path
-from . import views
+from .views import GroupView
 
 app_name = 'group' 
 
 urlpatterns =[
-    path('', views.group_list, name='group_list'),
-    path('create/', views.group_create, name='group_create'),
-    path('<int:pk>/edit/', views.group_edit, name='group_edit'),
-    path('<int:pk>/delete/', views.group_delete, name='group_delete'),
+    path('', GroupView().list, name='group_list'),
+    path('create/', GroupView().form, name='group_create'),
+    path('<int:id>/edit/', GroupView().form, name='group_edit'),
+    path('<int:id>/delete/', GroupView().delete, name='group_delete'),
+    path("datatable", GroupView().datatable, name="group_datatable"),
 ]

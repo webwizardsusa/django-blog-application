@@ -5,9 +5,6 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header">
-                <h5>{% if post %}Edit{% else %}Create{% endif %} Post</h5>
-            </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -69,7 +66,7 @@
                             <div class="text-danger">{{ form.is_published.errors }}</div>
                         {% endif %}
                     </div>
-                    <button type="submit" class="btn btn-primary">{% if post %} Update {% else %} Create {% endif %}</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
