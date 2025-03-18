@@ -16,18 +16,22 @@
                         <span class="pc-mtext" data-i18n="Dashboard">Dashboard</span> 
                     </a>
                 </li>
+                {% if can_view_category %}
                 <li class="pc-item">
                     <a href="{% url 'category:category_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-layout"></i></span>
                         <span class="pc-mtext" data-i18n="Categories">Categories</span>
                     </a>
                 </li>
+                {% endif %}
+                {% if can_view_post %}
                 <li class="pc-item">
                     <a href="{% url 'post:post_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-cards"></i></span>
                         <span class="pc-mtext" data-i18n="Posts">Posts</span>
                     </a>
                 </li>
+                {% endif %}
                 {% if can_view_tag %}
                 <li class="pc-item">
                     <a href="{% url 'tag:tag_list' %}" class="pc-link">
@@ -36,18 +40,22 @@
                     </a>
                 </li>
                 {% endif %}
+                {% if can_view_group %}
                 <li class="pc-item">
                     <a href="{% url 'group:group_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-users-three"></i></span>
                         <span class="pc-mtext" data-i18n="Groups">Groups</span>
                     </a>
                 </li>
+                {% endif %}
+                {% if can_view_user %}
                 <li class="pc-item">
                     <a href="{% url 'user:user_list' %}" class="pc-link">
                         <span class="pc-micon"><i class="ph ph-layout"></i></span>
                         <span class="pc-mtext" data-i18n="Users">Users</span>
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>

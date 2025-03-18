@@ -1,7 +1,7 @@
 from web_admin.common.crud_views import CrudView
+from django.db.models import Count
 from .models import Tag
 from .forms import TagForm
-from django.db.models import Count
 
 class TagView(CrudView):
     module = 'Tag'

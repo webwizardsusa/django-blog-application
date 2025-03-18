@@ -40,6 +40,9 @@ class CrudView:
         query = _dt['query']
 
         data = []
+       
+        if hasattr(self, "_filter"):
+            query = self._filter(query, request)
 
         search = request.POST.get('search[value]', '').strip()
         order_column = int(request.POST.get('order[0][column]', 0)) 

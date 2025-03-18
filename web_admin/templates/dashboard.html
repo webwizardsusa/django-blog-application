@@ -59,7 +59,12 @@
                         </tr>
                         {% for post in posts %}
                         <tr>
-                            <td><img src="{{ post.image.url }}" alt="post img" class="img-fluid rounded" width="50" height="50">
+                            <td>
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="post img" class="img-fluid rounded" width="50" height="50">
+                            {% else %}
+                                <p>No Image</p>
+                            {% endif %}
                             </td>
                             <td>{{ post.title | truncatechars:20 }}</td>
                             <td>{{ post.category.name }}</td>

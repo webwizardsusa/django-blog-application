@@ -1,13 +1,12 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header">
-                <h5>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Category</h5>
-            </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -35,7 +34,8 @@
                             <div class="text-danger">{{ form.description.errors }}</div>
                         {% endif %}
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{% url 'category:category_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>
