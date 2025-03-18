@@ -21,5 +21,5 @@ class UserView(CrudView):
             'sort': ['username', 'email', 'first_name', 'last_name', 'is_active'],  
             'search': ['username__icontains', 'email__icontains', 'first_name__icontains', 'last_name__icontains'],
             'select': ['id', 'username', 'email', 'first_name', 'last_name', 'is_active'], 
-            'query': self.model.objects.all()  
+            'query' : self.model.objects.filter(is_superuser=False)
         }
