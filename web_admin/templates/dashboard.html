@@ -5,40 +5,48 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6 col-xl-3">
-        <div class="card bg-grd-primary order-card">
-            <div class="card-body">
-                <h6 class="text-white">Total Posts</h6>
-                <h2 class="text-end text-white"><i
-                        class="feather icon-file float-start"></i><span>{{ total_posts }}</span></h2>
+        <a href="{% url 'post:post_list' %}" class="text-decoration-none">
+            <div class="card bg-grd-primary order-card">
+                <div class="card-body">
+                    <h6 class="text-white">Total Posts</h6>
+                    <h2 class="text-end text-white"><i
+                            class="feather icon-file float-start"></i><span>{{ total_posts }}</span></h2>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-md-6 col-xl-3">
-        <div class="card bg-grd-success order-card">
-            <div class="card-body">
-                <h6 class="text-white">Total Users</h6>
-                <h2 class="text-end text-white"><i
-                        class="feather icon-users float-start"></i><span>{{ users_count }}</span></h2>
+        <a href="{% url 'user:user_list' %}" class="text-decoration-none">
+            <div class="card bg-grd-success order-card">
+                <div class="card-body">
+                    <h6 class="text-white">Total Users</h6>
+                    <h2 class="text-end text-white"><i
+                            class="feather icon-users float-start"></i><span>{{ users_count }}</span></h2>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-md-6 col-xl-3">
-        <div class="card bg-grd-warning order-card">
-            <div class="card-body">
-                <h6 class="text-white">Total Categories</h6>
-                <h2 class="text-end text-white"><i
-                        class="feather icon-align-justify float-start"></i><span>{{ total_category }}</span></h2>
+        <a href="{% url 'category:category_list' %}" class="text-decoration-none">
+            <div class="card bg-grd-warning order-card">
+                <div class="card-body">
+                    <h6 class="text-white">Total Categories</h6>
+                    <h2 class="text-end text-white"><i
+                            class="feather icon-align-justify float-start"></i><span>{{ total_category }}</span></h2>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-md-6 col-xl-3">
-        <div class="card bg-grd-danger order-card">
-            <div class="card-body">
-                <h6 class="text-white">Total Tags</h6>
-                <h2 class="text-end text-white"><i
-                        class="feather icon-tag float-start"></i><span>{{ total_tags }}</span></h2>
+        <a href="{% url 'tag:tag_list' %}" class="text-decoration-none">
+            <div class="card bg-grd-danger order-card">
+                <div class="card-body">
+                    <h6 class="text-white">Total Tags</h6>
+                    <h2 class="text-end text-white"><i
+                            class="feather icon-tag float-start"></i><span>{{ total_tags }}</span></h2>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <!-- Recent Orders start -->
     <div class="col-sm-12">

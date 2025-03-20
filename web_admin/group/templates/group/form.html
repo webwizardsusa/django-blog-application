@@ -24,12 +24,12 @@
                                 {% ifchanged permission.content_type.model %}
                                     {% if not forloop.first %}</div>{% endif %}
                                     <div class="col-md-3 mt-4">
-                                        <h5 class="mb-3 text-primary text-uppercase"">{{ permission.content_type.model}}</h5>
+                                        <h5 class="mb-3 text-primary text-uppercase">{{ permission.content_type.model}}</h5>
                                 {% endifchanged %}
 
                                 <div class="form-check form-switch mb-2">
                                     <label class="custom-switch" for="permission-switch-{{permission.id}}">
-                                        <input type="checkbox" class="form-check-input custom-switch-input" name="permissions" value={{permission.id}} id="permission-switch-{{permission.id}}" {% if permission.id in form.permissions.value %}checked{% endif %}> 
+                                        <input type="checkbox" class="form-check-input custom-switch-input" name="permissions" value={{permission.id}} id="permission-switch-{{permission.id}}" {% if permission.id in form.permissions.value %}checked{% endif %}{% if form.instance.name == 'web_admin' and permission.content_type.model == 'group' %}readonly onclick="return false;"{% endif %}>    
                                         <span class="custom-switch-indicator mr-2"></span>
                                         {% if "add" in permission.name %}
                                             Add
