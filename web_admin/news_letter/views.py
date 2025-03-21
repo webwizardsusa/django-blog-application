@@ -10,8 +10,9 @@ def news_letters_list(request):
     context = {
         "news_letters": news_letters,
         "breadcrumb_title": "News Letters",
-        "breadcrumbs": [
-            {"name": "News Letters"}
+        'title': 'News Letters',
+        "breadcrumb": [
+            {"text": "News Letters", "url": reverse('news_letter:news_letters_list')},
         ]
     }
 
@@ -30,10 +31,10 @@ def news_letter_create(request):
 
     context = {
         "form": form,
-        "breadcrumb_title": "News Letter Management",
-        "breadcrumbs": [
-            {"name": "News Letters", "url": reverse('news_letter:news_letters_list')},
-            {"name": "Create New Letter"}
+        "title": "News Letters",
+        "text": "Create News Letter",
+        "breadcrumb": [
+            {"text": "Create News Letter", "url": reverse('news_letter:news_letters_list')},
         ]
     }
     return render(request, 'news_letters/form.html', context)
@@ -54,10 +55,10 @@ def news_letter_edit(request, pk):
 
     context = {
         "form": form,
-        "breadcrumb_title": "News Letter Management",
-        "breadcrumbs": [
-            {"name": "News Letters", "url": reverse('news_letter:news_letters_list')},
-            {"name": "Edit News Letter"}
+        "title": "News Letters",
+        "text": "Edit News Letter",
+        "breadcrumb": [
+            {"text": "Edit News Letter", "url": reverse('news_letter:news_letters_list')},
         ]
     }
     return render(request, 'news_letters/form.html', context)

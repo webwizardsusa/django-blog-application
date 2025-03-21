@@ -1,6 +1,8 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block page_css %}
 <!-- [Page specific CSS] start -->
 <link rel="stylesheet" href="{% static 'css/plugins/dataTables.bootstrap5.min.css' %}">
@@ -37,6 +39,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">News Letter Management</h4>
                     <a href="{% url 'news_letter:news_letter_create' %}" class="btn btn-primary">Add News Letter</a>
                 </div>
             </div>

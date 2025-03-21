@@ -1,12 +1,16 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{% if news_letter %}Edit{% else %}Create{% endif %} News Letter</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">{{text}}</h4>
+                </div>
             </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
