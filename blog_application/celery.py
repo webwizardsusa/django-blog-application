@@ -19,6 +19,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'send_email_every_day': {
         'task': 'public_site.tasks.send_news_letter_task',
-        'schedule': crontab(minute='*/1'),  # Runs every day at 9 AM
+        'schedule': crontab(minute='*/150'),  # Runs every day at 9 AM
     },
 }
