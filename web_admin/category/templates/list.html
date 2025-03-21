@@ -1,10 +1,11 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load tags %}
+
+{% block title %}{{title}}{% endblock %}
 
 {% block page_css %}
-<!-- [Page specific CSS] start -->
-<link rel="stylesheet" href="{% static 'css/plugins/dataTables.bootstrap5.min.css' %}">
-<!-- [Page specific CSS] end -->
+    {% datatable 'css' %}
 {% endblock %}
 
 {% block content %}
@@ -13,59 +14,83 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="mb-0">Categories</h4>
-                    <a href="{% url 'category:category_create' %}" class="btn btn-primary">Add Category</a>
+                    <h4 class="mb-0">Category Management</h4>
+                    {% if can_add_category %}
+                        <a href="{% url 'category:category_create' %}" class="btn btn-primary">Add Category</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="card-body">
-                <div class="dt-responsive">
-                    <table id="category-table" class="table table-striped table-bordered nowrap">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Total Blogs</th>
-                                <th>Image</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+                {% datatable 'table' table_id='categories' columns=columns %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block page_js %}
-{% include 'layout/partials/_scripts.html' %}
+{% block js %}
+    {% datatable 'js' %}
+    {% sweetalert 'js' %}
+{% endblock %}
 
-<script>
-  initializeDataTable('#category-table', "{% url 'category:category_list' %}", [
-        { "data": "name" },
-        { "data": "total_blogs" },
-        {
-            "data": "image", 
-            "orderable": false,
-            "searchable": false,
-            "render": function(data, type, row) {
-                if (data) {
-                    return `<img src="${data}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">`;
-                } else {
-                    return "<span>No Image</span>";
+{% block script %}
+    {% include 'layout/partials/_scripts.html' %}
+    {% datatable 'script' %}
+    {% sweetalert 'script' %}
+    <script>
+        $(function(){
+            ajaxdatatable({
+                selector: '#categories', 
+                url: '{% url "category:category_datatable" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                columns: [
+                    { "data": "name" },
+                    { "data": "total_posts", "searchable": false, "orderable": false }, 
+                    {
+                        "data": "image", 
+                        "orderable": false,
+                        "searchable": false,
+                        "render": function(data, type, row) {
+                            if (data) {
+                                let imageUrl = `/media/${data}`;
+                                return `<img src="${imageUrl}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">`;
+                            } else {
+                                return "<span>No Image</span>";
+                            }
+                        }
+                    },
+                    {
+                        "data": "created_at",
+                        "render": data => data ? new Date(data).toLocaleDateString('en-US') : "N/A"
+                    },
+                    { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
+                        let action = {};
+                        {% if can_edit_category %}
+                            action['edit'] = '{% url "category:category_edit" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        {% if can_delete_category %}
+                            action['delete'] = '{% url "category:category_delete" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        return actionColumn(action)
+                    }},
+                ],
+                order: [0, 'desc']
+            })
+        })  
+        $(document).on('click', '#delete', function(e){
+            e.preventDefault;
+
+            var url = $(this).data('href');
+            var fields = '{% csrf_token %}';
+
+            sweetalert().then((result) => {
+                if (result.isConfirmed) {
+                    postform(url, fields)
                 }
-            }
-        },
-        { "data": "created_at" },
-        {
-            "data": null,
-            "orderable": false,
-            "searchable": false,
-            "render": function(data, type, row) {
-                return data.actions;
-            }
-        }
-    ]);
-</script>
-  <!-- [Page Specific JS] end -->
+            })
+        })
+            
+    </script>
 {% endblock %}

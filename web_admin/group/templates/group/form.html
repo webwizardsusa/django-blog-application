@@ -1,0 +1,56 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.name.id_for_label }}">Group Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+            
+                    <div class="mb-3">
+                        <div class="row">
+                            {% for permission in form.permissions.field.queryset %}
+                                {% ifchanged permission.content_type.model %}
+                                    {% if not forloop.first %}</div>{% endif %}
+                                    <div class="col-md-3 mt-4">
+                                        <h5 class="mb-3 text-primary text-uppercase"">{{ permission.content_type.model}}</h5>
+                                {% endifchanged %}
+
+                                <div class="form-check form-switch mb-2">
+                                    <label class="custom-switch" for="permission-switch-{{permission.id}}">
+                                        <input type="checkbox" class="form-check-input custom-switch-input" name="permissions" value={{permission.id}} id="permission-switch-{{permission.id}}" {% if permission.id in form.permissions.value %}checked{% endif %}> 
+                                        <span class="custom-switch-indicator mr-2"></span>
+                                        {% if "add" in permission.name %}
+                                            Add
+                                        {% elif "change" in permission.name %}
+                                            Edit  
+                                        {% elif "delete" in permission.name %}
+                                            Delete 
+                                        {% elif "view" in permission.name %}
+                                            List 
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% if forloop.last %}</div>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>   
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{% url 'group:group_list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

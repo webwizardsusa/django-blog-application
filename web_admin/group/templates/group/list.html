@@ -1,0 +1,78 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block page_css %}
+    {% datatable 'css' %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">Group Management</h4>
+                    {% if can_add_group %}
+                        <a href="{% url 'group:group_create' %}" class="btn btn-primary">Add Group</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                {% datatable 'table' table_id='groups' columns=columns %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {% datatable 'js' %}
+    {% sweetalert 'js' %}
+{% endblock %}
+
+{% block script %}
+    {% include 'layout/partials/_scripts.html' %}
+    {% datatable 'script' %}
+    {% sweetalert 'script' %}
+    <script>
+        $(function(){
+            ajaxdatatable({
+                selector: '#groups', 
+                url: '{% url "group:group_datatable" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                columns: [
+                    { "data": "name" },
+                    { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
+                        let action = {};
+                        {% if can_edit_group %}
+                            action['edit'] = '{% url "group:group_edit" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        {% if can_delete_group %}
+                            action['delete'] = '{% url "group:group_delete" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        return actionColumn(action)
+                    }},
+                ],
+                order: [0, 'desc']
+            })
+        })  
+        $(document).on('click', '#delete', function(e){
+            e.preventDefault;
+
+            var url = $(this).data('href');
+            var fields = '{% csrf_token %}';
+
+            sweetalert().then((result) => {
+                if (result.isConfirmed) {
+                    postform(url, fields)
+                }
+            })
+        })
+            
+    </script>
+{% endblock %}

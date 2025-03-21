@@ -1,0 +1,164 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block page_css %}
+    {% datatable 'css' %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Advanced Search</h4>
+            </div>
+            <div class="card-body">
+                <form class="row g-3 align-items-center" method="GET" action="">
+                    <div class="col-md">
+                        <label for="categoryFilter" class="form-label">Category</label>
+                        <select name="category" class="form-select" id="categoryFilter">
+                            <option value="">All Categories</option>
+                            {% for category in results.categories %}
+                                <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>                        
+                    </div>
+                    <div class="col-md">
+                        <label for="authorFilter" class="form-label">Author</label>
+                        <select name="author" class="form-select" id="authorFilter">
+                            <option value="">All Authors</option>
+                            {% for author in results.authors %}
+                                <option value="{{ author.username }}" {% if request.GET.author == author.username %}selected{% endif %}>
+                                    {{ author.username }}
+                                </option>
+                            {% endfor %}
+                        </select>                        
+                    </div>
+                    <div class="col-md">
+                        <label for="tagFilter" class="form-label">Tag</label>
+                        <select name="tag" class="form-select" id="tagFilter">
+                            <option value="">All Tags</option>
+                            {% for tag in results.tags %}
+                                <option value="{{ tag.name }}" {% if request.GET.tag == tag.name %}selected{% endif %}>
+                                    {{ tag.name }}
+                                </option>
+                            {% endfor %}
+                        </select>                        
+                    </div>
+                    <div class="col-md d-flex align-items-end mt-5">
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Clear</a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">Post Management</h4>
+                    {% if can_add_post %}
+                        <a href="{% url 'post:post_create' %}" class="btn btn-primary">Add Post</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                {% datatable 'table' table_id='posts' columns=columns %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {% datatable 'js' %}
+    {% sweetalert 'js' %}
+{% endblock %}
+
+{% block script %}
+    {% include 'layout/partials/_scripts.html' %}
+    {% datatable 'script' %}
+    {% sweetalert 'script' %}
+    <script>
+        $(function(){
+            let urlParams = new URLSearchParams(window.location.search);
+            let category = urlParams.get("category") || "";
+            let author = urlParams.get("author") || "";
+            let tag = urlParams.get("tag") || "";
+
+            ajaxdatatable({
+                selector: '#posts', 
+                url: '{% url "post:post_datatable" %}',
+                data: function(d) {  
+                    d.csrfmiddlewaretoken = "{{ csrf_token }}";
+                    d.category = category;  
+                    d.author = author;
+                    d.tag = tag;
+                },
+                columns: [
+                    { "data": "title" },
+                    { "data": "category__name", "title": "Category" }, 
+                    {
+                        "data": "image", 
+                        "orderable": false,
+                        "searchable": false,
+                        "render": function(data, type, row) {
+                            if (data) {
+                                let imageUrl = `/media/${data}`;
+                                return `<img src="${imageUrl}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">`;
+                            } else {
+                                return "<span>No Image</span>";
+                            }
+                        }
+                    },
+                    { "data": "author__username", "title": "Author" },
+                    {
+                        "data": "is_published",
+                        "render": function (data) {
+                            return data 
+                                ? '<span class="badge bg-success">Published</span>' 
+                                : '<span class="badge bg-secondary">Draft</span>';
+                        }
+                    },
+                    {
+                        "data": "created_at",
+                        "render": data => data ? new Date(data).toLocaleDateString('en-US') : "N/A"
+                    },
+                    { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
+                        let action = {};
+                        {% if can_edit_post %}
+                            action['edit'] = '{% url "post:post_edit" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        {% if can_delete_post %}
+                            action['delete'] = '{% url "post:post_delete" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        return actionColumn(action)
+                    }},
+                ],
+                order: [0, 'desc']
+            })
+        })  
+
+        $('#categoryFilter').on('change', function() {
+            $('#posts').DataTable().ajax.reload();
+        });
+        $(document).on('click', '#delete', function(e){
+            e.preventDefault;
+
+            var url = $(this).data('href');
+            var fields = '{% csrf_token %}';
+
+            sweetalert().then((result) => {
+                if (result.isConfirmed) {
+                    postform(url, fields)
+                }
+            })
+        })
+            
+    </script>
+{% endblock %}

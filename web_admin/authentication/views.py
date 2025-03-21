@@ -10,11 +10,8 @@ def web_admin_login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            if user.groups.filter(name="web_admin").exists():
-                login(request, user)
-                return redirect("web_admin_dashboard")
-            else:
-                messages.error(request, "You do not have web admin access.")
+            login(request, user)
+            return redirect("web_admin_dashboard")
         else:
             messages.error(request, "Invalid username or password.")
 

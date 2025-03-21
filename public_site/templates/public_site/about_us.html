@@ -156,7 +156,7 @@
 
                 <div class="mt-6 leading-6">
                 <h3 class="text-xl font-medium text-gray-900">
-                    <a href="{% url 'blog_author' user_id=author.id %}">
+                    <a href="{% url 'post_author' username=author.username %}">
                     <span class="absolute inset-0" aria-hidden="true"></span>
                     {{ author.get_full_name }}
                     </a>

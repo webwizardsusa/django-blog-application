@@ -1,0 +1,19 @@
+{% load static %}
+
+{% if type == 'script' %}
+    <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
+    <script>
+        function sweetalert()
+        {
+            return Swal.fire({
+                title: "Are you sure?",
+                text: "You want to procced?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            });
+        }
+    </script>
+{% endif %}

@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web_admin',
+    'web_admin.common',
     'web_admin.authentication',
     'web_admin.myaccount',
     'web_admin.category',
-    'web_admin.blog',
+    'web_admin.post',
+    'web_admin.group',
     'web_admin.tag',
     'web_admin.user',
     'public_site',
@@ -52,9 +54,10 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'public_site.subscriber',
-    'public_site.contact',
     'django_celery_beat',
-    'celery'
+    'celery',
+    'public_site.contact',
+    'public_site.helpers',
 ]
 
 
@@ -84,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'web_admin.common.context_processors.user_permissions',
             ],
         },
     },
@@ -120,7 +124,7 @@ EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS') # Use TLS for secure connection
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS') # Use TLS for secure connection
 EMAIL_PORT = config('EMAIL_PORT')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')  # The default from email address
 
