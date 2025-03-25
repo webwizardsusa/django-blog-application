@@ -5,11 +5,14 @@
 <div class="card">
     <div class="card-body">
         <h4 class="f-w-500 mb-1">Login with your email</h4>
-        <p class="mb-4">Don't have an Account? <a href="register-v2.html" class="link-primary ms-1">Create Account</a>
+        <p class="mb-4">Don't have an Account?<a href="{% url 'authentication:register' %}" class="link-primary ms-1">Create Account</a>
         </p>
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-danger alert-error alert-dismissible fade show" role="alert">
+                <div class="alert alert-dismissible fade show 
+                    {% if message.tags == 'success' %} alert-success
+                    {% elif message.tags == 'error' %} alert-danger
+                    {% else %} alert-info {% endif %}" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>

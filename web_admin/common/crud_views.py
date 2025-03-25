@@ -40,7 +40,10 @@ class CrudView:
         query = _dt['query']
 
         data = []
-       
+
+        if hasattr(self, "_page_filter"):
+            query = self._page_filter(query, request.user)
+
         if hasattr(self, "_filter"):
             query = self._filter(query, request)
 
@@ -103,12 +106,15 @@ class CrudView:
             form = self.form_class(data=post_data, files=request.FILES, instance=instance)
             params.update({'form': form, **shared_data})
 
-            form_save = True
+            form_save = False
 
             if hasattr(self, '_save'):
+                print("_save comes")
                 form_save = self._save(params)
             else:
+                print("_save not comes")
                 if form.is_valid():
+                    form_save = True
                     if hasattr(self, '_afterSave'):
                         after_save = form.save(commit=False)
 

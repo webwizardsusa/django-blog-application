@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eeeeee;
+        }
+        .header h2 {
+            color: #333333;
+        }
+        .content {
+            padding: 20px 0;
+            color: #555555;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Welcome to Web Wizards usa, {{ author_name }}!</h2>
+        </div>
+        <div class="content">
+            <p>Dear {{ author_name }},</p>
+            <p>We are thrilled to have you join our community of authors. You can now access your account and start sharing your work with the world.</p>
+            <p>Your registered email: <strong>{{ author_email }}</strong></p>
+            <p>To get started, click the button below to log in to your account:</p>
+            <p style="text-align: center;">
+                <a href="{{ login_url }}" class="button">Login to Your Account</a>
+            </p>
+            <p>If you have any questions, feel free to reach out to our support team.</p>
+            <p>Best regards,</p>
+            <p><strong>WWU Team</strong></p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 WWU. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
