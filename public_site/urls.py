@@ -12,4 +12,9 @@ urlpatterns = [
     path('contact-us/', views.contact_us, name='contact_us'),
     # path("posts/", views.post_list, name='post_list'),
     # path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
+    path('login/', views.user_login, name='user_login'),
+    path('register/', views.register, name='register'),
+    path('logout/', views.user_logout, name='user_logout'),
+    path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
+    path('post/<int:post_id>/like/', views.like_post, name="like_post"),
 ]

@@ -20,6 +20,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     is_published = models.BooleanField(default=True)
+    published_at = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name='posts')

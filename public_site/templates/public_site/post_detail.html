@@ -76,7 +76,54 @@
                     </li>
                     {% endfor %}
                 </ul>
-
+                <div class="mt-6 flex items-center">
+                    <button id="like-btn" data-post-id="{{ post.id }}"
+                        class="flex items-center px-4 py-2 text-black bg-blue-950 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        
+                        <span id="like-icon">
+                            {% if has_liked %}
+                                ❤️
+                            {% else %}
+                                <i class="fa-regular fa-heart"></i>
+                            {% endif %}
+                        </span>
+                
+                        <span id="like-count" class="ml-2">{{ total_likes }} Likes</span>
+                    </button>
+                </div>                
+                <!-- Display Comments Section -->
+                <div class="mt-6 bg-gray-100 p-5 rounded-lg shadow">
+                    <h3 id="comment-count" class="text-xl font-semibold mb-4">
+                        Comments ({{ post.comments.count }})
+                    </h3>
+                    
+                    {% if post.comments.exists %}
+                        <ul id="comment-list">
+                            {% for comment in post.comments.all %}
+                                <li class="mb-4 p-4 border border-gray-300 rounded-lg bg-white">
+                                    <div class="flex items-center mb-2">
+                                        <strong class="text-gray-800">{{ comment.user.username }}</strong>
+                                        <span class="text-gray-500 text-sm ml-2">{{ comment.created_at|date:"Y-m-d H:i" }}</span>
+                                    </div>
+                                    <p class="text-gray-700">{{ comment.text }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p id="no-comments" class="text-gray-500 italic">No comments yet. Be the first to comment!</p>
+                    {% endif %}                    
+                </div>
+                
+                <div class="mt-6">
+                    <form id="comment-form" data-post-id="{{ post.id }}">
+                        {% csrf_token %}
+                        <textarea name="comment" rows="3" class="w-full rounded-md border border-gray-300 p-3 text-gray-800 focus:border-red-500 focus:ring-red-500" placeholder="Write your comment here..." required></textarea>
+                        <button type="submit" 
+                            class="px-4 py-2 text-black bg-blue-950 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <i class="fa-solid fa-paper-plane"></i> Send
+                        </button>                    
+                    </form>
+                </div>                
                 <!-- Social Share Buttons -->
                 {% comment %} <div class="py-8 sm:py-10">
                     <div class="flex items-center justify-between">
@@ -193,4 +240,113 @@
             </footer>
         </div>
     </article>
+{% endblock %}
+{% block page_js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $("#like-btn").click(function(e) {
+                e.preventDefault();
+                var postId = $(this).data("post-id");
+
+                $.ajax({
+                    url: "/post/" + postId + "/like/",
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function(response) {
+                        if (response.liked) {
+                            $("#like-icon").html("❤️");  
+                        } else {
+                            $("#like-icon").html('<i class="fa-regular fa-heart"></i>');  
+                        }
+                        $("#like-count").text(response.total_likes + " Likes");
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 403) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Oops! You need to log in",
+                                text: "Sign in to like posts and engage with the community!",
+                                confirmButtonText: "Login",
+                                confirmButtonColor: "#3085d6",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/login/";  
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops!",
+                                text: "Something went wrong. Please try again.",
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $("#comment-form").submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var postId = form.data("post-id");
+                var commentText = $("textarea[name='comment']").val();
+
+                $.ajax({
+                    url: "/post/" + postId + "/comment/",
+                    type: "POST",
+                    data: {
+                        comment: commentText,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            if ($("#comment-list").length === 0) {
+                                $(".mt-6.bg-gray-100.p-5.rounded-lg.shadow") 
+                                    .append('<ul id="comment-list"></ul>');
+                            }
+                            $("#no-comments").hide();
+                            $("#comment-list").prepend(`
+                                <li class="mb-4 p-4 border border-gray-300 rounded-lg bg-white">
+                                    <div class="flex items-center mb-2">
+                                        <strong class="text-gray-800">${response.comment.user}</strong>
+                                        <span class="text-gray-500 text-sm ml-2">${response.comment.created_at}</span>
+                                    </div>
+                                    <p class="text-gray-700">${response.comment.text}</p>
+                                </li>
+                            `);
+                            $("#comment-count").text(`Comments (${response.total_comments})`);
+                            $("textarea[name='comment']").val("");
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 403) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Oops! You need to log in",
+                                text: "Sign in to comment and engage with the community!",
+                                confirmButtonText: "Login",
+                                confirmButtonColor: "#3085d6",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/login/";  
+                                }
+                            });
+                        } else {
+                            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "Something went wrong!";
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops!",
+                                text: errorMessage
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>    
 {% endblock %}

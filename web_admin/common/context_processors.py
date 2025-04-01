@@ -22,4 +22,6 @@ def user_permissions(request):
         'can_edit_user': has_perm('auth.change_user'),
         'can_delete_user': has_perm('auth.delete_user'),
         'can_view_user': has_perm('auth.view_user'),
+        'can_view_comment': has_perm('public_site.view_comment'),
+        'can_delete_comment': has_perm('public_site.delete_comment'),
     }

@@ -1,24 +1,26 @@
 from django import forms
 from .models import Post
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'category', 'tags', 'image', 'content', 'is_published', 'author']
+        fields = ['title', 'category', 'tags', 'image', 'content', 'is_published', 'author', 'published_at']
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter post title"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
             "author": forms.Select(attrs={"class": "form-control"}),
             "is_published": forms.Select(choices=Post.STATUS_CHOICES, attrs={"class": "form-control"}),
+            "published_at": forms.DateInput(attrs={"class": "form-control", "type": "date"})
         }
 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Apply the filter for authors with a specific condition
-        self.fields['author'].queryset = User.objects.filter(groups__id=2)
+        self.fields['author'].queryset = User.objects.filter(groups__name="author")
         
         
     def clean_title(self):
@@ -39,3 +41,18 @@ class PostForm(forms.ModelForm):
         if not image:
             return None  # Ensure None is returned if no image is uploaded
         return image
+
+    def clean_published_at(self):
+        is_published = self.cleaned_data.get("is_published")
+        published_at = self.cleaned_data.get("published_at")
+
+        if self.instance.pk:  
+            return published_at  
+
+        if is_published and not published_at:
+            raise forms.ValidationError("Please provide a published date when publishing the post.")
+        
+        if published_at and published_at <= now().date(): 
+            raise forms.ValidationError("Published date must be in the future.")
+
+        return published_at

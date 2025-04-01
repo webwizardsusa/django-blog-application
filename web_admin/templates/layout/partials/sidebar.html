@@ -56,6 +56,14 @@
                     </a>
                 </li>
                 {% endif %}
+                {% if can_view_comment %}
+                <li class="pc-item">
+                    <a href="{% url 'comment:comment_list' %}" class="pc-link">
+                        <span class="pc-micon"><i class="ph ph-chat"></i></span>
+                        <span class="pc-mtext" data-i18n="Comments">Comments</span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

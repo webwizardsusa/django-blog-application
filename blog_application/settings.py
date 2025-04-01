@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'web_admin.group',
     'web_admin.tag',
     'web_admin.user',
+    'web_admin.comment',
     'public_site',
     'public_site.contact',
     'public_site.helpers',

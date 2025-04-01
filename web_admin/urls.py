@@ -9,5 +9,6 @@ urlpatterns = [
     path('group/', include('web_admin.group.urls', namespace='group')),
     path('tag/', include('web_admin.tag.urls', namespace='tag')),
     path('user/', include('web_admin.user.urls', namespace='user')),
+    path('comment/', include('web_admin.comment.urls', namespace='comment')),
     path('myaccount/', include('web_admin.myaccount.urls', namespace='myaccount')),
 ]

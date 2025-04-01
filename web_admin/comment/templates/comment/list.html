@@ -1,0 +1,78 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block page_css %}
+    {% datatable 'css' %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">Comment Management</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                {% datatable 'table' table_id='comments' columns=columns %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {% datatable 'js' %}
+    {% sweetalert 'js' %}
+{% endblock %}
+
+{% block script %}
+    {% include 'layout/partials/_scripts.html' %}
+    {% datatable 'script' %}
+    {% sweetalert 'script' %}
+    <script>
+        $(function(){
+            ajaxdatatable({
+                selector: '#comments', 
+                url: '{% url "comment:comment_datatable" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                columns: [
+                    { "data": "text" },
+                    { "data": "post__title", "title": "Post" }, 
+                    { "data": "user__username", "title": "Username" }, 
+                    {
+                        "data": "created_at",
+                        "render": data => data ? new Date(data).toLocaleDateString('en-US') : "N/A"
+                    },
+                    { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
+                        let action = {};
+                        {% if can_delete_comment %}
+                            action['delete'] = '{% url "comment:comment_delete" id=0 %}'.replace('0', row.id)
+                        {% endif %}
+                        return actionColumn(action)
+                    }},
+                ],
+                order: [0, 'desc']
+            })
+        })  
+        $(document).on('click', '#delete', function(e){
+            e.preventDefault;
+
+            var url = $(this).data('href');
+            var fields = '{% csrf_token %}';
+
+            sweetalert().then((result) => {
+                if (result.isConfirmed) {
+                    postform(url, fields)
+                }
+            })
+        })
+            
+    </script>
+{% endblock %}

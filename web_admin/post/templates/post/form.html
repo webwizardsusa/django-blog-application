@@ -66,6 +66,14 @@
                             <div class="text-danger">{{ form.is_published.errors }}</div>
                         {% endif %}
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ form.published_at.id_for_label }}">Published at</label>
+                        {{ form.published_at }}
+                        {% if form.published_at.errors %}
+                            <div class="text-danger">{{ form.published_at.errors }}</div>
+                        {% endif %}
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
