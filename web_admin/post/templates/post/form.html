@@ -1,74 +1,188 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
+                <div class="step-indicator">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="step-circle active" id="step-indicator-1">1</div>
+                        <div class="step-line"></div>
+                        <div class="step-circle" id="step-indicator-2">2</div>
+                    </div>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" id="step-form">
+                    {% csrf_token %}
+                    
+                    <!-- Step 1 -->
+                    <div id="step-1">
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.category.id_for_label }}">Category</label>
+                            <div class="d-flex align-items-center">
+                                {{ form.category }} 
+                                <button type="button" class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="error-container mt-1"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.tags.id_for_label }}">Tags</label>
+                            <div class="d-flex align-items-center">
+                                {{ form.tags }}
+                            </div>
+                            {% if form.tags.errors %}
+                                <div class="text-danger">{{ form.tags.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.author.id_for_label }}">Author</label>
+                            <div class="d-flex align-items-center">
+                                {{ form.author }} 
+                                <button type="button" class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#addAuthorModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="error-container mt-1"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" id="next-step" class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="step-2" style="display: none;">
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.title.id_for_label }}">Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
+                            <textarea name="content" id="id_content" class="form-control" placeholder="Enter post content">{{ form.content.value }}</textarea>                        
+                            {% if form.content.errors %}
+                                <div class="text-danger">{{ form.content.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label"> Image</label>
+                            <input type="file" name="image" id="image" class="form-control">
+                            {% if form.image.errors %}
+                                <div class="text-danger">{{ form.image.errors }}</div>
+                            {% endif %}
+                            {% if post and post.image %}
+                                <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-2" width="150">
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.is_published.id_for_label }}">Is published</label>
+                            {{ form.is_published }}
+                            {% if form.is_published.errors %}
+                                <div class="text-danger">{{ form.is_published.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" id="prev-step" class="btn btn-secondary">Previous</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="categoryErrorMessage" class="d-none"></div> <!-- Error Message Container -->
+                <form id="addCategoryForm">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label" for="{{ form.title.id_for_label }}">Title</label>
-                        {{ form.title }}
-                        {% if form.title.errors %}
-                            <div class="text-danger">{{ form.title.errors }}</div>
-                        {% endif %}
+                        <label for="name" class="form-label">Category Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter category name" required>
                     </div>
-
                     <div class="mb-3">
-                        <label class="form-label" for="{{ form.category.id_for_label }}">Category</label>
-                        {{ form.category }}
-                        {% if form.category.errors %}
-                            <div class="text-danger">{{ form.category.errors }}</div>
-                        {% endif %}
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" placeholder="Enter category description" required></textarea>
                     </div>
+                    <button type="submit" class="btn btn-primary">Save Category</button>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
 
-                    <div class="mb-3">
-                        <label class="form-label" for="{{ form.tags.id_for_label }}">Tags</label>
-                        {{ form.tags }}
-                        {% if form.tags.errors %}
-                            <div class="text-danger">{{ form.tags.errors }}</div>
-                        {% endif %}
-                    </div>                    
+<!-- Add Author Modal -->
+<div class="modal fade" id="addAuthorModal" tabindex="-1" aria-labelledby="addAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAuthorModalLabel">Add New Author</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="authorErrorMessage" class="alert alert-danger d-none mx-3 mt-3"></div>
 
+            <div class="modal-body">
+                <form id="addAuthorForm">
+                    {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
-                        <textarea name="content" id="id_content" class="form-control" placeholder="Enter post content">{{ form.content.value }}</textarea>                        
-                        {% if form.content.errors %}
-                            <div class="text-danger">{{ form.content.errors }}</div>
-                        {% endif %}
+                        <label for="username" class="form-label">User Name</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required>
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.image.id_for_label }}" class="form-label"> Image</label>
-                        <input type="file" name="image" id="image" class="form-control">
-                        {% if form.image.errors %}
-                            <div class="text-danger">{{ form.image.errors }}</div>
-                        {% endif %}
-                        {% if post and post.image %}
-                            <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-2" width="150">
-                        {% endif %}
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" placeholder="Enter email" required>
                     </div>
-
                     <div class="mb-3">
-                        <label class="form-label" for="{{ form.author.id_for_label }}">Author</label>
-                        {{ form.author }}
-                        {% if form.author.errors %}
-                            <div class="text-danger">{{ form.author.errors }}</div>
-                        {% endif %}
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="author_description" class="form-control" placeholder="Enter author description" required></textarea>
                     </div>
+                    <button type="submit" class="btn btn-primary">Save Author</button>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Add Tag Modal -->
+<div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTagModalLabel">Add New Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="tagErrorMessage" class="d-none"></div> 
+                <form id="addTagForm">
+                    {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label" for="{{ form.is_published.id_for_label }}">Is published</label>
-                        {{ form.is_published }}
-                        {% if form.is_published.errors %}
-                            <div class="text-danger">{{ form.is_published.errors }}</div>
-                        {% endif %}
+                        <label for="tag_name" class="form-label">Tag Name</label>
+                        <input type="text" name="tag_name" id="tag_name" class="form-control" placeholder="Enter tag name" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{% url 'post:post_list' %}" class="btn btn-secondary">Cancel</a>
-                </form>
+                    <button type="submit" class="btn btn-primary">Save Tag</button>
+                </form>                
             </div>
         </div>
     </div>
@@ -78,18 +192,249 @@
 {% block page_css %}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .step-indicator {
+        padding: 20px 0;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .step-circle {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #6c757d;
+        font-size: 12px;
+        z-index: 1;
+    }
+    
+    .step-circle.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .step-line {
+        flex-grow: 1;
+        height: 2px;
+        background-color: #e9ecef;
+        margin: 0 15px;
+    }
+
+    .error-container {
+        min-height: 24px;  /* Reserve space for error message */
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.875rem;
+        display: block;
+        margin-top: 0.25rem;
+    }
+</style>
 {% endblock %}
 
 {% block page_js %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/rich-text-editor-vj@3.0.6/js/froala_editor.min.js"></script>
 <script>
+    document.getElementById("next-step").addEventListener("click", function() {
+        var step1Fields = [
+            {id: "id_category", name: "Category"},
+            {id: "id_author", name: "Author"}
+        ];
+        var hasErrors = false;
+        
+        step1Fields.forEach(function(field) {
+            var input = document.getElementById(field.id);
+            var errorContainer = input.closest('.mb-3').querySelector('.error-container');
+            
+            errorContainer.innerHTML = '';
+
+            if (!input.value) {
+                hasErrors = true;
+                errorContainer.innerHTML = `<div class="text-danger">${field.name} is required.</div>`;
+            }
+        });
+
+        if (!hasErrors) {
+            document.getElementById("step-1").style.display = "none";
+            document.getElementById("step-2").style.display = "block";
+            document.getElementById("step-indicator-2").classList.add("active");
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectFields = document.querySelectorAll('select.form-control');
+        selectFields.forEach(function(field) {
+            field.removeAttribute('required');
+        });
+    });
+
+    $(document).ready(function() {
+        $('#id_category, #id_author').on('change', function() {
+            var errorContainer = this.closest('.mb-3').querySelector('.error-container');
+            errorContainer.innerHTML = '';
+        });
+    });
+
     $(document).ready(function() {
         $('.form-control[multiple]').select2({
             placeholder: "Select tags",
+            allowClear: true,
+        });
+    });
+
+    $(document).ready(function() {
+        $('#category').select2({
+            placeholder: "Select Category",
             allowClear: true
         });
     });
     new FroalaEditor('#id_content')
+    $(document).ready(function() {
+        $("#addCategoryForm").submit(function(event) {
+            event.preventDefault();
+
+            $("#categoryErrorMessage").addClass("d-none").html("");  
+
+            var formData = {
+                'name': $("#name").val(),  
+                'description': $("#description").val(),  
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'post:create_category' %}", 
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        var newOption = new Option(response.name, response.id, true, true);
+                        $('#id_category').append(newOption).trigger('change');
+
+                        $("#addCategoryModal").modal('hide');
+                        $("#addCategoryForm")[0].reset();
+                        $("#categoryErrorMessage").addClass("d-none").html(""); 
+                    }
+                },
+                error: function(xhr) {
+                    var errors = JSON.parse(xhr.responseText).errors;
+                    var errorMessage = "<div class='alert alert-danger'><ul>";
+
+                    for (const key in errors) {
+                        errorMessage += "<li>" + errors[key] + "</li>";
+                    }
+                    errorMessage += "</ul></div>";
+
+                    $("#categoryErrorMessage").removeClass("d-none").html(errorMessage);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $("#addAuthorForm").submit(function(event) {
+            event.preventDefault();
+            $("#authorErrorMessage").addClass("d-none").html(""); 
+
+            var formData = {
+                'username': $("#username").val(),
+                'email': $("#email").val(),
+                'description': $("#author_description").val(),
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'post:create_author' %}", 
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        var newOption = new Option(response.username, response.id, true, true);
+                        $('#id_author').append(newOption).val(response.id).trigger('change'); 
+
+                        $("#addAuthorForm")[0].reset();
+                        $("#addAuthorModal").modal('hide');
+                        
+                        $("#authorErrorMessage").addClass("d-none").html("");
+                    } else {
+                        $("#authorErrorMessage").removeClass("d-none").html("<ul><li>" + response.error + "</li></ul>");
+                    }
+                },
+                error: function(xhr) {
+                    var errors = JSON.parse(xhr.responseText).errors;
+                    var errorMessage = "<div class='alert alert-danger'><ul>";
+
+                    for (const key in errors) {
+                        errorMessage += "<li>" + errors[key] + "</li>";
+                    }
+                    errorMessage += "</ul></div>";
+
+                    $("#categoryErrorMessage").removeClass("d-none").html(errorMessage);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#id_tag').select2({
+            placeholder: "Select or enter new tags",
+            allowClear: true,
+            tags: true,
+            tokenSeparators: [',', ' '],
+            createTag: function(params) {
+                return {
+                    id: params.term,
+                    text: params.term,
+                    newTag: true
+                }
+            }
+        }).on('select2:select', function(e) {
+            var data = e.params.data;
+            
+            if (data.newTag) {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'post:create_tag' %}",
+                    data: {
+                        'name': data.text,
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Create new option with server-returned ID
+                            var newOption = new Option(response.name, response.id, true, true);
+                            $('#id_tag').append(newOption).trigger('change');
+                            
+                            // Remove the temporary option
+                            $(`#id_tag option[value="${data.text}"]`).remove();
+                        }
+                    },
+                    error: function(xhr) {
+                        var errors = JSON.parse(xhr.responseText).errors;
+                        alert("Error creating tag: " + errors.name);
+                        
+                        // Remove only the failed tag
+                        var values = $('#id_tag').val();
+                        values = values.filter(v => v !== data.text);
+                        $('#id_tag').val(values).trigger('change');
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $("#prev-step").on("click", function() {
+            $("#step-2").hide();
+            $("#step-1").show();
+            $("#step-indicator-2").removeClass("active");
+        });
+    });
 </script>
 {% endblock %}
