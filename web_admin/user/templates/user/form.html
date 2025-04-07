@@ -63,7 +63,14 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.groups.id_for_label }}">Groups</label>
-                        {{ form.groups }}
+                        <select name="{{ form.group.name }}" id="group" class="form-control">
+                            {% for group in form.group.field.queryset %}
+                                <option value="{{ group.id }}" 
+                                    {% if form.group.value and form.group.value|stringformat:"s" == group.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ group.name }}
+                                </option>
+                            {% endfor %}
+                        </select>          
                         {% if form.groups.errors %}
                             <div class="text-danger">{{ form.groups.errors }}</div>
                         {% endif %}

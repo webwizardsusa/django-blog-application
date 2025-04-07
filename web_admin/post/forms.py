@@ -18,7 +18,7 @@ class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Apply the filter for authors with a specific condition
-        self.fields['author'].queryset = User.objects.filter(groups__id=2)
+        self.fields['author'].queryset = User.objects.filter(is_superuser=False)
         
         
     def clean_title(self):
