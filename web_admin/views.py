@@ -7,7 +7,7 @@ from web_admin.tag.models import Tag
 def dashboard(request):
     posts = Post.objects.order_by('-created_at')[:6] 
     total_posts = Post.objects.count()  
-    users_count = User.objects.filter(groups__id=2, is_active=1).count()
+    users_count = User.objects.exclude(is_superuser=True).count()
     total_category = Category.objects.count() 
     total_tags = Tag.objects.count()
 
