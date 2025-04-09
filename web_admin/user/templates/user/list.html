@@ -50,12 +50,19 @@
                     { "data": "email" },
                     { "data": "first_name" },
                     { "data": "last_name" },
+                    { "data": "role" },
                     {
                         "data": "is_active",
-                        "render": function (data) {
-                            return data 
-                                ? '<span class="badge bg-success">Active</span>' 
-                                : '<span class="badge bg-danger">InActive</span>';
+                        "render": function (data, type, row) {
+                            return `
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input toggle-status" type="checkbox" 
+                                        ${data ? 'checked' : ''} 
+                                        data-user-id="${row.id}"
+                                        data-status="${data}"
+                                        style="background-color: ${data ? '#198754' : '#dc3545'}; border-color: ${data ? '#198754' : '#dc3545'};">
+                                </div>
+                            `;
                         }
                     },
                     { "data": "action", "searchable": false, "orderable": false, "render": function(data, type, row) {
@@ -84,6 +91,44 @@
                 }
             })
         })
+        $(document).on('change', '.toggle-status', function() {
+            const userId = $(this).data('user-id');
+            const currentStatus = $(this).data('status');
+            const newStatus = !currentStatus;
             
+            $.ajax({
+                url: `/web_admin/user/${userId}/toggle-status/`,
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    is_active: newStatus
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $(this).css({
+                            'background-color': newStatus ? '#198754' : '#dc3545',
+                            'border-color': newStatus ? '#198754' : '#dc3545'
+                        });
+                        
+                        $(this).data('status', newStatus);                            
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'User status updated successfully',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                }.bind(this),
+                error: function() {
+                    $(this).prop('checked', currentStatus);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to update user status'
+                    });
+                }.bind(this)
+            });
+        });
     </script>
 {% endblock %}
