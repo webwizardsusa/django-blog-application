@@ -17,4 +17,8 @@ urlpatterns = [
     path('logout/', views.user_logout, name='user_logout'),
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     path('post/<int:post_id>/like/', views.like_post, name="like_post"),
+    path('password-reset/', views.password_reset_request, name='password_reset'),
+    path('password-reset/done/', views.password_reset_done, name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
+    path('reset/done/', views.password_reset_complete, name='password_reset_complete'),
 ]

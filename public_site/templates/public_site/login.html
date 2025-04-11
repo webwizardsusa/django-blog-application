@@ -1,56 +1,257 @@
-{% extends "layout/guest.html" %}
+{% extends "public_site/layout/base.html" %}
 {% load static %}
 
+{% block page_js %}
+<script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the password field and toggle button
+        const passwordField = document.getElementById('id_password_field');
+        const toggleButton = document.getElementById('toggle-password');
+        const eyeIcon = document.getElementById('eye-icon');
+        const eyeOffIcon = document.getElementById('eye-off-icon');
+
+        // Add click event listener to the toggle button
+        if (toggleButton && passwordField && eyeIcon && eyeOffIcon) {
+            toggleButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    eyeIcon.classList.remove('hidden');
+                    eyeOffIcon.classList.add('hidden');
+                } else {
+                    passwordField.type = 'password';
+                    eyeIcon.classList.add('hidden');
+                    eyeOffIcon.classList.remove('hidden');
+                }
+            });
+        } else {
+            console.error('One or more required elements not found');
+        }
+    });
+</script>
+{% endblock %}
+
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h4 class="f-w-500 mb-1">Login with your email</h4>
-        <p class="mb-4">Don't have an Account?<a href="{% url 'register' %}" class="link-primary ms-1">Create Account</a>
-        </p>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-dismissible fade show 
-                    {% if message.tags == 'success' %} alert-success
-                    {% elif message.tags == 'error' %} alert-danger
-                    {% else %} alert-info {% endif %}" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-        <form method="post" action="{% url 'user_login' %}">
-            {% csrf_token %}
-            <div class="mb-3">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Email Address">
-            </div>
-            <div class="mb-3">
-                <input type="password" name="password" class="form-control" id="floatingInput1" placeholder="Password">
-            </div>
-            <div class="d-flex mt-1 justify-content-between align-items-center">
-                <div class="form-check"><input class="form-check-input input-primary" type="checkbox" id="customCheckc1"
-                        checked=""> <label class="form-check-label text-muted" for="customCheckc1">Remember me?</label>
-                </div><a href="forgot-password-v2.html">
-                    <h6 class="text-secondary f-w-400 mb-0">Forgot Password?</h6>
-                </a>
-            </div>
-            <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-        <div class="saprator my-3"><span>Or continue with</span></div>
-        <div class="text-center">
-            <ul class="list-inline mx-auto mt-3 mb-0">
-                <li class="list-inline-item"><a href="https://www.facebook.com/"
-                        class="avtar avtar-s rounded-circle bg-facebook" target="_blank"><i
-                            class="fab fa-facebook-f text-white"></i></a></li>
-                <li class="list-inline-item"><a href="https://twitter.com/"
-                        class="avtar avtar-s rounded-circle bg-twitter" target="_blank"><i
-                            class="fab fa-twitter text-white"></i></a></li>
-                <li class="list-inline-item"><a href="https://myaccount.google.com/"
-                        class="avtar avtar-s rounded-circle bg-googleplus" target="_blank"><i
-                            class="fab fa-google text-white"></i></a></li>
-            </ul>
+<!-- Login Header -->
+<section class="bg-gray-50 py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="mx-auto max-w-xl px-5 sm:px-8 md:max-w-2xl lg:max-w-screen-xl">
+        <!-- Content -->
+        <div class="max-w-xl">
+            <h1 class="text-4xl font-medium tracking-normal text-gray-900 md:tracking-tight lg:text-5xl lg:leading-tight">
+                Login to your account
+            </h1>
+            <p class="mt-3 text-lg text-gray-500">
+                Access your Web Wizards USA account to manage your content, view analytics, and more.
+            </p>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Login main-->
+<section class="relative mx-auto max-w-screen-xl py-12 md:py-16 lg:px-8 lg:py-24">
+    <div class="w-full lg:flex lg:items-start lg:space-x-8">
+        <!-- Login Form -->
+        <div class="space-y-16 lg:w-2/3">
+            <div class="mx-auto max-w-xl px-5 sm:px-8 md:max-w-2xl lg:max-w-none lg:px-0 lg:pr-24 xl:pr-48">
+                <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
+                    Sign in
+                </h3>
+
+                <div class="relative mt-10">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="p-4 mb-4 rounded-lg shadow-md text-white 
+                                {% if message.tags == 'success' %} bg-green-500 {% elif message.tags == 'error' %} bg-red-500 {% elif message.tags == 'warning' %} bg-yellow-500 {% elif message.tags == 'info' %} bg-blue-500 {% endif %}">
+                                <div class="flex justify-between">
+                                    <span>{{ message }}</span>
+                                    <button type="button" class="text-white hover:text-gray-200" onclick="this.parentElement.parentElement.remove();">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Login Form -->
+                    <form method="post" action="{% url 'user_login' %}" class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="grid grid-cols-1 gap-4">
+                            <!-- Username/Email -->
+                            <div>
+                                <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">Username</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {{ form.username.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                    
+                            <!-- Password -->
+                            <div>
+                                <label for="id_password_field" class="block text-sm font-medium text-gray-700">Password</label>
+                                <div class="relative">
+                                    {{ form.password }}
+                                    <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center px-3 py-1.5">
+                                        <!-- Eye icon (when password is visible) -->
+                                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 text-gray-400 hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <!-- Eye-off icon (when password is hidden) -->
+                                        <svg id="eye-off-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                {% if form.password.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {{ form.password.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                            <div class="mt-4 text-sm text-red-600">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    
+                        <!-- Remember me & Forgot password -->
+                        <div class="mt-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                {{ form.remember_me }}
+                                <label for="{{ form.remember_me.id_for_label }}" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                            </div>
+                            <div class="text-sm">
+                                <a href="{% url 'password_reset' %}" class="font-medium text-red-600 hover:text-red-500">Forgot your password?</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <div class="mt-6">
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Sign in
+                            </button>
+                        </div>
+                        
+                        <!-- Register link -->
+                        <div class="mt-6 text-center">
+                            <p class="text-sm text-gray-600">
+                                Don't have an account? 
+                                <a href="{% url 'register' %}" class="font-medium text-red-600 hover:text-red-500">Create one now</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Sidebar -->
+        <div class="mx-auto mt-12 w-full max-w-xl px-4 sm:mt-16 sm:px-6 md:max-w-2xl md:px-8 lg:sticky lg:top-8 lg:mt-0 lg:w-1/3 lg:max-w-none lg:px-0">
+            <!-- Social Media Links -->
+            <div class="w-full rounded-2xl bg-gray-50 p-5 sm:p-8">
+                <h3 class="relative border-b border-gray-300/70 pb-2.5 text-2xl font-medium text-gray-900 before:absolute before:-bottom-px before:left-0 before:h-px before:w-24 before:bg-red-600 before:content-['']">
+                    Or continue with
+                </h3>
+
+                <!-- Links -->
+                <div class="pt-5">
+                    <div class="overflow-hidden">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/" class="group flex w-full items-center justify-between">
+                            <div class="flex items-center">
+                                <div>
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700" viewBox="0 0 512 512" fill="currentColor">
+                                            <path xmlns="http://www.w3.org/2000/svg" d="M480 257.35c0-123.7-100.3-224-224-224s-224 100.3-224 224c0 111.8 81.9 204.47 189 221.29V322.12h-56.89v-64.77H221V208c0-56.13 33.45-87.16 84.61-87.16 24.51 0 50.15 4.38 50.15 4.38v55.13H327.5c-27.81 0-36.51 17.26-36.51 35v42h62.12l-9.92 64.77H291v156.54c107.1-16.81 189-109.48 189-221.31z" fill-rule="evenodd"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="relative col-span-3 flex flex-col flex-wrap">
+                                    <div class="box-border flex w-full flex-1 flex-col justify-between px-6 md:px-0">
+                                        <div class="transition-color relative z-10 ml-3 text-base font-medium text-gray-700 duration-300 ease-in-out group-hover:text-red-600">
+                                            Facebook
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mx-2 h-5 w-5 text-red-400 transition duration-300 ease-in-out group-hover:translate-x-1.5 group-hover:text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </a>
+
+                        <hr class="my-2.5 ml-13 w-full border-t border-dashed border-gray-300/70"/>
+
+                        <!-- Google -->
+                        <a href="https://myaccount.google.com/" class="group flex w-full items-center justify-between">
+                            <div class="flex items-center">
+                                <div>
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300/70 bg-transparent transition duration-300 ease-in-out">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transform text-gray-700 transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-red-700" viewBox="0 0 488 512" fill="currentColor">
+                                            <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="relative col-span-3 flex flex-col flex-wrap">
+                                    <div class="box-border flex w-full flex-1 flex-col justify-between px-6 md:px-0">
+                                        <div class="transition-color relative z-10 ml-3 text-base font-medium text-gray-700 duration-300 ease-in-out group-hover:text-red-600">
+                                            Google
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mx-2 h-5 w-5 text-red-400 transition duration-300 ease-in-out group-hover:translate-x-1.5 group-hover:text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="bg-gray-50 py-12 sm:py-20 lg:py-24">
+    <div class="mx-auto max-w-screen-xl px-5 sm:px-6 lg:px-8">
+        <!-- Content -->
+        <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+            <img src="{% static 'images/paper-airplane.png' %}" class="h-auto w-24 animate-orbit"/>
+            <h2 class="mt-6 text-3xl font-medium tracking-normal text-gray-900 sm:mt-8 sm:text-4xl md:tracking-tight lg:text-5xl lg:leading-tight">
+                Get the most talked about stories directly in your inbox
+            </h2>
+            <p class="mt-4 text-lg leading-relaxed text-gray-500">
+                Every week we share the most relevant news in tech, culture and
+                entertainment. Join our community of over
+                <span class="font-medium text-gray-800">10,000 readers</span>.
+            </p>
+
+            <!-- Newsletter signup container -->
+            <div class="mt-8 flex w-full flex-col items-center sm:mt-10">
+                <div class="relative h-14 w-full max-w-xl rounded-3xl">
+                    <!-- Newsletter signup form -->
+                    <form class="group rounded-3xl border border-gray-300/70 bg-transparent transition duration-300 ease-in-out">
+                        <input type="email" class="h-14 w-full rounded-3xl border-0 border-transparent bg-white py-3.5 pl-6 pr-36 text-sm leading-5 text-gray-800 transition duration-300 ease-in-out hover:bg-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100" required placeholder="Enter your email" autocomplete="email"/>
+                        <button type="submit" class="before:content-[&quot;&quot;] absolute right-3 top-1.5 inline-flex h-11 items-center bg-transparent px-4 py-2 text-tiny uppercase tracking-widest text-red-700 outline-none transition duration-300 ease-in-out before:absolute before:left-0 before:right-auto before:h-6 before:w-px before:bg-gray-300/70 before:transition before:duration-300 before:ease-in-out hover:text-red-600 focus:outline-none sm:font-medium md:px-6">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <p class="mt-4 text-center text-sm text-gray-500">
+                    Your privacy is important to us. We promise not to send you spam!
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
