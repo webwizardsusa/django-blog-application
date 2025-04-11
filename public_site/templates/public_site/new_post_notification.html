@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Blog Post: {{ post_title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eeeeee;
+        }
+        .header h2 {
+            color: #333333;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px 0;
+            color: #414141;
+        }
+        .content h3 {
+            color: #333333;
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        .author {
+            color: #666666;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+        }
+        .post-excerpt {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            color: #414141;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: sans-serif;
+        }
+        .button {
+            display: inline-block;
+            background-color: #dc2626;
+            color: #ffffff !important;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .button:hover {
+            background-color: #b91c1c;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #666666;
+            border-top: 1px solid #eeeeee;
+            line-height: 1.5;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .footer a {
+            color: #dc2626;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>New Blog Post Published!</h2>
+        </div>
+        <div class="content">
+            <h3>{{ post_title }}</h3>
+            <p class="author">By {{ author_name }}</p>
+            
+            <div class="post-excerpt">
+                {{ post_excerpt }}
+            </div>
+
+            <p style="text-align: center; margin-top: 25px;">
+                <a href="{{ post_url }}" class="button">Read Full Post</a>
+            </p>
+
+            <p style="margin-top: 25px;">
+                We hope you enjoy reading this new post. Your continued readership means a lot to us!
+            </p>
+            
+            <p>Best regards,<br>The WWU Team</p>
+        </div>
+        <div class="footer">
+            <p>You received this email because you're subscribed to our blog updates.</p>
+            <p>To unsubscribe from these notifications, <a href="{{ unsubscribe_url }}">click here</a>.</p>
+            <p>&copy; 2025 WWU. All Rights Reserved.</p>
+        </div>
+    </div>    
+</body>
+</html> 

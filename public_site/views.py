@@ -25,6 +25,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from .forms import CustomPasswordResetForm
+from public_site.tasks import send_contact_email_task, send_welcome_email_task
+from django.core.mail import send_mail
+from blog_application import settings
+from django.core.mail import EmailMessage
+from django.http import JsonResponse
+from .models import Subscriber
+from django.views.decorators.csrf import csrf_exempt
 
 def paginate_queryset(request, queryset, per_page):
     paginator = Paginator(queryset, per_page)
@@ -342,3 +349,37 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_complete(request):
     return render(request, "public_site/password_reset_complete.html")
+@csrf_exempt
+def subscribe_newsletter(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            try:
+                # Check if subscriber already exists
+                subscriber, created = Subscriber.objects.get_or_create(email=email)
+                if created:
+                    # Send welcome email asynchronously using Celery
+                    send_welcome_email_task.delay(subscriber.email)
+                    return JsonResponse({
+                        'status': 'success',
+                        'message': 'Thank you for subscribing to our newsletter! A welcome email is on its way.'
+                    })
+                else:
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'You are already subscribed to our newsletter.'
+                    })
+            except Exception as e:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'An error occurred while subscribing.'
+                })
+        else:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Please provide a valid email address.'
+            })
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request method.'
+    })
