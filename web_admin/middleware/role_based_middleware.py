@@ -8,8 +8,11 @@ class RoleBasedAccessMiddleware:
     def __call__(self, request):
         path = request.path
 
-        # Exclude login pages from checks to prevent infinite redirects
-        if path.startswith("/web_admin/auth/login/") or path.startswith("/admin/login/"):
+        # Exclude login and password reset pages from checks to prevent infinite redirects
+        if (path.startswith("/web_admin/auth/login/") or 
+            path.startswith("/admin/login/") or 
+            path.startswith("/web_admin/auth/password-reset/") or
+            "password-reset" in path):
             return self.get_response(request)
 
         # Handle /web_admin role restrictions
