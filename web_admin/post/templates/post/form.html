@@ -34,7 +34,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
-                        <textarea name="content" id="id_content" class="form-control" placeholder="Enter post content">{{ form.content.value }}</textarea>                        
+                        {{ form.content }}
                         {% if form.content.errors %}
                             <div class="text-danger">{{ form.content.errors }}</div>
                         {% endif %}
@@ -89,7 +89,10 @@
             placeholder: "Select tags",
             allowClear: true
         });
+        
+        new FroalaEditor('#id_content', {
+            placeholderText: 'Enter post content'
+        });
     });
-    new FroalaEditor('#id_content')
 </script>
 {% endblock %}

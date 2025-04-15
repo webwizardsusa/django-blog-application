@@ -99,11 +99,10 @@ class CrudView:
         if request.method == 'POST':
             if hasattr(self, '_beforeSave'):
                 post_data = self._beforeSave(params)
-            
+
             form = self.form_class(data=post_data, files=request.FILES, instance=instance)
             params.update({'form': form, **shared_data})
-
-            form_save = True
+            form_save = False
 
             if hasattr(self, '_save'):
                 form_save = self._save(params)
