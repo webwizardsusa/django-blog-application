@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(required=True,
-        widget=forms.TextInput(
-            attrs={'class': 'mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500', 'placeholder': 'Enter your Username', 'required': False, }),
+        widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500', 'placeholder': 'Enter your Username', 'required': False, }),
         error_messages={
             'required': 'Username is required',
         }

@@ -34,8 +34,6 @@ class Subscriber(models.Model):
 
     class Meta:
         db_table = 'subscribers'
-        verbose_name = 'Subscriber'
-        verbose_name_plural = 'Subscribers'
 
     def __str__(self):
         return self.email

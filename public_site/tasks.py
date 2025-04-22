@@ -13,11 +13,7 @@ def send_contact_email_task(subject, message, from_email, recipient_list):
 @shared_task
 def send_register_email(username, email, login_url):
     """Sends the registration confirmation email asynchronously."""
-    context = {
-        "user_name": username,
-        "user_email": email,
-        "login_url": login_url
-    }
+    context = {"user_name": username, "user_email": email, "login_url": login_url}
     
     html_content = render_to_string("public_site/register_email.html", context)
     text_content = strip_tags(html_content)
@@ -34,10 +30,7 @@ def send_register_email(username, email, login_url):
 @shared_task
 def send_welcome_email_task(subscriber_email):
     """Sends a welcome email to new newsletter subscribers."""
-    context = {
-        "email": subscriber_email,
-        "unsubscribe_url": "#"  # You can implement unsubscribe functionality later
-    }
+    context = {"email": subscriber_email,"unsubscribe_url": "#" }
     
     html_content = render_to_string("public_site/newsletter_welcome_email.html", context)
     text_content = strip_tags(html_content)

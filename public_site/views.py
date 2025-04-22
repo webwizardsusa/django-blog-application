@@ -349,16 +349,14 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_complete(request):
     return render(request, "public_site/password_reset_complete.html")
-@csrf_exempt
+
 def subscribe_newsletter(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         if email:
             try:
-                # Check if subscriber already exists
                 subscriber, created = Subscriber.objects.get_or_create(email=email)
                 if created:
-                    # Send welcome email asynchronously using Celery
                     send_welcome_email_task.delay(subscriber.email)
                     return JsonResponse({
                         'status': 'success',
