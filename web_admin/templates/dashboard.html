@@ -5,16 +5,15 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6 col-xl-3">
-        <a href="{% url 'post:post_list' %}" class="text-decoration-none">
-            <div class="card bg-grd-primary order-card">
-                <div class="card-body">
-                    <h6 class="text-white">Total Posts</h6>
-                    <h2 class="text-end text-white"><i
-                            class="feather icon-file float-start"></i><span>{{ total_posts }}</span></h2>
-                </div>
+        <div class="card bg-grd-primary order-card">
+            <div class="card-body">
+                <h6 class="text-white">{% if is_author %}My Posts{% else %}Total Posts{% endif %}</h6>
+                <h2 class="text-end text-white"><i
+                        class="feather icon-file float-start"></i><span>{{ total_posts }}</span></h2>
             </div>
         </a>
     </div>
+    {% if can_view_user %}
     <div class="col-md-6 col-xl-3">
         <a href="{% url 'user:user_list' %}" class="text-decoration-none">
             <div class="card bg-grd-success order-card">
@@ -26,6 +25,7 @@
             </div>
         </a>
     </div>
+    {% endif %}
     <div class="col-md-6 col-xl-3">
         <a href="{% url 'category:category_list' %}" class="text-decoration-none">
             <div class="card bg-grd-warning order-card">
@@ -61,7 +61,9 @@
                             <th>Image</th>
                             <th>Title</th>
                             <th>Category</th>
+                            {% if not is_author %}
                             <th>Author</th>
+                            {% endif %}
                             <th>Status</th>
                             <th>Created At</th>
                         </tr>
@@ -76,7 +78,9 @@
                             </td>
                             <td>{{ post.title | truncatechars:20 }}</td>
                             <td>{{ post.category.name }}</td>
+                            {% if not is_author %}
                             <td>{{ post.author.get_full_name }}</td>
+                            {% endif %}                            
                             <td> {% if post.is_published %}
                                 <span class="badge bg-success">Published</span>
                                 {% else %}

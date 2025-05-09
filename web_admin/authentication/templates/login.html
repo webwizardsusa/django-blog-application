@@ -5,11 +5,14 @@
 <div class="card">
     <div class="card-body">
         <h4 class="f-w-500 mb-1">Login with your email</h4>
-        <p class="mb-4">Don't have an Account? <a href="register-v2.html" class="link-primary ms-1">Create Account</a>
+        <p class="mb-4">Don't have an Account?<a href="{% url 'authentication:register' %}" class="link-primary ms-1">Create Account</a>
         </p>
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-danger alert-error alert-dismissible fade show" role="alert">
+                <div class="alert alert-dismissible fade show 
+                    {% if message.tags == 'success' %} alert-success
+                    {% elif message.tags == 'error' %} alert-danger
+                    {% else %} alert-info {% endif %}" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -18,23 +21,31 @@
         <form method="post" action="{% url 'authentication:login' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Email Address">
+                <label for="username" class="form-label">Username</label>
+                {{ form.username }}
             </div>
             <div class="mb-3">
-                <input type="password" name="password" class="form-control" id="floatingInput1" placeholder="Password">
+                <label for="username" class="form-label">Password</label>
+                <div class="input-group">
+                    {{ form.password }}
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <i class="feather icon-eye-off"></i>
+                    </button>
+                </div>
             </div>
             <div class="d-flex mt-1 justify-content-between align-items-center">
                 <div class="form-check"><input class="form-check-input input-primary" type="checkbox" id="customCheckc1"
                         checked=""> <label class="form-check-label text-muted" for="customCheckc1">Remember me?</label>
-                </div><a href="forgot-password-v2.html">
+                </div>
+                <!-- <a href="forgot-password-v2.html">
                     <h6 class="text-secondary f-w-400 mb-0">Forgot Password?</h6>
-                </a>
+                </a> -->
             </div>
             <div class="d-grid mt-4">
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
-        <div class="saprator my-3"><span>Or continue with</span></div>
+        <!-- <div class="saprator my-3"><span>Or continue with</span></div>
         <div class="text-center">
             <ul class="list-inline mx-auto mt-3 mb-0">
                 <li class="list-inline-item"><a href="https://www.facebook.com/"
@@ -47,7 +58,25 @@
                         class="avtar avtar-s rounded-circle bg-googleplus" target="_blank"><i
                             class="fab fa-google text-white"></i></a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('icon-eye-off');
+                icon.classList.add('icon-eye');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('icon-eye');
+                icon.classList.add('icon-eye-off');
+            }
+        });
+    </script>
 {% endblock %}

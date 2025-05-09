@@ -1,6 +1,10 @@
 # project_name/celery.py
 import os
+import json
 from celery import Celery
+from kombu.serialization import register
+
+register('json', json.dumps, json.loads,content_type='application/json',content_encoding='utf-8')
 
 # Set the default Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog_application.settings')

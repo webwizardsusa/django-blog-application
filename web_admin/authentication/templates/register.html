@@ -1,0 +1,106 @@
+{% extends "layout/guest.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="f-w-500 mb-1">Register</h4>
+        <p class="mb-4">Already have an Account? <a href="{% url 'authentication:login' %}" class="link-primary ms-1">Sign In</a>
+        </p>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger alert-error alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" action="{% url 'authentication:register' %}">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                    {{ form.username }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <div class="input-group">
+                    {{ form.firstname }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <div class="input-group">
+                    {{ form.lastname }}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-group">
+                    {{ form.email }}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password1" class="form-label">Password</label>
+                <div class="input-group">
+                    {{ form.password1 }}
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                        <i class="feather icon-eye-off"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password2" class="form-label">Confirm Password</label>
+                <div class="input-group">
+                    {{ form.password2 }}
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                        <i class="feather icon-eye-off"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.getElementById('togglePassword1').addEventListener('click', function() {
+            const password = document.getElementById('password1');
+            const icon = this.querySelector('i');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('icon-eye-off');
+                icon.classList.add('icon-eye');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('icon-eye');
+                icon.classList.add('icon-eye-off');
+            }
+        });
+        document.getElementById('togglePassword2').addEventListener('click', function() {
+            const password = document.getElementById('password2');
+            const icon = this.querySelector('i');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('icon-eye-off');
+                icon.classList.add('icon-eye');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('icon-eye');
+                icon.classList.add('icon-eye-off');
+            }
+        });
+    </script>
+{% endblock %}

@@ -35,6 +35,13 @@ class PostView(CrudView):
             return {'categories': Category.objects.all(), 'authors': authors, 'tags': Tag.objects.all()}
             
         return None
+    
+    def _page_filter(self, query, user):
+        """Filter the query based on the user's role."""
+        if user.groups.filter(name="author").exists():
+            return query.filter(author=user)  
+        elif user.groups.filter(name="web_admin").exists():
+            return query
 
     def _filter(self, query, request):
         category_name = request.POST.get('category') or None  
